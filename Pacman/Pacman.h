@@ -26,7 +26,7 @@ public:
 	static Pacman* Create(Drawer* aDrawer);
 	~Pacman(void);
 
-	bool Update(float aTime);
+	bool Update(float aTime);	
 	bool Draw();
 
 private:
@@ -36,6 +36,9 @@ private:
 	void MoveAvatar();
 	bool CheckEndGameCondition();
 	void UpdateScore();
+	void HitGhost();
+	void CheckGhostTimer(float aTime);
+	void DrawText();
 
 	Drawer* myDrawer;
 

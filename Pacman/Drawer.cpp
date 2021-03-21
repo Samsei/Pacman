@@ -1,7 +1,6 @@
 #include "Drawer.h"
 #include "SDL.h"
 #include "SDL_image.h"
-#include "SDL_ttf.h"
 
 Drawer* Drawer::Create(SDL_Window* aWindow, SDL_Renderer* aRenderer)
 {
@@ -20,10 +19,12 @@ Drawer::Drawer(SDL_Window* aWindow, SDL_Renderer* aRenderer)
 : myWindow(aWindow)
 , myRenderer(aRenderer)
 {
+	font = TTF_OpenFont("freefont-ttf\\sfd\\FreeMono.ttf", 24);
 }
 
 Drawer::~Drawer(void)
 {
+	TTF_CloseFont(font);
 }
 
 bool Drawer::Init()
@@ -39,22 +40,16 @@ void Drawer::Draw(Sprite* sprite, int aCellX, int aCellY)
 	SDL_RenderCopy(myRenderer, sprite->returnTexture(), sprite->returnSize(), sprite->returnPos());
 }
 
-void Drawer::DrawText(const char* aText, const char* aFontFile, int aX, int aY)
+void Drawer::DrawText(const char* aText, int aX, int aY)
 {
-	TTF_Font* font=TTF_OpenFont(aFontFile, 24);
+	surface = TTF_RenderText_Solid(font, aText, fg);
+	optimizedSurface = SDL_CreateTextureFromSurface(myRenderer, surface);
 
-	SDL_Color fg={255,0,0,255};
-
-	SDL_Surface* surface = TTF_RenderText_Solid(font, aText, fg);
-	SDL_Texture* optimizedSurface = SDL_CreateTextureFromSurface(myRenderer, surface);
-
-    SDL_Rect sizeRect;
     sizeRect.x = 0;
     sizeRect.y = 0;
     sizeRect.w = surface->w;
     sizeRect.h = surface->h;
 
-    SDL_Rect posRect;
     posRect.x = aX;
     posRect.y = aY;
 	posRect.w = sizeRect.w;
@@ -63,7 +58,6 @@ void Drawer::DrawText(const char* aText, const char* aFontFile, int aX, int aY)
 	SDL_RenderCopy(myRenderer, optimizedSurface, &sizeRect, &posRect);
 	SDL_FreeSurface(surface);
 	SDL_DestroyTexture(optimizedSurface);  //i think i did somehting here, need to check
-	TTF_CloseFont(font);
 }
 
 SDL_Renderer* Drawer::ReturnRenderer()

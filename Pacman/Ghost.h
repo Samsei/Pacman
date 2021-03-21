@@ -15,6 +15,11 @@ public:
 
 	void Update(float aTime, World* aWorld);
 
+	void GetNextTile();
+	void FindPath(float aTime, World* aWorld);
+	void MoveGhost();
+	void MoveSprite();
+
 	bool myIsClaimableFlag = false;;
 	bool myIsDeadFlag = false;
 
@@ -26,6 +31,17 @@ protected:
 
 	int myDesiredMovementX = 0;
 	int myDesiredMovementY = 0;
+	float speed = 30.f;
+
+	int nextTileX = 0;
+	int nextTileY = 0;
+
+	int tileSize = 22;
+
+	float distanceToMove = 0;
+
+	Vector2f destination;
+	Vector2f direction;
 
 	std::list<PathmapTile*> myPath;
 

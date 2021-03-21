@@ -2,6 +2,7 @@
 #define DRAWER_H
 
 #include "Sprite.h"
+#include "SDL_ttf.h"
 
 struct SDL_Window;
 struct SDL_Renderer;
@@ -14,7 +15,7 @@ public:
 	~Drawer(void);
 
 	void Draw(Sprite* sprite, int aCellX = 0, int aCellY = 0);
-	void DrawText(const char* aText, const char* aFontFile, int aX, int aY);
+	void DrawText(const char* aText, int aX, int aY);
 	SDL_Renderer* ReturnRenderer();
 
 private:
@@ -23,7 +24,14 @@ private:
 	
 	SDL_Window* myWindow;
 	SDL_Renderer* myRenderer;
-	SDL_Surface* world;
+	SDL_Surface* surface;
+	SDL_Texture* optimizedSurface;
+
+	TTF_Font* font;
+	SDL_Color fg = { 255,0,0,255 };
+
+	SDL_Rect posRect;
+	SDL_Rect sizeRect;
 };
 
 #endif // DRAWER_H

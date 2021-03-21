@@ -29,13 +29,15 @@ void Ghost::Die(World* aWorld)
 
 void Ghost::Update(float aTime, World* aWorld)
 {
-	float speed = 30.f;
-	int nextTileX = GetCurrentTileX() + myDesiredMovementX;
-	int nextTileY = GetCurrentTileY() + myDesiredMovementY;
+	GetNextTile();
 
-	if (myIsDeadFlag)
-		speed = 120.f;
+	FindPath(aTime, aWorld);
 
+	MoveGhost();
+}
+
+void Ghost::FindPath(float aTime, World* aWorld)
+{
 	if (IsAtDestination())
 	{
 		if (!myPath.empty())
@@ -54,29 +56,46 @@ void Ghost::Update(float aTime, World* aWorld)
 			{
 				myDesiredMovementX = 0;
 				myDesiredMovementY = 1;
-			} else if (myDesiredMovementY == 1)
+			}
+			else if (myDesiredMovementY == 1)
 			{
 				myDesiredMovementX = -1;
-				myDesiredMovementY = 0;			
-			} else if (myDesiredMovementX == -1)
+				myDesiredMovementY = 0;
+			}
+			else if (myDesiredMovementX == -1)
 			{
 				myDesiredMovementX = 0;
 				myDesiredMovementY = -1;
-			} else
+			}
+			else
 			{
 				myDesiredMovementX = 1;
 				myDesiredMovementY = 0;
 			}
 
 			myIsDeadFlag = false;
+			speed = 30.0f;
 		}
 	}
 
-	int tileSize = 22;
-	Vector2f destination(myNextTileX * tileSize, myNextTileY * tileSize);
-	Vector2f direction = destination - myPosition;
+	destination = Vector2f(myNextTileX * tileSize, myNextTileY * tileSize);
+	direction = destination - myPosition;
 
-	float distanceToMove = aTime * speed;
+	distanceToMove = aTime * speed;
+}
+
+void Ghost::GetNextTile()
+{
+	nextTileX = GetCurrentTileX() + myDesiredMovementX;
+	nextTileY = GetCurrentTileY() + myDesiredMovementY;
+}
+
+void Ghost::MoveGhost()
+{
+	if (myIsDeadFlag)
+	{
+		speed = 120.f;
+	}
 
 	if (distanceToMove > direction.Length())
 	{
@@ -90,15 +109,38 @@ void Ghost::Update(float aTime, World* aWorld)
 		myPosition += direction * distanceToMove;
 	}
 
-	ghostSprite->MoveSprite(myPosition.myX + 220, myPosition.myY + 60);
+	MoveSprite();
+}
+
+void Ghost::MoveSprite()
+{
+	if (myIsDeadFlag)
+	{
+		ghostDeadSprite->MoveSprite(myPosition.myX + 220, myPosition.myY + 60);
+	}
+	else if (myIsClaimableFlag)
+	{
+		ghostVulnerableSprite->MoveSprite(myPosition.myX + 220, myPosition.myY + 60);
+	}
+	else
+	{
+		ghostSprite->MoveSprite(myPosition.myX + 220, myPosition.myY + 60);
+	}
 }
 
 void Ghost::Draw(Drawer* aDrawer)
 {
 	if (myIsDeadFlag)
+	{
 		aDrawer->Draw(ghostDeadSprite, (int)myPosition.myX, (int)myPosition.myY);
+
+	}
 	else if (myIsClaimableFlag)
+	{
 		aDrawer->Draw(ghostVulnerableSprite, (int)myPosition.myX, (int)myPosition.myY);
+	}
 	else
+	{
 		aDrawer->Draw(ghostSprite, (int)myPosition.myX, (int)myPosition.myY);
+	}
 }

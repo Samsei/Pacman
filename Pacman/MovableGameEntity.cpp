@@ -15,8 +15,6 @@ bool MovableGameEntity::IsAtDestination()
 {
 	if (myCurrentTileX == myNextTileX && myCurrentTileY == myNextTileY)
 	{
-
-
 		return true;
 	}
 

@@ -1,10 +1,10 @@
 #include "Avatar.h"
 #include "Drawer.h"
 
-Avatar::Avatar(SDL_Renderer* aRenderer, const Vector2f& aPosition, Sprite* avatarSprite)
-: MovableGameEntity(aPosition, avatarSprite)
+Avatar::Avatar(SDL_Renderer* aRenderer, const Vector2f& aPosition)
+: MovableGameEntity(aPosition, mySprite)
 {
-	mySprite = avatarSprite;
+	mySprite = new Sprite(aRenderer, "open_32.png");
 }
 
 Avatar::~Avatar(void)
@@ -13,8 +13,13 @@ Avatar::~Avatar(void)
 
 void Avatar::Update(float aTime)
 {
-	Vector2f destination(myNextTileX * tileSize, myNextTileY * tileSize);
-	Vector2f direction = destination - myPosition;
+	MoveAvatar(aTime);
+}
+
+void Avatar::MoveAvatar(float aTime)
+{
+	destination = Vector2f(myNextTileX * tileSize, myNextTileY * tileSize);
+	direction = destination - myPosition;
 
 	distanceToMove = aTime * 30.f;
 
@@ -23,14 +28,14 @@ void Avatar::Update(float aTime)
 		myPosition = destination;
 		myCurrentTileX = myNextTileX;
 		myCurrentTileY = myNextTileY;
-		mySprite->MoveSprite(myPosition.myX + 220, myPosition.myY + 60);
 	}
 	else
 	{
 		direction.Normalize();
 		myPosition += direction * distanceToMove;
-		mySprite->MoveSprite(myPosition.myX + 220, myPosition.myY + 60);
 	}
+
+	mySprite->MoveSprite(myPosition.myX + 220, myPosition.myY + 60);
 }
 
 void Avatar::Draw(Drawer* aDrawer)

@@ -4,24 +4,7 @@ Sprite::Sprite(SDL_Renderer* aRenderer, const char* anImage, int aCellX, int aCe
 	image(anImage),
 	myRenderer(aRenderer)
 {
-	surface = IMG_Load(image);
-
-	if (!surface)
-		return;
-
-	texture = SDL_CreateTextureFromSurface(myRenderer, surface);
-
-	sizeRect.x = 0;
-	sizeRect.y = 0;
-	sizeRect.w = surface->w;
-	sizeRect.h = surface->h;
-
-	posRect.x = aCellX;
-	posRect.y = aCellY;
-	posRect.w = sizeRect.w;
-	posRect.h = sizeRect.h;
-
-	SDL_FreeSurface(surface);
+	ChangeTexture(aRenderer, anImage, aCellX, aCellY);
 }
 
 SDL_Texture* Sprite::returnTexture()
@@ -45,4 +28,27 @@ void Sprite::MoveSprite(int aCellX, int aCellY)
 	posRect.y = aCellY;
 	posRect.w = sizeRect.w;
 	posRect.h = sizeRect.h;
+}
+
+void Sprite::ChangeTexture(SDL_Renderer* aRenderer, const char* anImage, int aCellX, int aCellY)
+{
+	surface = IMG_Load(anImage);
+
+	if (!surface)
+		return;
+
+	SDL_DestroyTexture(texture);
+	texture = SDL_CreateTextureFromSurface(aRenderer, surface);
+
+	sizeRect.x = 0;
+	sizeRect.y = 0;
+	sizeRect.w = surface->w;
+	sizeRect.h = surface->h;
+
+	posRect.x = aCellX;
+	posRect.y = aCellY;
+	posRect.w = sizeRect.w;
+	posRect.h = sizeRect.h;
+
+	SDL_FreeSurface(surface);
 }

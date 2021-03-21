@@ -1,6 +1,4 @@
 #include "SDL.h"
-#include "SDL_image.h"
-#include "SDL_ttf.h"
 #include "assert.h"
 #include "pacman.h"
 #include "drawer.h"
@@ -43,6 +41,11 @@ int main(int argc, char **argv)
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); //no need to set every frame if not being changed
 
+	if (SDL_Init(SDL_INIT_AUDIO) < 0)
+	{
+		exit(-1);//i'll add audio at some point
+	}
+
 	while (SDL_PollEvent(&event) >= 0)
 	{
 		SDL_RenderClear(renderer);
@@ -70,4 +73,3 @@ int main(int argc, char **argv)
 
 	return 0;
 }
-

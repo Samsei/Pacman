@@ -151,7 +151,7 @@ void Pacman::MoveAvatar()
 	nextTileX = myAvatar->GetCurrentTileX() + myNextMovement.myX;
 	nextTileY = myAvatar->GetCurrentTileY() + myNextMovement.myY;
 
-	if (myAvatar->IsAtDestination() && myWorld->TileIsValid(nextTileX, nextTileY))  //unnested if statementa
+	if (myAvatar->IsAtDestination() && myWorld->TileIsValid(nextTileX, nextTileY))  //unnested if statement
 	{
 		myAvatar->SetNextTile(nextTileX, nextTileY);
 	}

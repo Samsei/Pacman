@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -129,6 +129,7 @@
     <ClCompile Include="MovableGameEntity.cpp" />
     <ClCompile Include="Pacman.cpp" />
     <ClCompile Include="PathmapTile.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="StaticGameEntity.cpp" />
     <ClCompile Include="Vector2f.cpp" />
     <ClCompile Include="World.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="MovableGameEntity.h" />
     <ClInclude Include="Pacman.h" />
     <ClInclude Include="PathmapTile.h" />
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="StaticGameEntity.h" />
     <ClInclude Include="Vector2f.h" />
     <ClInclude Include="World.h" />

@@ -2,7 +2,10 @@
 #define WORLD_H
 
 #include <list>
+#include <algorithm>
+#include <vector> 
 #include "Vector2f.h"
+#include "Sprite.h"
 
 class Drawer;
 class PathmapTile;
@@ -13,10 +16,10 @@ class Cherry;
 class World
 {
 public:
-	World(void);
+	World(SDL_Renderer* aRenderer);
 	~World(void);
 
-	void Init();
+	void Init(Drawer* aDrawer);
 
 	void Draw(Drawer* aDrawer);
 	bool TileIsValid(int anX, int anY);
@@ -37,14 +40,17 @@ private:
 
 
 	bool InitPathmap();
-	bool InitDots();
-	bool InitBigDots();
+	bool InitDots(SDL_Renderer* aRenderer);
+	bool InitBigDots(SDL_Renderer* aRenderer);
 
 	std::list<PathmapTile*> myPathmapTiles;
 	std::list<Dot*> myDots;
 	std::list<BigDot*> myBigDots;
 	std::list<Cherry*> myCherry;
 
+	Sprite* dotSprite;
+	Sprite* bigDotSprite;
+	Sprite* worldSprite;
 };
 
 #endif // WORLD_H

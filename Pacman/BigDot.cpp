@@ -1,10 +1,17 @@
 #include "BigDot.h"
+#include "Sprite.h"
 
-BigDot::BigDot(Vector2f aPosition)
-: StaticGameEntity(aPosition, "Big_Dot_32.png")
+BigDot::BigDot(Vector2f aPosition, Sprite mySprite)
+: StaticGameEntity(aPosition, &mySprite)
 {
+	dotSprite = mySprite;
 }
 
 BigDot::~BigDot(void)
 {
+}
+
+Sprite BigDot::ReturnSprite()
+{
+	return dotSprite;
 }

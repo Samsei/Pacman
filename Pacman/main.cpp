@@ -37,17 +37,22 @@ int main(int argc, char **argv)
 
 	float lastFrame = (float) SDL_GetTicks() * 0.001f;
 	SDL_Event event;
+
+	float currentFrame = 0;
+	float elapsedTime = 0;
+
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); //no need to set every frame if not being changed
+
 	while (SDL_PollEvent(&event) >= 0)
 	{
-		float currentFrame = (float) SDL_GetTicks() * 0.001f;
-		float elapsedTime = currentFrame - lastFrame;
+		SDL_RenderClear(renderer);
+
+		currentFrame = (float) SDL_GetTicks() * 0.001f;
+		elapsedTime = currentFrame - lastFrame;
 
 		if (!pacman->Update(elapsedTime))
 			break;
-
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		SDL_RenderClear(renderer);
-
+		
 		pacman->Draw();
 		
 		lastFrame = currentFrame;		

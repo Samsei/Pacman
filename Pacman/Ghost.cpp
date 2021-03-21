@@ -3,14 +3,18 @@
 #include "PathmapTile.h"
 #include "Drawer.h"
 
-Ghost::Ghost(const Vector2f& aPosition)
-: MovableGameEntity(aPosition, "ghost_32.png")
+Ghost::Ghost(const Vector2f& aPosition, SDL_Renderer* aRenderer)
+: MovableGameEntity(aPosition, ghostSprite)
 {
 	myIsClaimableFlag = false;
 	myIsDeadFlag = false;
 
 	myDesiredMovementX = 0;
 	myDesiredMovementY = -1;
+
+	ghostSprite = new Sprite(aRenderer, "ghost_32.png", 0, 0);
+	ghostVulnerableSprite = new Sprite(aRenderer, "Ghost_Vulnerable_32.png", 0, 0);
+	ghostDeadSprite = new Sprite(aRenderer, "Ghost_Dead_32.png", 0, 0);
 }
 
 Ghost::~Ghost(void)
@@ -85,19 +89,16 @@ void Ghost::Update(float aTime, World* aWorld)
 		direction.Normalize();
 		myPosition += direction * distanceToMove;
 	}
-}
 
-void Ghost::SetImage(const char* anImage)
-{
-	myImage = anImage;
+	ghostSprite->MoveSprite(myPosition.myX + 220, myPosition.myY + 60);
 }
 
 void Ghost::Draw(Drawer* aDrawer)
 {
 	if (myIsDeadFlag)
-		aDrawer->Draw("Ghost_Dead_32.png", (int)myPosition.myX + 220, (int)myPosition.myY + 60);
+		aDrawer->Draw(ghostDeadSprite, (int)myPosition.myX, (int)myPosition.myY);
 	else if (myIsClaimableFlag)
-		aDrawer->Draw("Ghost_Vulnerable_32.png", (int)myPosition.myX + 220, (int)myPosition.myY + 60);
+		aDrawer->Draw(ghostVulnerableSprite, (int)myPosition.myX, (int)myPosition.myY);
 	else
-		aDrawer->Draw(myImage, (int)myPosition.myX + 220, (int)myPosition.myY + 60);
+		aDrawer->Draw(ghostSprite, (int)myPosition.myX, (int)myPosition.myY);
 }

@@ -10,15 +10,13 @@ class PathmapTile;
 class Ghost : public MovableGameEntity
 {
 public:
-	Ghost(const Vector2f& aPosition);
+	Ghost(const Vector2f& aPosition, SDL_Renderer* aRenderer);
 	~Ghost(void);
 
 	void Update(float aTime, World* aWorld);
 
-	bool myIsClaimableFlag;
-	bool myIsDeadFlag;
-
-	void SetImage(const char* anImage);
+	bool myIsClaimableFlag = false;;
+	bool myIsDeadFlag = false;
 
 	void Die(World* aWorld);
 
@@ -26,11 +24,14 @@ public:
 
 protected:
 
-	int myDesiredMovementX;
-	int myDesiredMovementY;
+	int myDesiredMovementX = 0;
+	int myDesiredMovementY = 0;
 
 	std::list<PathmapTile*> myPath;
 
+	Sprite* ghostSprite ;
+	Sprite* ghostVulnerableSprite;
+	Sprite* ghostDeadSprite;
 };
 
 #endif // GHOST_H

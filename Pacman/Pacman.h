@@ -2,6 +2,17 @@
 #define PACMAN_H
 
 #include "Vector2f.h"
+#include "Drawer.h"
+#include "SDL.h"
+
+#include "Avatar.h"
+#include "World.h"
+#include "Ghost.h"
+
+#include <string>
+#include <iostream>
+#include <sstream>
+#include <fstream>
 
 struct SDL_Surface;
 class Drawer;
@@ -24,15 +35,21 @@ private:
 	bool UpdateInput();
 	void MoveAvatar();
 	bool CheckEndGameCondition();
+	void UpdateScore();
 
 	Drawer* myDrawer;
 
 	float myTimeToNextUpdate;
 	float myGhostGhostCounter;
 
+	int nextTileX;
+	int nextTileY; //added to .h instead of initializing every frame
+
 	int myLives;
 	int myScore;
 	int myFps;
+
+	const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
 	Vector2f myNextMovement;
 
@@ -40,6 +57,7 @@ private:
 	Ghost* myGhost;
 	World* myWorld;
 
+	Sprite* avatarSprite;
 };
 
 #endif // PACMAN_H

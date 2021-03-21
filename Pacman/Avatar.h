@@ -7,14 +7,19 @@
 class Avatar : public MovableGameEntity
 {
 public:
-	Avatar(const Vector2f& aPosition);
+	Avatar(SDL_Renderer* aRenderer, const Vector2f& aPosition, Sprite* avatarSprite);
 	~Avatar(void);
 
 	void Update(float aTime);
 
+	void Draw(Drawer* aDrawer);
+
 private:
 
+	const int tileSize = 22;
+	float distanceToMove; //added to .h instead of delcaring each frame
 
+	Sprite* mySprite;
 };
 
 #endif //AVATAR_H

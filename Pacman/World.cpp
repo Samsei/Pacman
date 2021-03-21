@@ -1,4 +1,5 @@
 #include "World.h"
+#include "World.h"
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -9,19 +10,21 @@
 #include "BigDot.h"
 #include "Drawer.h"
 
-World::World(void)
+World::World(SDL_Renderer* aRenderer)
 {
+	bigDotSprite = new Sprite(aRenderer, "Big_Dot_32.png", 0, 0);;
+	worldSprite = new Sprite(aRenderer, "playfield.png", 0, 0);;
 }
 
 World::~World(void)
 {
 }
 
-void World::Init()
+void World::Init(Drawer* aDrawer)
 {
 	InitPathmap();
-	InitDots();
-	InitBigDots();
+	InitDots(aDrawer->ReturnRenderer());
+	InitBigDots(aDrawer->ReturnRenderer());
 }
 
 bool World::InitPathmap()
@@ -48,10 +51,11 @@ bool World::InitPathmap()
 	return true;
 }
 
-bool World::InitDots()
+bool World::InitDots(SDL_Renderer* aRenderer)
 {
 	std::string line;
 	std::ifstream myfile ("map.txt");
+
 	if (myfile.is_open())
 	{
 		int lineIndex = 0;
@@ -62,7 +66,8 @@ bool World::InitDots()
 			{
 				if (line[i] == '.')
 				{
-					Dot* dot = new Dot(Vector2f(i*22, lineIndex*22));
+					Sprite* sprite = new Sprite(aRenderer, "Small_Dot_32.png", i * 22 + 220, lineIndex * 22 + 60);
+					Dot* dot = new Dot(Vector2f(i*22, lineIndex*22), *sprite);
 					myDots.push_back(dot);
 				}
 			}
@@ -71,14 +76,14 @@ bool World::InitDots()
 		}
 		myfile.close();
 	}
-
 	return true;
 }
 
-bool World::InitBigDots()
+bool World::InitBigDots(SDL_Renderer* aRenderer)
 {
 	std::string line;
 	std::ifstream myfile ("map.txt");
+
 	if (myfile.is_open())
 	{
 		int lineIndex = 0;
@@ -89,7 +94,8 @@ bool World::InitBigDots()
 			{
 				if (line[i] == 'o')
 				{
-					BigDot* dot = new BigDot(Vector2f(i*22, lineIndex*22));
+					Sprite* sprite = new Sprite(aRenderer, "Big_Dot_32.png", i * 22 + 220, lineIndex * 22 + 60);
+					BigDot* dot = new BigDot(Vector2f(i*22, lineIndex*22), *sprite);
 					myBigDots.push_back(dot);
 				}
 			}
@@ -104,18 +110,16 @@ bool World::InitBigDots()
 
 void World::Draw(Drawer* aDrawer)
 {
-	aDrawer->Draw("playfield.png");
+	aDrawer->Draw(worldSprite);
 
-	for(std::list<Dot*>::iterator list_iter = myDots.begin(); list_iter != myDots.end(); list_iter++)
+	for (auto* dot : myDots)
 	{
-		Dot* dot = *list_iter;
-		dot->Draw(aDrawer);
+		aDrawer->Draw(&dot->ReturnSprite(), dot->GetPosition().myX + 220, dot->GetPosition().myY + 60);
 	}
 
-	for(std::list<BigDot*>::iterator list_iter = myBigDots.begin(); list_iter != myBigDots.end(); list_iter++)
+	for (auto* dot : myBigDots)
 	{
-		BigDot* dot = *list_iter;
-		dot->Draw(aDrawer);
+		aDrawer->Draw(&dot->ReturnSprite(), dot->GetPosition().myX + 220, dot->GetPosition().myY + 60);
 	}
 }
 
@@ -134,16 +138,16 @@ bool World::TileIsValid(int anX, int anY)
 
 bool World::HasIntersectedDot(const Vector2f& aPosition)
 {
-	for(std::list<Dot*>::iterator list_iter = myDots.begin(); list_iter != myDots.end(); list_iter++)
+	auto it = std::find_if(myDots.begin(), myDots.end(), [&](Dot* dot) -> bool { return ((dot->GetPosition() - aPosition).Length() < 5.f); });
+
+	if (myDots.end() != it)
 	{
-		Dot* dot = *list_iter;
-		if ((dot->GetPosition() - aPosition).Length() < 5.f)
-		{
-			myDots.remove(dot);
-			delete dot;
-			return true;
-		}
-	}
+		Dot* dot = *it;
+
+		myDots.remove(dot);
+		delete dot;
+		return true;
+	}	
 
 	return false;
 }

@@ -36,15 +36,14 @@ private:
 	void checkGhostTimer(float);
 	void drawText();
 
+	float time_to_next_update = 0;
+	float ghost_timer = 0;
 
-	float time_to_next_update;
-	float ghost_timer;
-
-	int next_tile_x;
-	int next_tile_y; 
-	int lives;
-	int score;
-	int fps;
+	int next_tile_x = 0;
+	int next_tile_y = 0;
+	int lives = 0;
+	int score = 0;
+	int fps = 0;
 
 	const Uint8* keystate = SDL_GetKeyboardState(NULL);
 

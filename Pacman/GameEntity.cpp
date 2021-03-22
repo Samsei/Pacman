@@ -9,6 +9,7 @@ GameEntity::GameEntity(const Vector2f& entity_position, Sprite* entity_sprite)
 
 GameEntity::~GameEntity(void)
 {
+
 }
 
 bool GameEntity::intersect(GameEntity* aGameEntity)

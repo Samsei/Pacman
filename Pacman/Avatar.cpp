@@ -9,6 +9,9 @@ Avatar::Avatar(SDL_Renderer* main_renderer, const Vector2f& avatar_position)
 
 Avatar::~Avatar(void)
 {
+	delete avatar_sprite;
+
+	avatar_sprite = NULL;
 }
 
 void Avatar::update(float delta_time)

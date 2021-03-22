@@ -16,12 +16,12 @@ public:
 	void moveSprite(int = 0, int = 0);
 	void changeTexture(SDL_Renderer*, const char*, int = 0, int = 0);
 private:
-	SDL_Renderer* renderer;
-	SDL_Texture* texture;
-	SDL_Surface* surface;
+	SDL_Renderer* renderer = nullptr;
+	SDL_Texture* texture = nullptr;
+	SDL_Surface* surface = nullptr;
 
-	SDL_Rect size_rect;
-	SDL_Rect position_rect;
+	SDL_Rect size_rect = { 0, 0 , 0 , 0 };
+	SDL_Rect position_rect = { 0, 0 , 0 , 0 };
 
 	const char* image = nullptr;
 };

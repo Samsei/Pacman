@@ -8,6 +8,7 @@ BigDot::BigDot(Vector2f aPosition, Sprite mySprite)
 
 BigDot::~BigDot(void)
 {
+
 }
 
 Sprite BigDot::ReturnSprite()

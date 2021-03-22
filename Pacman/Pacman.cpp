@@ -187,26 +187,12 @@ bool Pacman::draw()
 
 void Pacman::drawText()
 {
-	std::string scoreString;
-	std::stringstream scoreStream;
-	std::string livesString;
-	std::stringstream liveStream;
-	std::string fpsString;
-	std::stringstream fpsStream;
-
-	scoreStream << score;
-	scoreString = scoreStream.str();
 	renderer->drawText("Score", 20, 50);
-	renderer->drawText(scoreString.c_str(), 90, 50);
+	renderer->drawText(std::to_string(score).c_str(), 90, 50);
 
-	liveStream << lives;
-	livesString = liveStream.str();
 	renderer->drawText("Lives", 20, 80);
-	renderer->drawText(livesString.c_str(), 90, 80);
+	renderer->drawText(std::to_string(lives).c_str(), 90, 80);
 
 	renderer->drawText("FPS", 880, 50);
-
-	fpsStream << fps;
-	fpsString = fpsStream.str();
-	renderer->drawText(fpsString.c_str(), 930, 50);
+	renderer->drawText(std::to_string(fps).c_str(), 930, 50);
 }

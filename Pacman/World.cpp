@@ -87,8 +87,8 @@ bool World::initBigDots(SDL_Renderer* renderer)
 				if (line[i] == 'o')
 				{
 					Sprite* sprite = new Sprite(renderer, "Big_Dot_32.png", i * 22 + 220, lineIndex * 22 + 60);
-					BigDot* dot = new BigDot(Vector2f(i*22, lineIndex*22), *sprite);
-					myBigDots.push_back(dot);
+					BigDot* big_dot = new BigDot(Vector2f(i*22, lineIndex*22), *sprite);
+					myBigDots.push_back(big_dot);
 				}
 			}
 
@@ -138,9 +138,9 @@ void World::draw(Drawer* renderer)
 		renderer->draw(&dot->ReturnSprite(), dot->getPosition().x + 220, dot->getPosition().y + 60);
 	}
 
-	for (auto* dot : myBigDots)
+	for (auto* big_dot : myBigDots)
 	{
-		renderer->draw(&dot->ReturnSprite(), dot->getPosition().x + 220, dot->getPosition().y + 60);
+		renderer->draw(&big_dot->ReturnSprite(), big_dot->getPosition().x + 220, big_dot->getPosition().y + 60);
 	}
 
 	for (auto* cherry : myCherry)
@@ -171,8 +171,11 @@ bool World::hasIntersectedDot(const Vector2f& position)
 	if (myDots.end() != it)
 	{
 		Dot* dot = *it;
+
 		myDots.remove(dot);
 		delete dot;
+		dot = NULL;
+
 		return true;
 	}	
 
@@ -185,9 +188,12 @@ bool World::hasIntersectedBigDot(const Vector2f& position)
 
 	if (myBigDots.end() != it)
 	{
-		BigDot* dot = *it;
-		myBigDots.remove(dot);
-		delete dot;
+		BigDot* big_dot = *it;
+
+		myBigDots.remove(big_dot);
+		delete big_dot;
+		big_dot = NULL;
+
 		return true;
 	}
 

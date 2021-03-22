@@ -40,8 +40,6 @@ void Sprite::changeTexture(SDL_Renderer* renderer, const char* image, int cell_x
 	SDL_DestroyTexture(texture);
 	texture = SDL_CreateTextureFromSurface(renderer, surface);
 
-	size_rect.x = 0;
-	size_rect.y = 0;
 	size_rect.w = surface->w;
 	size_rect.h = surface->h;
 

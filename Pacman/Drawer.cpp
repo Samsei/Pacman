@@ -23,6 +23,7 @@ Drawer::Drawer(SDL_Window* window, SDL_Renderer* main_renderer)
 Drawer::~Drawer(void)
 {
 	TTF_CloseFont(font);
+	SDL_RenderClear(renderer);
 }
 
 bool Drawer::init()
@@ -45,8 +46,6 @@ void Drawer::drawText(const char* text, int x, int y)
 	surface = TTF_RenderText_Solid(font, text, color);
 	texture = SDL_CreateTextureFromSurface(renderer, surface);
 
-    size_rect.x = 0;
-    size_rect.y = 0;
     size_rect.w = surface->w;
     size_rect.h = surface->h;
 

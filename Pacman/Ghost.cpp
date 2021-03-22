@@ -16,6 +16,13 @@ Ghost::Ghost(const Vector2f& entity_position, SDL_Renderer* main_renderer)
 
 Ghost::~Ghost(void)
 {
+	delete ghost_sprite;
+	delete ghost_vulnerable_sprite ;
+	delete ghost_dead_sprite;
+
+	ghost_sprite = NULL;
+	ghost_vulnerable_sprite = NULL;
+	ghost_dead_sprite = NULL;
 }
 
 void Ghost::die(World* world)

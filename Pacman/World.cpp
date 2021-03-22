@@ -9,6 +9,32 @@ World::World(SDL_Renderer* renderer)
 
 World::~World(void)
 {
+	for (auto* dot : dots_list)
+	{
+		if (dot)
+		{
+			delete dot;
+			dot = NULL;
+		}		
+	}
+
+	for (auto* big_dot : big_dots_list)
+	{
+		if (big_dot)
+		{
+			delete big_dot;
+			big_dot = NULL;
+		}
+	}
+
+	for (auto* cherry : cherry_list)
+	{
+		if (cherry)
+		{
+			delete cherry;
+			cherry = NULL;
+		}
+	}
 }
 
 void World::init(Drawer* renderer)
@@ -32,7 +58,7 @@ bool World::initPathMap()
 			for (unsigned int i = 0; i < line.length(); i++)
 			{
 				PathmapTile* tile = new PathmapTile(i, lineIndex, (line[i] == 'x'));
-				myPathmapTiles.push_back(tile);
+				pathmap_tiles.push_back(tile);
 			}
 
 			lineIndex++;
@@ -60,7 +86,7 @@ bool World::initDots(SDL_Renderer* renderer)
 				{
 					Sprite* sprite = new Sprite(renderer, "Small_Dot_32.png", i * 22 + 220, lineIndex * 22 + 60);
 					Dot* dot = new Dot(Vector2f(i*22, lineIndex*22), *sprite);
-					myDots.push_back(dot);
+					dots_list.push_back(dot);
 				}
 			}
 
@@ -88,7 +114,7 @@ bool World::initBigDots(SDL_Renderer* renderer)
 				{
 					Sprite* sprite = new Sprite(renderer, "Big_Dot_32.png", i * 22 + 220, lineIndex * 22 + 60);
 					BigDot* big_dot = new BigDot(Vector2f(i*22, lineIndex*22), *sprite);
-					myBigDots.push_back(big_dot);
+					big_dots_list.push_back(big_dot);
 				}
 			}
 
@@ -117,7 +143,7 @@ bool World::initCherrys(SDL_Renderer* renderer)
 				{
 					Sprite* sprite = new Sprite(renderer, "cherry.png", i * 22 + 220, lineIndex * 22 + 60);
 					Cherry* cherry = new Cherry(Vector2f(i * 22, lineIndex * 22), *sprite);
-					myCherry.push_back(cherry);
+					cherry_list.push_back(cherry);
 				}
 			}
 
@@ -133,17 +159,17 @@ void World::draw(Drawer* renderer)
 {
 	renderer->draw(worldSprite);
 
-	for (auto* dot : myDots)
+	for (auto* dot : dots_list)
 	{
 		renderer->draw(&dot->ReturnSprite(), dot->getPosition().x + 220, dot->getPosition().y + 60);
 	}
 
-	for (auto* big_dot : myBigDots)
+	for (auto* big_dot : big_dots_list)
 	{
 		renderer->draw(&big_dot->ReturnSprite(), big_dot->getPosition().x + 220, big_dot->getPosition().y + 60);
 	}
 
-	for (auto* cherry : myCherry)
+	for (auto* cherry : cherry_list)
 	{
 		renderer->draw(&cherry->ReturnSprite(), cherry->getPosition().x + 220, cherry->getPosition().y + 60);
 	}
@@ -151,7 +177,7 @@ void World::draw(Drawer* renderer)
 
 bool World::tileIsValid(int x, int y)
 {
-	for(std::list<PathmapTile*>::iterator list_iter = myPathmapTiles.begin(); list_iter != myPathmapTiles.end(); list_iter++)
+	for(std::list<PathmapTile*>::iterator list_iter = pathmap_tiles.begin(); list_iter != pathmap_tiles.end(); list_iter++)
 	{
 		PathmapTile* tile = *list_iter;
 
@@ -166,13 +192,13 @@ bool World::tileIsValid(int x, int y)
 
 bool World::hasIntersectedDot(const Vector2f& position)
 {
-	auto it = std::find_if(myDots.begin(), myDots.end(), [&](Dot* dot) -> bool { return ((dot->getPosition() - position).Length() < 5.f); });
+	auto it = std::find_if(dots_list.begin(), dots_list.end(), [&](Dot* dot) -> bool { return ((dot->getPosition() - position).Length() < 5.f); });
 
-	if (myDots.end() != it)
+	if (dots_list.end() != it)
 	{
 		Dot* dot = *it;
 
-		myDots.remove(dot);
+		dots_list.remove(dot);
 		delete dot;
 		dot = NULL;
 
@@ -184,13 +210,13 @@ bool World::hasIntersectedDot(const Vector2f& position)
 
 bool World::hasIntersectedBigDot(const Vector2f& position)
 {
-	auto it = std::find_if(myBigDots.begin(), myBigDots.end(), [&](BigDot* dot) -> bool { return ((dot->getPosition() - position).Length() < 5.f); });
+	auto it = std::find_if(big_dots_list.begin(), big_dots_list.end(), [&](BigDot* dot) -> bool { return ((dot->getPosition() - position).Length() < 5.f); });
 
-	if (myBigDots.end() != it)
+	if (big_dots_list.end() != it)
 	{
 		BigDot* big_dot = *it;
 
-		myBigDots.remove(big_dot);
+		big_dots_list.remove(big_dot);
 		delete big_dot;
 		big_dot = NULL;
 
@@ -202,7 +228,20 @@ bool World::hasIntersectedBigDot(const Vector2f& position)
 
 bool World::hasIntersectedCherry(const Vector2f& position)
 {
-	return true;
+	auto it = std::find_if(cherry_list.begin(), cherry_list.end(), [&](Cherry* cherry) -> bool { return ((cherry->getPosition() - position).Length() < 5.f); });
+
+	if (cherry_list.end() != it)
+	{
+		Cherry* cherry = *it;
+
+		cherry_list.remove(cherry);
+		delete cherry;
+		cherry = NULL;
+
+		return true;
+	}
+
+	return false;
 }
 
 void World::GetPath(int from_x, int from_y, int to_x, int to_y, std::list<PathmapTile*>& list)
@@ -210,7 +249,7 @@ void World::GetPath(int from_x, int from_y, int to_x, int to_y, std::list<Pathma
 	PathmapTile* fromTile = GetTile(from_x, from_y);
 	PathmapTile* toTile = GetTile(to_x, to_y);
 
-	for(std::list<PathmapTile*>::iterator list_iter = myPathmapTiles.begin(); list_iter != myPathmapTiles.end(); list_iter++)
+	for(std::list<PathmapTile*>::iterator list_iter = pathmap_tiles.begin(); list_iter != pathmap_tiles.end(); list_iter++)
 	{
 		PathmapTile* tile = *list_iter;
 		tile->is_visited = false;
@@ -221,7 +260,7 @@ void World::GetPath(int from_x, int from_y, int to_x, int to_y, std::list<Pathma
 
 PathmapTile* World::GetTile(int from_x, int from_y)
 {
-	for(std::list<PathmapTile*>::iterator list_iter = myPathmapTiles.begin(); list_iter != myPathmapTiles.end(); list_iter++)
+	for(std::list<PathmapTile*>::iterator list_iter = pathmap_tiles.begin(); list_iter != pathmap_tiles.end(); list_iter++)
 	{
 		PathmapTile* tile = *list_iter;
 		if (tile->x == from_x && tile->y == from_y)

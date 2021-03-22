@@ -98,10 +98,10 @@ void Avatar::updateSprite()
 	avatar_sprite->moveSprite(position.x + 220, position.y + 60);
 }
 
-void Avatar::changeSprite(float aTime)
+void Avatar::changeSprite(float delta_time)
 {
-	change_sprite_timer += aTime;
-	if (change_sprite_timer >= 0.36)
+	change_sprite_timer += delta_time;
+	if (change_sprite_timer >= sprite_timer)
 	{
 		sprite_open *= -1;
 		change_sprite_timer = 0;

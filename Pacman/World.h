@@ -43,10 +43,10 @@ private:
 	bool findPath(PathmapTile*, PathmapTile*, std::list<PathmapTile*>&);
 	bool listDoesNotContain(PathmapTile*, std::list<PathmapTile*>&);	
 
-	std::list<PathmapTile*> myPathmapTiles;
-	std::list<Dot*> myDots;
-	std::list<BigDot*> myBigDots;
-	std::list<Cherry*> myCherry;
+	std::list<PathmapTile*> pathmap_tiles;
+	std::list<Dot*> dots_list;
+	std::list<BigDot*> big_dots_list;
+	std::list<Cherry*> cherry_list;
 
 	Sprite* dotSprite = nullptr;
 	Sprite* bigDotSprite = nullptr;

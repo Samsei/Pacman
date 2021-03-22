@@ -29,15 +29,29 @@ Pacman::Pacman(Drawer* main_renderer)
 
 Pacman::~Pacman(void)
 {
-	delete player;
-	delete ghost;
-	delete world;//memory
-	delete player_sprite;
+	if (player)
+	{
+		delete player;
+		player = NULL;
+	}
 
-	player = NULL;
-	world = NULL;
-	ghost = NULL;
-	player_sprite = NULL;
+	if (ghost)
+	{
+		delete ghost;
+		ghost = NULL;
+	}
+
+	if (world)
+	{
+		delete world;//memory
+		world = NULL;
+	}
+
+	if (player_sprite)
+	{
+		delete player_sprite;
+		player_sprite = NULL;
+	}	
 }
 
 bool Pacman::init()
@@ -92,11 +106,16 @@ void Pacman::updateScore()
 		score += 10;
 	}
 
-	if (world->hasIntersectedBigDot(player->getPosition()))
+	else if (world->hasIntersectedBigDot(player->getPosition()))
 	{
 		score += 20;
 		ghost_timer = 20.f;
 		ghost->is_vulnerable = true;
+	}
+	
+	else if (world->hasIntersectedCherry(player->getPosition()))
+	{
+		score += 100;
 	}
 }
 

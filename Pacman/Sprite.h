@@ -15,6 +15,7 @@ public:
 
 	void moveSprite(int = 0, int = 0);
 	void changeTexture(SDL_Renderer*, const char*, int = 0, int = 0);
+
 private:
 	SDL_Renderer* renderer = nullptr;
 	SDL_Texture* texture = nullptr;

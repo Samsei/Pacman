@@ -23,6 +23,6 @@ private:
 	SDL_Rect size_rect;
 	SDL_Rect position_rect;
 
-	const char* image;
+	const char* image = nullptr;
 };
 

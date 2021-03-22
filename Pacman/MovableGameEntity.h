@@ -18,7 +18,6 @@ public:
 	bool isAtDestination();
 
 protected:
-
 	int current_tile_x = 0;
 	int current_tile_y = 0;
 

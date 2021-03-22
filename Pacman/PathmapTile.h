@@ -9,6 +9,7 @@ public:
 
 	int x = 0;
 	int y = 0;
+
 	bool is_blocking = false;
 	bool is_visited = false;
 };

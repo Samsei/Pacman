@@ -29,7 +29,7 @@ private:
 	SDL_Surface* surface = nullptr;
 	SDL_Texture* texture = nullptr;
 
-	SDL_Color color = { 255,0,0,255 };
+	SDL_Color color = { 255, 0, 0, 255 };
 	SDL_Rect position_rect;
 	SDL_Rect size_rect;
 

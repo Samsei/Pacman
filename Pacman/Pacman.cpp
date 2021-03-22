@@ -33,6 +33,7 @@ Pacman::~Pacman(void)
 	delete ghost;
 	delete world;//memory
 	delete player_sprite;
+
 	player = NULL;
 	world = NULL;
 	ghost = NULL;
@@ -58,18 +59,19 @@ bool Pacman::update(float delta_time)
 		return false;
 	}
 
-	movePlayer();
-	player->update(delta_time);
-	ghost->update(delta_time, world);
-
-	updateScore(); //made own function
-	checkGhostTimer(delta_time);
-	hitGhost();
-	
 	if (delta_time > 0)
 	{
 		fps = (int)(1 / delta_time);
 	}
+
+	movePlayer();
+	player->update(delta_time);
+	ghost->update(delta_time, world);
+
+	updateScore();
+	checkGhostTimer(delta_time);
+	hitGhost();
+
 	return true;
 }
 

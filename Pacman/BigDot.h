@@ -9,6 +9,7 @@ public:
 	BigDot(Vector2f aPosition, Sprite mySprite);
 	~BigDot(void);
 	Sprite ReturnSprite();
+
 private:
 	Sprite dotSprite;
 };

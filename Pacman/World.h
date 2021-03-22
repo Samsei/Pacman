@@ -34,7 +34,6 @@ public:
 	void GetPath(int, int, int, int, std::list<PathmapTile*>&);
 
 private:
-
 	PathmapTile* GetTile(int, int);
 
 	bool initPathMap();

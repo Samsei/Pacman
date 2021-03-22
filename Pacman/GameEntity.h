@@ -22,9 +22,11 @@ public:
 
 protected:
 
-	bool marked_for_delete;
-	Vector2f position;
-	Sprite* sprite;
+	bool marked_for_delete = false;
+
+	Vector2f position = { 0, 0 };
+
+	Sprite* sprite = nullptr;
 };
 
 #endif // GAMEENTITY_H

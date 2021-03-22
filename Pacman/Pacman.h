@@ -25,10 +25,12 @@ public:
 
 private:
 	Pacman(Drawer*);
+
 	bool init();
 	bool updateInput();
-	void movePlayer();
 	bool checkEndGameCondition();
+
+	void movePlayer();
 	void updateScore();
 	void hitGhost();
 	void checkGhostTimer(float);
@@ -39,21 +41,20 @@ private:
 	float ghost_timer;
 
 	int next_tile_x;
-	int next_tile_y; //added to .h instead of initializing every frame
-
+	int next_tile_y; 
 	int lives;
 	int score;
 	int fps;
 
 	const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
-	Vector2f next_movement;
+	Vector2f next_movement = { 0, 0 };
 
-	Avatar* player;
-	Ghost* ghost;
-	World* world;
-	Drawer* renderer;
-	Sprite* player_sprite;
+	Avatar* player = nullptr;
+	Ghost* ghost = nullptr;
+	World* world = nullptr;
+	Drawer* renderer = nullptr;
+	Sprite* player_sprite = nullptr;
 };
 
 #endif // PACMAN_H

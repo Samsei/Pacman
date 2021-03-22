@@ -23,8 +23,8 @@ private:
 	float change_sprite_timer = 0;
 	float sprite_open = 1;
 
-	Vector2f destination;
-	Vector2f direction ;
+	Vector2f destination = { 0, 0 };
+	Vector2f direction = { 0, 0 };
 
 	SDL_Renderer* render = nullptr;
 

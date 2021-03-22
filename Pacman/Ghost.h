@@ -29,7 +29,6 @@ public:
 	bool is_dead = false;
 
 protected:
-
 	int desired_movement_x = 0;
 	int desired_movement_y = 0;
 	int next_tile_x = 0;
@@ -39,8 +38,8 @@ protected:
 	float distance_to_move = 0.f;
 	float speed = 30.f;
 
-	Vector2f destination;
-	Vector2f direction;
+	Vector2f destination = { 0, 0 };
+	Vector2f direction = { 0, 0 };
 
 	std::list<PathmapTile*> path;
 

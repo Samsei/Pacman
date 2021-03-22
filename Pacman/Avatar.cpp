@@ -23,7 +23,7 @@ void Avatar::update(float delta_time)
 
 void Avatar::moveAvatar(float delta_time)
 {
-	destination = Vector2f(next_tile_x * tile_size, next_tile_y * tile_size);
+	destination = Vector2f(entity_next_tile_x * tile_size, entity_next_tile_y * tile_size);
 	direction = destination - position;
 
 	distance_to_move = delta_time * 30.f;
@@ -31,8 +31,8 @@ void Avatar::moveAvatar(float delta_time)
 	if (distance_to_move > direction.Length())
 	{
 		position = destination;
-		current_tile_x = next_tile_x;
-		current_tile_y = next_tile_y;
+		current_tile_x = entity_next_tile_x;
+		current_tile_y = entity_next_tile_y;
 	}
 	else
 	{

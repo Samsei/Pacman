@@ -21,8 +21,8 @@ protected:
 	int current_tile_x = 0;
 	int current_tile_y = 0;
 
-	int next_tile_x = 0;
-	int next_tile_y = 0;
+	int entity_next_tile_x = 0;
+	int entity_next_tile_y = 0;
 };
 
 #endif // MOVABLEGAMEENTITY_H

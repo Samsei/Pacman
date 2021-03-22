@@ -39,8 +39,8 @@ private:
 	float time_to_next_update = 0;
 	float ghost_timer = 0;
 
-	int next_tile_x = 0;
-	int next_tile_y = 0;
+	int entity_next_tile_x = 0;
+	int entity_next_tile_y = 0;
 	int lives = 0;
 	int score = 0;
 	int fps = 0;

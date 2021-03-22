@@ -167,12 +167,12 @@ bool Pacman::updateInput()
 
 void Pacman::movePlayer()
 {
-	next_tile_x = player->getCurrentTileX() + next_movement.x;
-	next_tile_y = player->getCurrentTileY() + next_movement.y;
+	entity_next_tile_x = player->getCurrentTileX() + next_movement.x;
+	entity_next_tile_y = player->getCurrentTileY() + next_movement.y;
 
-	if (player->isAtDestination() && world->tileIsValid(next_tile_x, next_tile_y))  //unnested if statement
+	if (player->isAtDestination() && world->tileIsValid(entity_next_tile_x, entity_next_tile_y))  //unnested if statement
 	{
-		player->setNextTile(next_tile_x, next_tile_y);
+		player->setNextTile(entity_next_tile_x, entity_next_tile_y);
 	}
 }
 

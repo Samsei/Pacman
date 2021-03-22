@@ -80,7 +80,7 @@ void Ghost::findPath(float delta_time, World* world)
 		}
 	}
 
-	destination = Vector2f(next_tile_x * tile_size, next_tile_y * tile_size);
+	destination = Vector2f(entity_next_tile_x * tile_size, entity_next_tile_y * tile_size);
 	direction = destination - position;
 
 	distance_to_move = delta_time * speed;
@@ -102,8 +102,8 @@ void Ghost::moveGhost()
 	if (distance_to_move > direction.Length())
 	{
 		position = destination;
-		current_tile_x = next_tile_x;
-		current_tile_y = next_tile_y;
+		current_tile_x = entity_next_tile_x;
+		current_tile_y = entity_next_tile_y;
 	}
 	else
 	{

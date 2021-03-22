@@ -134,15 +134,15 @@ void Ghost::draw(Drawer* renderer)
 {
 	if (is_dead)
 	{
-		renderer->draw(ghost_dead_sprite, (int)position.x, (int)position.y);
+		renderer->draw(ghost_dead_sprite, position.x, position.y);
 
 	}
 	else if (is_vulnerable)
 	{
-		renderer->draw(ghost_vulnerable_sprite, (int)position.x, (int)position.y);
+		renderer->draw(ghost_vulnerable_sprite, position.x, position.y);
 	}
 	else
 	{
-		renderer->draw(ghost_sprite, (int)position.x, (int)position.y);
+		renderer->draw(ghost_sprite, position.x, position.y);
 	}
 }

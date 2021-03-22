@@ -2,9 +2,7 @@
 #define AVATAR_H
 
 #include "MovableGameEntity.h"
-#include "Vector2f.h"
-#include <string>
-#include <unordered_map>
+#include "Drawer.h"
 
 class Avatar : public MovableGameEntity
 {

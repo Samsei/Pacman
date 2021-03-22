@@ -1,5 +1,4 @@
 #include "GameEntity.h"
-#include "Drawer.h"
 
 GameEntity::GameEntity(const Vector2f& entity_position, Sprite* entity_sprite)
 :position(entity_position)

@@ -2,10 +2,14 @@
 #define WORLD_H
 
 #include <list>
-#include <algorithm>
-#include <vector> 
-#include "Vector2f.h"
-#include "Sprite.h"
+#include <fstream>
+#include <string>
+
+#include "PathmapTile.h"
+#include "Dot.h"
+#include "BigDot.h"
+#include "Cherry.h"
+#include "Drawer.h"
 
 class Drawer;
 class PathmapTile;

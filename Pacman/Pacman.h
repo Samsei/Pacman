@@ -1,21 +1,15 @@
 #ifndef PACMAN_H
 #define PACMAN_H
 
-#include "Vector2f.h"
-#include "Drawer.h"
-#include "SDL.h"
+#include <sstream>
 
 #include "Avatar.h"
-#include "World.h"
 #include "Ghost.h"
-
-#include <string>
-#include <iostream>
-#include <sstream>
-#include <fstream>
+#include "World.h"
 
 struct SDL_Surface;
 class Drawer;
+class Sprite;
 class Avatar;
 class World;
 class Ghost;

@@ -1,6 +1,4 @@
 #include "Avatar.h"
-#include "Drawer.h"
-#include "Pacman.h"
 
 Avatar::Avatar(SDL_Renderer* main_renderer, const Vector2f& avatar_position)
 	: MovableGameEntity(avatar_position, avatar_sprite),

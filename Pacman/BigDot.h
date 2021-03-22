@@ -2,7 +2,6 @@
 #define BIGDOT_H
 
 #include "StaticGameEntity.h"
-#include "Vector2f.h"
 
 class BigDot : public StaticGameEntity
 {

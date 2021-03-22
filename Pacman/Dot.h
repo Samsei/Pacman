@@ -2,7 +2,6 @@
 #define DOT_H
 
 #include "StaticGameEntity.h"
-#include "Vector2f.h"
 
 class Dot : public StaticGameEntity
 {

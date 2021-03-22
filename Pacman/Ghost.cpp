@@ -1,7 +1,4 @@
 #include "Ghost.h"
-#include "World.h"
-#include "PathmapTile.h"
-#include "Drawer.h"
 
 Ghost::Ghost(const Vector2f& entity_position, SDL_Renderer* main_renderer)
 : MovableGameEntity(entity_position, ghost_sprite)

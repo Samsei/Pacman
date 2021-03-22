@@ -1,8 +1,8 @@
 #ifndef DRAWER_H
 #define DRAWER_H
 
-#include "Sprite.h"
 #include "SDL_ttf.h"
+#include "Sprite.h"
 
 struct SDL_Window;
 struct SDL_Renderer;

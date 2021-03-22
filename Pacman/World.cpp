@@ -1,14 +1,5 @@
 #include "World.h"
-#include <iostream>
-#include <sstream>
-#include <fstream>
-#include <string>
 
-#include "PathmapTile.h"
-#include "Dot.h"
-#include "BigDot.h"
-#include "Drawer.h"
-#include "Cherry.h"
 
 World::World(SDL_Renderer* renderer)
 {

@@ -2,6 +2,10 @@
 #define GHOST_H
 
 #include <list>
+
+#include "World.h"
+#include "PathmapTile.h"
+#include "Drawer.h"
 #include "MovableGameEntity.h"
 
 class World;

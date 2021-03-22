@@ -1,6 +1,4 @@
 #include "Drawer.h"
-#include "SDL.h"
-#include "SDL_image.h"
 
 Drawer* Drawer::Create(SDL_Window* window, SDL_Renderer* main_renderer)
 {

@@ -2,7 +2,7 @@
 #define GAMEENTITY_H
 
 #include "Vector2f.h"
-#include "Sprite.h"
+#include "Drawer.h"
 
 class Drawer;
 

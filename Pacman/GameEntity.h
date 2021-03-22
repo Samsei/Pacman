@@ -9,23 +9,22 @@ class Drawer;
 class GameEntity
 {
 public:
-	GameEntity(const Vector2f& aPosition, Sprite* sprite);
+	GameEntity(const Vector2f&, Sprite*);
 	~GameEntity(void);
+	virtual void draw(Drawer*);
 
-	Vector2f GetPosition() const { return myPosition; }
-	void SetPosition(const Vector2f& aPosition){ myPosition = aPosition; }
+	void setPosition(const Vector2f& aPosition) { position = aPosition; }
+	void markForDelete() { marked_for_delete = true; }
+	bool isMarkedForDelete() const { return marked_for_delete; }
+	bool intersect(GameEntity*);
 
-	bool Intersect(GameEntity* aGameEntity);
-	virtual void Draw(Drawer* aDrawer);
-
-	void MarkForDelete() { myIdMarkedForDeleteFlag = true; }
-	bool IsMarkedForDelete() const { return myIdMarkedForDeleteFlag; }
+	Vector2f getPosition() const { return position; }
 
 protected:
 
-	bool myIdMarkedForDeleteFlag;
-	Vector2f myPosition;
-	Sprite* mySprite;
+	bool marked_for_delete;
+	Vector2f position;
+	Sprite* sprite;
 };
 
 #endif // GAMEENTITY_H

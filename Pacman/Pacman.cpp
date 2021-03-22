@@ -4,7 +4,7 @@ Pacman* Pacman::Create(Drawer* aDrawer)
 {
 	Pacman* pacman = new Pacman(aDrawer);
 
-	if (!pacman->Init())
+	if (!pacman->init())
 	{
 		delete pacman;
 		pacman = NULL;
@@ -13,131 +13,129 @@ Pacman* Pacman::Create(Drawer* aDrawer)
 	return pacman;
 }
 
-Pacman::Pacman(Drawer* aDrawer)
-: myDrawer(aDrawer)
-, myTimeToNextUpdate(0.f)
-, myNextMovement(-1.f,0.f)
-, myScore(0)
-, myFps(0)
-, myLives(3)
-, myGhostGhostCounter(0.f)
+Pacman::Pacman(Drawer* main_renderer)
+: renderer(main_renderer)
+, time_to_next_update(0.f)
+, next_movement(-1.f,0.f)
+, score(0)
+, fps(0)
+, lives(3)
+, ghost_timer(0.f)
 {
-	myAvatar = new Avatar(aDrawer->ReturnRenderer(), Vector2f(13*22,22*22));
-	myGhost = new Ghost(Vector2f(13*22,13*22), aDrawer->ReturnRenderer());
-	myWorld = new World(aDrawer->ReturnRenderer());
+	player = new Avatar(main_renderer->returnRenderer(), Vector2f(13*22,22*22));
+	ghost = new Ghost(Vector2f(13*22,13*22), main_renderer->returnRenderer());
+	world = new World(main_renderer->returnRenderer());
 }
 
 Pacman::~Pacman(void)
 {
-	delete myAvatar;
-	myAvatar = NULL;
-	delete myGhost;
-	myGhost = NULL;
-	delete myWorld;//memory
-	myWorld = NULL;
-	delete avatarSprite;
-	avatarSprite = NULL;
+	delete player;
+	delete ghost;
+	delete world;//memory
+	delete player_sprite;
+	player = NULL;
+	world = NULL;
+	ghost = NULL;
+	player_sprite = NULL;
 }
 
-bool Pacman::Init()
+bool Pacman::init()
 {
-	myWorld->Init(myDrawer);
+	world->init(renderer);
 
 	return true;
 }
 
-bool Pacman::Update(float aTime)
+bool Pacman::update(float delta_time)
 {
-	if (!UpdateInput())
+	if (!updateInput())
 	{
 		return false;
 	}
 
-	if (!CheckEndGameCondition())
+	if (!checkEndGameCondition())
 	{
 		return false;
 	}
 
-	MoveAvatar();
-	myAvatar->Update(aTime);
-	myGhost->Update(aTime, myWorld);
+	movePlayer();
+	player->update(delta_time);
+	ghost->update(delta_time, world);
 
-	UpdateScore(); //made own function
-	CheckGhostTimer(aTime);
-	HitGhost();
+	updateScore(); //made own function
+	checkGhostTimer(delta_time);
+	hitGhost();
 	
-	if (aTime > 0)
+	if (delta_time > 0)
 	{
-		myFps = (int)(1 / aTime);
+		fps = (int)(1 / delta_time);
 	}
 	return true;
 }
 
-void Pacman::CheckGhostTimer(float aTime)
+void Pacman::checkGhostTimer(float delta_time)
 {
-	myGhostGhostCounter -= aTime;
+	ghost_timer -= delta_time;
 
-	if (myGhostGhostCounter <= 0)
+	if (ghost_timer <= 0)
 	{
-		myGhost->myIsClaimableFlag = false;
+		ghost->is_vulnerable = false;
 	}
 }
 
-void Pacman::UpdateScore()
+void Pacman::updateScore()
 {
-	if (myWorld->HasIntersectedDot(myAvatar->GetPosition()))
-		myScore += 10;
-
-	if (myWorld->HasIntersectedBigDot(myAvatar->GetPosition()))
+	if (world->hasIntersectedDot(player->getPosition()))
 	{
-		myScore += 20;
-		myGhostGhostCounter = 20.f;
-		myGhost->myIsClaimableFlag = true;
+		score += 10;
+	}
+
+	if (world->hasIntersectedBigDot(player->getPosition()))
+	{
+		score += 20;
+		ghost_timer = 20.f;
+		ghost->is_vulnerable = true;
 	}
 }
 
-void Pacman::HitGhost()
+void Pacman::hitGhost()
 {
-	if ((myGhost->GetPosition() - myAvatar->GetPosition()).Length() < 10.f)
+	if ((ghost->getPosition() - player->getPosition()).Length() < 10.f)
 	{
-		if (myGhostGhostCounter <= 0.f)
+		if (ghost_timer <= 0.f)
 		{
-			myLives--;
+			lives--;
 
-			myAvatar->SetPosition(Vector2f(13 * 22, 22 * 22));
-			myGhost->SetPosition(Vector2f(13 * 22, 13 * 22));
+			player->setPosition(Vector2f(13 * 22, 22 * 22));
+			ghost->setPosition(Vector2f(13 * 22, 13 * 22));
 		}
-		else if (myGhost->myIsClaimableFlag && !myGhost->myIsDeadFlag)
+		else if (ghost->is_vulnerable && !ghost->is_dead)
 		{
-			myScore += 50;
-			myGhost->myIsDeadFlag = true;
-			myGhost->Die(myWorld);
+			score += 50;
+			ghost->is_dead = true;
+			ghost->die(world);
 		}
 	}
 }
 
-bool Pacman::UpdateInput()
+bool Pacman::updateInput()
 {
 	if (keystate[SDL_SCANCODE_UP])
 	{ 
-		myNextMovement = Vector2f(0.f, -1.f);
+		next_movement = Vector2f(0.f, -1.f);
 	}
 	else if (keystate[SDL_SCANCODE_DOWN])
 	{
-		myNextMovement = Vector2f(0.f, 1.f);
+		next_movement = Vector2f(0.f, 1.f);
 	}
 	else if (keystate[SDL_SCANCODE_RIGHT])
 	{
-		myNextMovement = Vector2f(1.f, 0.f);
+		next_movement = Vector2f(1.f, 0.f);
 	}
 	else if (keystate[SDL_SCANCODE_LEFT])
 	{
-		myNextMovement = Vector2f(-1.f, 0.f);//made if statements more readable
+		next_movement = Vector2f(-1.f, 0.f);//made if statements more readable
 	}
-	/*else
-	{
-		myNextMovement = Vector2f(0.f, 0.f);//add no movement
-	}*/
 
 	if (keystate[SDL_SCANCODE_ESCAPE])
 	{
@@ -146,46 +144,46 @@ bool Pacman::UpdateInput()
 	return true;
 }
 
-void Pacman::MoveAvatar()
+void Pacman::movePlayer()
 {
-	nextTileX = myAvatar->GetCurrentTileX() + myNextMovement.myX;
-	nextTileY = myAvatar->GetCurrentTileY() + myNextMovement.myY;
+	next_tile_x = player->getCurrentTileX() + next_movement.x;
+	next_tile_y = player->getCurrentTileY() + next_movement.y;
 
-	if (myAvatar->IsAtDestination() && myWorld->TileIsValid(nextTileX, nextTileY))  //unnested if statement
+	if (player->isAtDestination() && world->tileIsValid(next_tile_x, next_tile_y))  //unnested if statement
 	{
-		myAvatar->SetNextTile(nextTileX, nextTileY);
+		player->setNextTile(next_tile_x, next_tile_y);
 	}
 }
 
-bool Pacman::CheckEndGameCondition()
+bool Pacman::checkEndGameCondition()
 {
-	if (myScore == 10000000)
+	if (score == 10000000)
 	{
-		myDrawer->DrawText("You win!", 20, 70);
+		renderer->drawText("You win!", 20, 70);
 		return false;
 	}
 
-	if (myLives <= 0)
+	if (lives <= 0)
 	{
-		myDrawer->DrawText("You lose!", 20, 70);
+		renderer->drawText("You lose!", 20, 70);
 		return false;
 	}
 
 	return true;
 }
 
-bool Pacman::Draw()
+bool Pacman::draw()
 {
-	myWorld->Draw(myDrawer);
-	myAvatar->Draw(myDrawer);
-	myGhost->Draw(myDrawer);
+	world->draw(renderer);
+	player->draw(renderer);
+	ghost->draw(renderer);
 
-	DrawText();	
+	drawText();	
 
 	return true;
 }
 
-void Pacman::DrawText()
+void Pacman::drawText()
 {
 	std::string scoreString;
 	std::stringstream scoreStream;
@@ -194,19 +192,19 @@ void Pacman::DrawText()
 	std::string fpsString;
 	std::stringstream fpsStream;
 
-	scoreStream << myScore;
+	scoreStream << score;
 	scoreString = scoreStream.str();
-	myDrawer->DrawText("Score", 20, 50);
-	myDrawer->DrawText(scoreString.c_str(), 90, 50);
+	renderer->drawText("Score", 20, 50);
+	renderer->drawText(scoreString.c_str(), 90, 50);
 
-	liveStream << myLives;
+	liveStream << lives;
 	livesString = liveStream.str();
-	myDrawer->DrawText("Lives", 20, 80);
-	myDrawer->DrawText(livesString.c_str(), 90, 80);
+	renderer->drawText("Lives", 20, 80);
+	renderer->drawText(livesString.c_str(), 90, 80);
 
-	myDrawer->DrawText("FPS", 880, 50);
+	renderer->drawText("FPS", 880, 50);
 
-	fpsStream << myFps;
+	fpsStream << fps;
 	fpsString = fpsStream.str();
-	myDrawer->DrawText(fpsString.c_str(), 930, 50);
+	renderer->drawText(fpsString.c_str(), 930, 50);
 }

@@ -7,8 +7,11 @@
 class Cherry : public StaticGameEntity
 {
 public:
-	Cherry(Vector2f aPosition, Sprite* mySprite);
+	Cherry(Vector2f aPosition, Sprite mySprite);
 	~Cherry(void);
+	Sprite ReturnSprite();
+private:
+	Sprite cherrySprite;
 };
 
 #endif // CHERRY_H

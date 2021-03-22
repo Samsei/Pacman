@@ -16,41 +16,43 @@ class Cherry;
 class World
 {
 public:
-	World(SDL_Renderer* aRenderer);
+	World(SDL_Renderer*);
 	~World(void);
 
-	void Init(Drawer* aDrawer);
+	void init(Drawer*);
+	void draw(Drawer*);
 
-	void Draw(Drawer* aDrawer);
-	bool TileIsValid(int anX, int anY);
+	bool tileIsValid(int, int);
+	bool hasIntersectedDot(const Vector2f&);
+	bool hasIntersectedBigDot(const Vector2f&);
+	bool hasIntersectedCherry(const Vector2f&);
 
-	bool HasIntersectedDot(const Vector2f& aPosition);
-	bool HasIntersectedBigDot(const Vector2f& aPosition);
-	bool HasIntersectedCherry(const Vector2f& aPosition);
-
-	void Update();
-
-	void GetPath(int aFromX, int aFromY, int aToX, int aToY, std::list<PathmapTile*>& aList);
+	void GetPath(int, int, int, int, std::list<PathmapTile*>&);
 
 private:
 
-	PathmapTile* GetTile(int aFromX, int aFromY);
-	bool Pathfind(PathmapTile* aFromTile, PathmapTile* aToTile, std::list<PathmapTile*>& aList);
-	bool ListDoesNotContain(PathmapTile* aFromTile, std::list<PathmapTile*>& aList);
+	PathmapTile* GetTile(int, int);
 
-
-	bool InitPathmap();
-	bool InitDots(SDL_Renderer* aRenderer);
-	bool InitBigDots(SDL_Renderer* aRenderer);
+	bool initPathMap();
+	bool initDots(SDL_Renderer*);
+	bool initBigDots(SDL_Renderer*);
+	bool initCherrys(SDL_Renderer*);
+	bool findPath(PathmapTile*, PathmapTile*, std::list<PathmapTile*>&);
+	bool listDoesNotContain(PathmapTile*, std::list<PathmapTile*>&);	
 
 	std::list<PathmapTile*> myPathmapTiles;
 	std::list<Dot*> myDots;
 	std::list<BigDot*> myBigDots;
 	std::list<Cherry*> myCherry;
 
-	Sprite* dotSprite;
-	Sprite* bigDotSprite;
-	Sprite* worldSprite;
+	Sprite* dotSprite = nullptr;
+	Sprite* bigDotSprite = nullptr;
+	Sprite* worldSprite = nullptr;
+
+	PathmapTile* up = nullptr;
+	PathmapTile* down = nullptr;
+	PathmapTile* right = nullptr;
+	PathmapTile* left = nullptr;
 };
 
 #endif // WORLD_H

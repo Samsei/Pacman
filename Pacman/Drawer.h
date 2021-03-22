@@ -11,27 +11,29 @@ struct SDL_Surface;
 class Drawer
 {
 public:
-	static Drawer* Create(SDL_Window* aWindow, SDL_Renderer* aRenderer);
+	static Drawer* Create(SDL_Window*, SDL_Renderer*);
 	~Drawer(void);
 
-	void Draw(Sprite* sprite, int aCellX = 0, int aCellY = 0);
-	void DrawText(const char* aText, int aX, int aY);
-	SDL_Renderer* ReturnRenderer();
+	void draw(Sprite*, int = 0, int = 0);
+	void drawText(const char*, int, int);
+
+	SDL_Renderer* returnRenderer();
 
 private:
-	Drawer(SDL_Window* aWindow, SDL_Renderer* aRenderer);
-	bool Init();
+	Drawer(SDL_Window*, SDL_Renderer*);
+
+	bool init();
 	
-	SDL_Window* myWindow;
-	SDL_Renderer* myRenderer;
-	SDL_Surface* surface;
-	SDL_Texture* optimizedSurface;
+	SDL_Window* window = nullptr;
+	SDL_Renderer* renderer = nullptr;
+	SDL_Surface* surface = nullptr;
+	SDL_Texture* texture = nullptr;
+
+	SDL_Color color = { 255,0,0,255 };
+	SDL_Rect position_rect;
+	SDL_Rect size_rect;
 
 	TTF_Font* font;
-	SDL_Color fg = { 255,0,0,255 };
-
-	SDL_Rect posRect;
-	SDL_Rect sizeRect;
 };
 
 #endif // DRAWER_H

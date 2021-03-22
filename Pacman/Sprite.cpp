@@ -1,10 +1,10 @@
 #include "Sprite.h"
 
-Sprite::Sprite(SDL_Renderer* aRenderer, const char* anImage, int aCellX, int aCellY) :
-	image(anImage),
-	myRenderer(aRenderer)
+Sprite::Sprite(SDL_Renderer* main_renderer, const char* image, int cell_x, int cell_y) :
+	image(image),
+	renderer(main_renderer)
 {
-	ChangeTexture(aRenderer, anImage, aCellX, aCellY);
+	changeTexture(main_renderer, image, cell_x, cell_y);
 }
 
 SDL_Texture* Sprite::returnTexture()
@@ -14,41 +14,41 @@ SDL_Texture* Sprite::returnTexture()
 
 SDL_Rect* Sprite::returnSize()
 {
-	return &sizeRect;
+	return &size_rect;
 }
 
 SDL_Rect* Sprite::returnPos()
 {
-	return &posRect;
+	return &position_rect;
 }
 
-void Sprite::MoveSprite(int aCellX, int aCellY)
+void Sprite::moveSprite(int cell_x, int cell_y)
 {
-	posRect.x = aCellX;
-	posRect.y = aCellY;
-	posRect.w = sizeRect.w;
-	posRect.h = sizeRect.h;
+	position_rect.x = cell_x;
+	position_rect.y = cell_y;
+	position_rect.w = size_rect.w;
+	position_rect.h = size_rect.h;
 }
 
-void Sprite::ChangeTexture(SDL_Renderer* aRenderer, const char* anImage, int aCellX, int aCellY)
+void Sprite::changeTexture(SDL_Renderer* renderer, const char* image, int cell_x, int cell_y)
 {
-	surface = IMG_Load(anImage);
+	surface = IMG_Load(image);
 
 	if (!surface)
 		return;
 
 	SDL_DestroyTexture(texture);
-	texture = SDL_CreateTextureFromSurface(aRenderer, surface);
+	texture = SDL_CreateTextureFromSurface(renderer, surface);
 
-	sizeRect.x = 0;
-	sizeRect.y = 0;
-	sizeRect.w = surface->w;
-	sizeRect.h = surface->h;
+	size_rect.x = 0;
+	size_rect.y = 0;
+	size_rect.w = surface->w;
+	size_rect.h = surface->h;
 
-	posRect.x = aCellX;
-	posRect.y = aCellY;
-	posRect.w = sizeRect.w;
-	posRect.h = sizeRect.h;
+	position_rect.x = cell_x;
+	position_rect.y = cell_y;
+	position_rect.w = size_rect.w;
+	position_rect.h = size_rect.h;
 
 	SDL_FreeSurface(surface);
 }

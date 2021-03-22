@@ -7,23 +7,23 @@
 class MovableGameEntity : public GameEntity
 {
 public:
-	MovableGameEntity(const Vector2f& aPosition, Sprite* mySprite);
+	MovableGameEntity(const Vector2f&, Sprite*);
 	~MovableGameEntity(void);
 
-	void SetNextTile(int anX, int anY);
-	int GetCurrentTileX() const { return myCurrentTileX; }
-	int GetCurrentTileY() const { return myCurrentTileY; }
+	void setNextTile(int, int);
 
-	bool IsAtDestination();
+	int getCurrentTileX() const { return current_tile_x; }
+	int getCurrentTileY() const { return current_tile_y; }
+
+	bool isAtDestination();
 
 protected:
 
-	int myCurrentTileX;
-	int myCurrentTileY;
+	int current_tile_x = 0;
+	int current_tile_y = 0;
 
-	int myNextTileX;
-	int myNextTileY;
-
+	int next_tile_x = 0;
+	int next_tile_y = 0;
 };
 
 #endif // MOVABLEGAMEENTITY_H

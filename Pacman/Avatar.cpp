@@ -2,97 +2,112 @@
 #include "Drawer.h"
 #include "Pacman.h"
 
-Avatar::Avatar(SDL_Renderer* aRenderer, const Vector2f& aPosition)
-	: MovableGameEntity(aPosition, mySprite),
-	myRenderer(aRenderer)
+Avatar::Avatar(SDL_Renderer* main_renderer, const Vector2f& avatar_position)
+	: MovableGameEntity(avatar_position, avatar_sprite),
+	render(main_renderer)
 {
-	mySprite = new Sprite(aRenderer, "open_32.png");
+	avatar_sprite = new Sprite(main_renderer, "open_32.png");
 }
 
 Avatar::~Avatar(void)
 {
 }
 
-void Avatar::Update(float aTime)
+void Avatar::update(float delta_time)
 {
-	MoveAvatar(aTime);
+	moveAvatar(delta_time);
+	changeSprite(delta_time);
+	updateSprite();
 }
 
-void Avatar::MoveAvatar(float aTime)
+void Avatar::moveAvatar(float delta_time)
 {
-	destination = Vector2f(myNextTileX * tileSize, myNextTileY * tileSize);
-	direction = destination - myPosition;
+	destination = Vector2f(next_tile_x * tile_size, next_tile_y * tile_size);
+	direction = destination - position;
 
-	distanceToMove = aTime * 30.f;
+	distance_to_move = delta_time * 30.f;
 
-	if (distanceToMove > direction.Length())
+	if (distance_to_move > direction.Length())
 	{
-		myPosition = destination;
-		myCurrentTileX = myNextTileX;
-		myCurrentTileY = myNextTileY;
+		position = destination;
+		current_tile_x = next_tile_x;
+		current_tile_y = next_tile_y;
 	}
 	else
 	{
 		direction.Normalize();
-		myPosition += direction * distanceToMove;
-	}
-
-	PlaceHoldName(aTime);
-	UpdateSprite();
-
-	mySprite->MoveSprite(myPosition.myX + 220, myPosition.myY + 60);
+		position += direction * distance_to_move;
+	}	
 }
 
-void Avatar::UpdateSprite()
+void Avatar::updateSprite()
 {
-	if (direction.myX == -1 && spriteOpen == -1)
+	if (sprite_open == -1)
 	{
-		mySprite->ChangeTexture(myRenderer, "closed_left_32.png", myPosition.myX + 220, myPosition.myY + 60);
-	}
-	else if (direction.myX == -1 && spriteOpen == 1)
-	{
-		mySprite->ChangeTexture(myRenderer, "open_left_32.png", myPosition.myX + 220, myPosition.myY + 60);
-	}
+		if (direction.x == -1)
+		{
+			avatar_sprite->changeTexture(render, "closed_left_32.png", position.x + 220, position.y + 60);
+			return;
+		}
+		
+		else if (direction.y == -1)
+		{
+			avatar_sprite->changeTexture(render, "closed_up_32.png", position.x + 220, position.y + 60);
+			return;
+		}
 
-	else if (direction.myX == 1 && spriteOpen == -1)
-	{
-		mySprite->ChangeTexture(myRenderer, "closed_right_32.png", myPosition.myX + 220, myPosition.myY + 60);
+		else if (direction.x == 1)
+		{
+			avatar_sprite->changeTexture(render, "closed_right_32.png", position.x + 220, position.y + 60);
+			return;
+		}
+		
+		else if (direction.y == 1)
+		{
+			avatar_sprite->changeTexture(render, "closed_down_32.png", position.x + 220, position.y + 60);
+			return;
+		}		
 	}
-	else if (direction.myX == 1 && spriteOpen == 1)
+	
+	else
 	{
-		mySprite->ChangeTexture(myRenderer, "open_right_32.png", myPosition.myX + 220, myPosition.myY + 60);
-	}
+		if (direction.x == -1)
+		{
+			avatar_sprite->changeTexture(render, "open_left_32.png", position.x + 220, position.y + 60);
+			return;
+		}
 
-	else if (direction.myY == -1 && spriteOpen == -1)
-	{
-		mySprite->ChangeTexture(myRenderer, "closed_up_32.png", myPosition.myX + 220, myPosition.myY + 60);
-	}
-	else if (direction.myY == -1 && spriteOpen == 1)
-	{
-		mySprite->ChangeTexture(myRenderer, "open_up_32.png", myPosition.myX + 220, myPosition.myY + 60);
-	}
+		else if (direction.y == -1)
+		{
+			avatar_sprite->changeTexture(render, "open_up_32.png", position.x + 220, position.y + 60);
+			return;
+		}
+		else if (direction.x == 1)
+		{
+			avatar_sprite->changeTexture(render, "open_right_32.png", position.x + 220, position.y + 60);
+			return;
+		}
+		else if (direction.y == 1)
+		{
+			avatar_sprite->changeTexture(render, "open_down_32.png", position.x + 220, position.y + 60);
+			return;
+		}
+	}	
 
-	else if (direction.myY == 1 && spriteOpen == -1)
+	avatar_sprite->moveSprite(position.x + 220, position.y + 60);
+}
+
+void Avatar::changeSprite(float aTime)
+{
+	change_sprite_timer += aTime;
+	if (change_sprite_timer >= 0.36)
 	{
-		mySprite->ChangeTexture(myRenderer, "closed_down_32.png", myPosition.myX + 220, myPosition.myY + 60);
-	}
-	else if (direction.myY == 1 && spriteOpen == 1)
-	{
-		mySprite->ChangeTexture(myRenderer, "open_down_32.png", myPosition.myX + 220, myPosition.myY + 60);
+		sprite_open *= -1;
+		change_sprite_timer = 0;
 	}
 }
 
-void Avatar::PlaceHoldName(float aTime)
+void Avatar::draw(Drawer* renderer)
 {
-	changeSpriteTime += aTime;
-	if (changeSpriteTime >= 0.35)
-	{
-		spriteOpen *= -1;
-		changeSpriteTime = 0;
-	}
-}
-
-void Avatar::Draw(Drawer* aDrawer)
-{
-	aDrawer->Draw(mySprite, myPosition.myX, myPosition.myY);
+	renderer->draw(avatar_sprite, position.x, position.y);
 }

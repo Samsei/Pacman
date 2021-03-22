@@ -1,19 +1,19 @@
 #include "MovableGameEntity.h"
 
-MovableGameEntity::MovableGameEntity(const Vector2f& aPosition, Sprite* mySprite)
-: GameEntity(aPosition, mySprite)
+MovableGameEntity::MovableGameEntity(const Vector2f& entity_position, Sprite* entity_sprite)
+: GameEntity(entity_position, entity_sprite)
 {
-	myCurrentTileX = myNextTileX =  myPosition.myX / 22;
-	myCurrentTileY = myNextTileY =  myPosition.myY / 22;
+	current_tile_x = next_tile_x =  position.x / 22;
+	current_tile_y = next_tile_y =  position.y / 22;
 }
 
 MovableGameEntity::~MovableGameEntity(void)
 {
 }
 
-bool MovableGameEntity::IsAtDestination()
+bool MovableGameEntity::isAtDestination()
 {
-	if (myCurrentTileX == myNextTileX && myCurrentTileY == myNextTileY)
+	if (current_tile_x == next_tile_x && current_tile_y == next_tile_y)
 	{
 		return true;
 	}
@@ -21,8 +21,8 @@ bool MovableGameEntity::IsAtDestination()
 	return false;
 }
 
-void MovableGameEntity::SetNextTile(int anX, int anY)
+void MovableGameEntity::setNextTile(int x, int y)
 {
-	myNextTileX = anX;
-	myNextTileY = anY;
+	next_tile_x = x;
+	next_tile_y = y;
 }

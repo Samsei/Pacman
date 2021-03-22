@@ -1,4 +1,4 @@
-............xx............
+..c.........xx.........c..
 .xxxx.xxxxx.xx.xxxxx.xxxx.
 oxxxx.xxxxx.xx.xxxxx.xxxxo
 .xxxx.xxxxx.xx.xxxxx.xxxx.
@@ -26,4 +26,4 @@ xx.xx.xx.xxxxxxxx.xx.xx.xx
 ......xx....xx....xx......
 oxxxxxxxxxx.xx.xxxxxxxxxxo
 .xxxxxxxxxx.xx.xxxxxxxxxx.
-..........................
+..c....................c..

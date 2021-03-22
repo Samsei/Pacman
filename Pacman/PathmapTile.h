@@ -4,14 +4,13 @@
 class PathmapTile
 {
 public:
-	PathmapTile(int anX, int anY, bool aIsBlockingFlag);
+	PathmapTile(int, int, bool);
 	~PathmapTile(void);
 
-	int myX;
-	int myY;
-	bool myIsBlockingFlag;
-	bool myIsVisitedFlag;
-
+	int x = 0;
+	int y = 0;
+	bool is_blocking = false;
+	bool is_visited = false;
 };
 
 #endif // PATHMAPTILE_H

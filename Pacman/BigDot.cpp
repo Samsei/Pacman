@@ -1,5 +1,4 @@
 #include "BigDot.h"
-#include "Sprite.h"
 
 BigDot::BigDot(Vector2f aPosition, Sprite mySprite)
 : StaticGameEntity(aPosition, &mySprite)

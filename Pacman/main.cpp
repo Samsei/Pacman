@@ -12,17 +12,6 @@ int main(int argc, char **argv)
 		assert(0 && "Failed to initialize video!");
 		exit(-1);
 	}
-	
-	SDL_Window* window = SDL_CreateWindow("Pacman", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1024, 768, SDL_WINDOW_OPENGL);
-	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-	if(!window)
-	{
-		assert(0 && "Failed to create window!");
-		exit(-1);
-	}
-
-	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
 
 	if (TTF_Init() == -1)
 	{
@@ -30,35 +19,46 @@ int main(int argc, char **argv)
 		exit(-1);
 	}
 
-	Drawer* drawer = Drawer::Create(window, renderer);
-	Pacman* pacman = Pacman::Create(drawer);
-
-	float lastFrame = (float) SDL_GetTicks() * 0.001f;
-	SDL_Event event;
-
-	float currentFrame = 0;
-	float elapsedTime = 0;
-
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); //no need to set every frame if not being changed
-
 	if (SDL_Init(SDL_INIT_AUDIO) < 0)
 	{
 		exit(-1);//i'll add audio at some point
 	}
 
+	SDL_Window* window = SDL_CreateWindow("Pacman", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1024, 768, SDL_WINDOW_OPENGL);
+	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	Drawer* drawer = Drawer::Create(window, renderer);
+	Pacman* pacman = Pacman::Create(drawer);
+	
+	if (!window)
+	{
+		assert(0 && "Failed to create window!");
+		exit(-1);
+	}
+
+	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); //no need to set every frame if not being changed
+
+	SDL_Event event;
+
+	float last_frame = (float)SDL_GetTicks() * 0.001f;
+	float current_frame = 0;
+	float elapsed_time = 0;
+	
+
 	while (SDL_PollEvent(&event) >= 0)
 	{
 		SDL_RenderClear(renderer);
 
-		currentFrame = (float) SDL_GetTicks() * 0.001f;
-		elapsedTime = currentFrame - lastFrame;
+		current_frame = (float) SDL_GetTicks() * 0.001f;
+		elapsed_time = current_frame - last_frame;
+		last_frame = current_frame;
 
-		if (!pacman->Update(elapsedTime))
+		if (!pacman->update(elapsed_time))
+		{
 			break;
-		
-		pacman->Draw();
-		
-		lastFrame = currentFrame;		
+		}
+
+		pacman->draw();		
 
 		SDL_RenderPresent(renderer);
 		SDL_Delay(1);

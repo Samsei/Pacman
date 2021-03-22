@@ -10,44 +10,39 @@ class PathmapTile;
 class Ghost : public MovableGameEntity
 {
 public:
-	Ghost(const Vector2f& aPosition, SDL_Renderer* aRenderer);
+	Ghost(const Vector2f&, SDL_Renderer*);
 	~Ghost(void);
 
-	void Update(float aTime, World* aWorld);
+	void update(float, World*);
+	void getNextTile();
+	void findPath(float, World*);
+	void moveGhost();
+	void moveSprite();
+	void die(World*);
+	void draw(Drawer*);
 
-	void GetNextTile();
-	void FindPath(float aTime, World* aWorld);
-	void MoveGhost();
-	void MoveSprite();
-
-	bool myIsClaimableFlag = false;;
-	bool myIsDeadFlag = false;
-
-	void Die(World* aWorld);
-
-	void Draw(Drawer* aDrawer);
+	bool is_vulnerable = false;;
+	bool is_dead = false;
 
 protected:
 
-	int myDesiredMovementX = 0;
-	int myDesiredMovementY = 0;
+	int desired_movement_x = 0;
+	int desired_movement_y = 0;
+	int next_tile_x = 0;
+	int next_tile_y = 0;
+	int tile_size = 22;
+
+	float distance_to_move = 0.f;
 	float speed = 30.f;
-
-	int nextTileX = 0;
-	int nextTileY = 0;
-
-	int tileSize = 22;
-
-	float distanceToMove = 0;
 
 	Vector2f destination;
 	Vector2f direction;
 
-	std::list<PathmapTile*> myPath;
+	std::list<PathmapTile*> path;
 
-	Sprite* ghostSprite ;
-	Sprite* ghostVulnerableSprite;
-	Sprite* ghostDeadSprite;
+	Sprite* ghost_sprite = nullptr;
+	Sprite* ghost_vulnerable_sprite = nullptr;
+	Sprite* ghost_dead_sprite = nullptr;
 };
 
 #endif // GHOST_H

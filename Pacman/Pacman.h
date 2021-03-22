@@ -23,44 +23,43 @@ class Ghost;
 class Pacman
 {
 public:
-	static Pacman* Create(Drawer* aDrawer);
+	static Pacman* Create(Drawer*);
 	~Pacman(void);
 
-	bool Update(float aTime);	
-	bool Draw();
+	bool update(float);	
+	bool draw();
 
 private:
-	Pacman(Drawer* aDrawer);
-	bool Init();
-	bool UpdateInput();
-	void MoveAvatar();
-	bool CheckEndGameCondition();
-	void UpdateScore();
-	void HitGhost();
-	void CheckGhostTimer(float aTime);
-	void DrawText();
+	Pacman(Drawer*);
+	bool init();
+	bool updateInput();
+	void movePlayer();
+	bool checkEndGameCondition();
+	void updateScore();
+	void hitGhost();
+	void checkGhostTimer(float);
+	void drawText();
 
-	Drawer* myDrawer;
 
-	float myTimeToNextUpdate;
-	float myGhostGhostCounter;
+	float time_to_next_update;
+	float ghost_timer;
 
-	int nextTileX;
-	int nextTileY; //added to .h instead of initializing every frame
+	int next_tile_x;
+	int next_tile_y; //added to .h instead of initializing every frame
 
-	int myLives;
-	int myScore;
-	int myFps;
+	int lives;
+	int score;
+	int fps;
 
 	const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
-	Vector2f myNextMovement;
+	Vector2f next_movement;
 
-	Avatar* myAvatar;
-	Ghost* myGhost;
-	World* myWorld;
-
-	Sprite* avatarSprite;
+	Avatar* player;
+	Ghost* ghost;
+	World* world;
+	Drawer* renderer;
+	Sprite* player_sprite;
 };
 
 #endif // PACMAN_H

@@ -16,9 +16,9 @@ Pacman* Pacman::Create(Drawer* aDrawer)
 Pacman::Pacman(Drawer* main_renderer)
 : renderer(main_renderer)
 {
-	player = new Avatar(main_renderer->returnRenderer(), Vector2f(13*22,22*22));
-
 	world = new World(main_renderer->returnRenderer());
+
+	player = new Avatar(main_renderer->returnRenderer(), Vector2f(13 * 22, 22 * 22));
 
 	for (auto* string : ghost_sprite_paths)
 	{
@@ -79,8 +79,8 @@ bool Pacman::update(float delta_time)
 		fps = (int)(1 / delta_time);
 	}
 
-	movePlayer();
-	player->update(delta_time);
+	player->updateInput(next_movement, world);
+	player->update(delta_time, next_movement);
 
 	for (auto* ghost_v : ghosts)
 	{
@@ -168,17 +168,6 @@ bool Pacman::updateInput()
 	}
 
 	return true;
-}
-
-void Pacman::movePlayer()
-{
-	entity_next_tile_x = player->getCurrentTileX() + next_movement.x;
-	entity_next_tile_y = player->getCurrentTileY() + next_movement.y;
-
-	if (player->isAtDestination() && world->tileIsValid(entity_next_tile_x, entity_next_tile_y))  //unnested if statement
-	{
-		player->setNextTile(entity_next_tile_x, entity_next_tile_y);
-	}
 }
 
 bool Pacman::checkEndGameCondition()

@@ -11,11 +11,10 @@ class GameEntity
 public:
 	GameEntity(const Vector2f&, Sprite*);
 	~GameEntity(void);
-	virtual void draw(Drawer*);
 
+	virtual void draw(Drawer*);
 	void setPosition(const Vector2f& aPosition) { position = aPosition; }
-	void markForDelete() { marked_for_delete = true; }
-	bool isMarkedForDelete() const { return marked_for_delete; }
+
 	bool intersect(GameEntity*);
 
 	Vector2f getPosition() const { return position; }
@@ -24,7 +23,7 @@ protected:
 
 	bool marked_for_delete = false;
 
-	Vector2f position = { 0, 0 };
+	Vector2f position = { 0.0f, 0.0f };
 
 	Sprite* sprite = nullptr;
 };

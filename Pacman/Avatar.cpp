@@ -1,7 +1,7 @@
 #include "Avatar.h"
 
-Avatar::Avatar(SDL_Renderer* main_renderer, const Vector2f& avatar_position)
-	: MovableGameEntity(avatar_position, avatar_sprite),
+Avatar::Avatar(SDL_Renderer* main_renderer, const Vector2f& avatar_position): 
+	MovableGameEntity(avatar_position, avatar_sprite),
 	render(main_renderer)
 {
 	avatar_sprite = new Sprite(main_renderer, "open_32.png");
@@ -14,7 +14,7 @@ Avatar::~Avatar(void)
 	avatar_sprite = NULL;
 }
 
-void Avatar::update(float delta_time)
+void Avatar::update(float delta_time, Vector2f next_movement)
 {
 	moveAvatar(delta_time);
 	changeSprite(delta_time);
@@ -23,22 +23,30 @@ void Avatar::update(float delta_time)
 
 void Avatar::moveAvatar(float delta_time)
 {
-	destination = Vector2f(entity_next_tile_x * tile_size, entity_next_tile_y * tile_size);
+	destination = Vector2f(entity_next_tile.x * tile_size, entity_next_tile.y * tile_size);
 	direction = destination - position;
 
-	distance_to_move = delta_time * 30.f;
+	distance_to_move = delta_time * speed;
 
 	if (distance_to_move > direction.Length())
 	{
 		position = destination;
-		current_tile_x = entity_next_tile_x;
-		current_tile_y = entity_next_tile_y;
+		current_tile = { entity_next_tile.x, entity_next_tile.y };
 	}
 	else
 	{
 		direction.Normalize();
 		position += direction * distance_to_move;
 	}	
+}
+
+void Avatar::updateInput(Vector2f next_movement, World* world)
+{
+	if (isAtDestination() && world->tileIsValid(getCurrentTile().x + next_movement.x, getCurrentTile().y + next_movement.y))  //unnested if statement
+	{
+		entity_next_tile = { getCurrentTile().x + next_movement.x,  getCurrentTile().y + next_movement.y };
+		setNextTile(entity_next_tile.x, entity_next_tile.y);
+	}
 }
 
 void Avatar::updateSprite()

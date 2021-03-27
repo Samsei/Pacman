@@ -3,8 +3,8 @@
 MovableGameEntity::MovableGameEntity(const Vector2f& entity_position, Sprite* entity_sprite)
 : GameEntity(entity_position, entity_sprite)
 {
-	current_tile_x = entity_next_tile_x =  position.x / 22;
-	current_tile_y = entity_next_tile_y =  position.y / 22;
+	current_tile.x = entity_next_tile.x =  position.x / 22;
+	current_tile.y = entity_next_tile.y =  position.y / 22;
 }
 
 MovableGameEntity::~MovableGameEntity(void)
@@ -13,7 +13,7 @@ MovableGameEntity::~MovableGameEntity(void)
 
 bool MovableGameEntity::isAtDestination()
 {
-	if (current_tile_x == entity_next_tile_x && current_tile_y == entity_next_tile_y)
+	if (current_tile.x == entity_next_tile.x && current_tile.y == entity_next_tile.y)
 	{
 		return true;
 	}
@@ -21,8 +21,7 @@ bool MovableGameEntity::isAtDestination()
 	return false;
 }
 
-void MovableGameEntity::setNextTile(int x, int y)
+void MovableGameEntity::setNextTile(float x, float y)
 {
-	entity_next_tile_x = x;
-	entity_next_tile_y = y;
+	entity_next_tile = { x, y };
 }

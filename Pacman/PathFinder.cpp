@@ -7,3 +7,4 @@ PathFinder::PathFinder(Avatar* avatar, int intelligence, World* main_world) :
 {
 
 }
+

@@ -30,7 +30,6 @@ private:
 	bool updateInput();
 	bool checkEndGameCondition();
 
-	void movePlayer();
 	void updateScore();
 	void hitGhost();
 	void checkGhostTimer(float);

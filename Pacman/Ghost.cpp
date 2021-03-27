@@ -28,15 +28,9 @@ void Ghost::findPath(float delta_time)
 {
 	if (isAtDestination())
 	{
-		if (!path.empty())
+		if (world->tileIsValid(next_tile.x, next_tile.y))
 		{
-			nextTile = path.front();
-			path.pop_front();
-			setNextTile(nextTile->x, nextTile->y);
-		}
-		else if (world->tileIsValid(next_tile_x, next_tile_y))
-		{
-			setNextTile(next_tile_x, next_tile_y);
+			setNextTile(next_tile.x, next_tile.y);
 		}
 		else
 		{
@@ -46,7 +40,7 @@ void Ghost::findPath(float delta_time)
 		}
 	}
 
-	destination = Vector2f(entity_next_tile_x * tile_size, entity_next_tile_y * tile_size);
+	destination = Vector2f(entity_next_tile.x * tile_size, entity_next_tile.y * tile_size);
 	direction = destination - position;
 
 	distance_to_move = delta_time * speed;
@@ -54,32 +48,31 @@ void Ghost::findPath(float delta_time)
 
 void Ghost::changeMovementDirection()
 {
-	if (desired_movement_x == 1)
+	if (desired_movement.x == 1)
 	{
-		desired_movement_x = 0;
-		desired_movement_y = 1;
+		desired_movement.x = 0;
+		desired_movement.y = 1;
 	}
-	else if (desired_movement_y == 1)
+	else if (desired_movement.y == 1)
 	{
-		desired_movement_x = -1;
-		desired_movement_y = 0;
+		desired_movement.x = -1;
+		desired_movement.y = 0;
 	}
-	else if (desired_movement_x == -1)
+	else if (desired_movement.x == -1)
 	{
-		desired_movement_x = 0;
-		desired_movement_y = -1;
+		desired_movement.x = 0;
+		desired_movement.y = -1;
 	}
 	else
 	{
-		desired_movement_x = 1;
-		desired_movement_y = 0;
+		desired_movement.x = 1;
+		desired_movement.y = 0;
 	}
 }
 
 void Ghost::getNextTile()
 {
-	next_tile_x = getCurrentTileX() + desired_movement_x;
-	next_tile_y = getCurrentTileY() + desired_movement_y;
+	next_tile = { getCurrentTile().x + desired_movement.x, getCurrentTile().y + desired_movement.y };
 }
 
 void Ghost::moveGhost()
@@ -87,8 +80,7 @@ void Ghost::moveGhost()
 	if (distance_to_move > direction.Length())
 	{
 		position = destination;
-		current_tile_x = entity_next_tile_x;
-		current_tile_y = entity_next_tile_y;
+		current_tile = { entity_next_tile.x, entity_next_tile.y };
 	}
 	else
 	{

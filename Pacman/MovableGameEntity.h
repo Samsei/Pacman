@@ -10,19 +10,15 @@ public:
 	MovableGameEntity(const Vector2f&, Sprite*);
 	~MovableGameEntity(void);
 
-	void setNextTile(int, int);
+	void setNextTile(float, float);
 
-	int getCurrentTileX() const { return current_tile_x; }
-	int getCurrentTileY() const { return current_tile_y; }
+	Vector2f getCurrentTile() const { return current_tile; }
 
 	bool isAtDestination();
 
 protected:
-	int current_tile_x = 0;
-	int current_tile_y = 0;
-
-	int entity_next_tile_x = 0;
-	int entity_next_tile_y = 0;
+	Vector2f current_tile = { 0, 0 };
+	Vector2f entity_next_tile = { 0, 0 };
 };
 
 #endif // MOVABLEGAMEENTITY_H

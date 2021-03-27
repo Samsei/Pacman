@@ -1,6 +1,7 @@
 #ifndef PACMAN_H
 #define PACMAN_H
 
+#include <vector>
 #include <sstream>
 
 #include "Avatar.h"
@@ -44,12 +45,17 @@ private:
 	int lives = 0;
 	int score = 0;
 	int fps = 0;
+	int intelligence = 0;
 
 	const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
 	Vector2f next_movement = { 0, 0 };
 
 	Avatar* player = nullptr;
+
+	std::vector<Ghost*> ghosts;
+	std::list<const char*> ghost_sprite_paths = {"ghost_32_red.png", "ghost_32_pink.png", "ghost_32_cyan.png", "ghost_32_orange.png"};
+
 	Ghost* ghost = nullptr;
 	World* world = nullptr;
 	Drawer* renderer = nullptr;

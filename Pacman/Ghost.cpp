@@ -1,34 +1,19 @@
 #include "Ghost.h"
 
-Ghost::Ghost(const Vector2f& entity_position, SDL_Renderer* main_renderer)
-: MovableGameEntity(entity_position, ghost_sprite)
+Ghost::Ghost(const Vector2f& entity_position, SDL_Renderer* main_renderer, const char* sprite, int intelligence)
+: MovableGameEntity(entity_position, ghost_sprite),
+  ghost_intelligence(intelligence)
 {
-	is_vulnerable = false;
-	is_dead = false;
-
-	desired_movement_x = 0;
-	desired_movement_y = -1;
-
-	ghost_sprite = new Sprite(main_renderer, "ghost_32.png", 0, 0);
+	ghost_sprite = new Sprite(main_renderer, sprite, 0, 0);
 	ghost_vulnerable_sprite = new Sprite(main_renderer, "Ghost_Vulnerable_32.png", 0, 0);
 	ghost_dead_sprite = new Sprite(main_renderer, "Ghost_Dead_32.png", 0, 0);
-}
 
-Ghost::~Ghost(void)
-{
-	delete ghost_sprite;
-	delete ghost_vulnerable_sprite ;
-	delete ghost_dead_sprite;
-
-	ghost_sprite = NULL;
-	ghost_vulnerable_sprite = NULL;
-	ghost_dead_sprite = NULL;
+	pathFinder = new PathFinder();
 }
 
 void Ghost::die(World* world)
 {
 	path.clear();
-	world->GetPath(current_tile_x, current_tile_y, 13, 13, path);
 	speed = 120.f;
 }
 

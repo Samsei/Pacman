@@ -39,120 +39,47 @@ World::~World(void)
 
 void World::init(Drawer* renderer)
 {
-	initPathMap();
-	initDots(renderer->returnRenderer());
-	initBigDots(renderer->returnRenderer());
-	initCherrys(renderer->returnRenderer());
-}
+	main_renderer = renderer->returnRenderer();
 
-bool World::initPathMap()
-{
-	std::string line;
-	std::ifstream myfile ("map.txt");
-	if (myfile.is_open())
+	my_file.open("map.txt");
+
+	if (my_file.is_open())
 	{
-		int lineIndex = 0;
-		while (! myfile.eof() )
+		line_index = 0;
+		while (!my_file.eof())
 		{
-			std::getline (myfile,line);
+			std::getline(my_file, line);
 			for (unsigned int i = 0; i < line.length(); i++)
 			{
-				PathmapTile* tile = new PathmapTile(i, lineIndex, (line[i] == 'x'));
+				tile = new PathmapTile(i, line_index, (line[i] == 'x'));
 				pathmap_tiles.push_back(tile);
-			}
 
-			lineIndex++;
-		}
-		myfile.close();
-	}
-
-	return true;
-}
-
-bool World::initDots(SDL_Renderer* renderer)
-{
-	std::string line;
-	std::ifstream myfile ("map.txt");
-
-	if (myfile.is_open())
-	{
-		int lineIndex = 0;
-		while (! myfile.eof() )
-		{
-			std::getline (myfile,line);
-			for (unsigned int i = 0; i < line.length(); i++)
-			{
 				if (line[i] == '.')
 				{
-					Sprite* sprite = new Sprite(renderer, "Small_Dot_32.png", i * 22 + 220, lineIndex * 22 + 60);
-					Dot* dot = new Dot(Vector2f(i*22, lineIndex*22), *sprite);
+					Sprite* sprite = new Sprite(main_renderer, "Small_Dot_32.png", i * 22 + 220, line_index * 22 + 60);
+					Dot* dot = new Dot(Vector2f(i * 22, line_index * 22), *sprite);
 					dots_list.push_back(dot);
 				}
-			}
 
-			lineIndex++;
-		}
-		myfile.close();
-	}
-	return true;
-}
-
-bool World::initBigDots(SDL_Renderer* renderer)
-{
-	std::string line;
-	std::ifstream myfile ("map.txt");
-
-	if (myfile.is_open())
-	{
-		int lineIndex = 0;
-		while (! myfile.eof() )
-		{
-			std::getline (myfile,line);
-			for (unsigned int i = 0; i < line.length(); i++)
-			{
-				if (line[i] == 'o')
+				else if (line[i] == 'o')
 				{
-					Sprite* sprite = new Sprite(renderer, "Big_Dot_32.png", i * 22 + 220, lineIndex * 22 + 60);
-					BigDot* big_dot = new BigDot(Vector2f(i*22, lineIndex*22), *sprite);
+					Sprite* sprite = new Sprite(main_renderer, "Big_Dot_32.png", i * 22 + 220, line_index * 22 + 60);
+					BigDot* big_dot = new BigDot(Vector2f(i * 22, line_index * 22), *sprite);
 					big_dots_list.push_back(big_dot);
 				}
-			}
 
-			lineIndex++;
-		}
-		myfile.close();
-	}
-
-	return true;
-}
-
-bool World::initCherrys(SDL_Renderer* renderer)
-{
-	std::string line;
-	std::ifstream myfile("map.txt");
-
-	if (myfile.is_open())
-	{
-		int lineIndex = 0;
-		while (!myfile.eof())
-		{
-			std::getline(myfile, line);
-			for (unsigned int i = 0; i < line.length(); i++)
-			{
-				if (line[i] == 'c')
+				else if (line[i] == 'c')
 				{
-					Sprite* sprite = new Sprite(renderer, "cherry.png", i * 22 + 220, lineIndex * 22 + 60);
-					Cherry* cherry = new Cherry(Vector2f(i * 22, lineIndex * 22), *sprite);
+					Sprite* sprite = new Sprite(main_renderer, "cherry.png", i * 22 + 220, line_index * 22 + 60);
+					Cherry* cherry = new Cherry(Vector2f(i * 22, line_index * 22), *sprite);
 					cherry_list.push_back(cherry);
 				}
 			}
 
-			lineIndex++;
+			line_index++;
 		}
-		myfile.close();
+		my_file.close();
 	}
-
-	return true;
 }
 
 void World::draw(Drawer* renderer)

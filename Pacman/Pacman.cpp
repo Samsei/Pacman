@@ -23,7 +23,14 @@ Pacman::Pacman(Drawer* main_renderer)
 , ghost_timer(0.f)
 {
 	player = new Avatar(main_renderer->returnRenderer(), Vector2f(13*22,22*22));
-	ghost = new Ghost(Vector2f(13*22,13*22), main_renderer->returnRenderer());
+
+	for (auto* string : ghost_sprite_paths)
+	{
+		ghost = new Ghost(Vector2f(13 * 22, 13 * 22), main_renderer->returnRenderer(), string, intelligence);
+		ghosts.push_back(ghost);
+		intelligence++;
+	}
+
 	world = new World(main_renderer->returnRenderer());
 }
 
@@ -33,12 +40,6 @@ Pacman::~Pacman(void)
 	{
 		delete player;
 		player = NULL;
-	}
-
-	if (ghost)
-	{
-		delete ghost;
-		ghost = NULL;
 	}
 
 	if (world)
@@ -52,6 +53,12 @@ Pacman::~Pacman(void)
 		delete player_sprite;
 		player_sprite = NULL;
 	}	
+
+	if (ghost)
+	{
+		delete ghost;
+		ghost = NULL;
+	}
 }
 
 bool Pacman::init()
@@ -80,7 +87,11 @@ bool Pacman::update(float delta_time)
 
 	movePlayer();
 	player->update(delta_time);
-	ghost->update(delta_time, world, player->getPosition());
+
+	for (auto* ghost_v : ghosts)
+	{
+		ghost_v->update(delta_time, world, player->getPosition());
+	}
 
 	updateScore();
 	checkGhostTimer(delta_time);

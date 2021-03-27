@@ -20,7 +20,7 @@ private:
 
 	const int tile_size = 22;
 
-	const float sprite_timer = 0.37f;
+	const float sprite_timer = 0.365f;
 	float distance_to_move = 0; //added to .h instead of delcaring each frame
 	float change_sprite_timer = 0;
 	float sprite_open = 1;

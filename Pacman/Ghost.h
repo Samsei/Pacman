@@ -7,6 +7,7 @@
 #include "PathmapTile.h"
 #include "Drawer.h"
 #include "MovableGameEntity.h"
+#include "PathFinder.h"
 
 class World;
 class PathmapTile;
@@ -14,8 +15,7 @@ class PathmapTile;
 class Ghost : public MovableGameEntity
 {
 public:
-	Ghost(const Vector2f&, SDL_Renderer*);
-	~Ghost(void);
+	Ghost(const Vector2f&, SDL_Renderer*, const char*, int);
 
 	void update(float, World*, Vector2f);
 	void getNextTile();
@@ -31,10 +31,11 @@ public:
 
 protected:
 	int desired_movement_x = 0;
-	int desired_movement_y = 0;
+	int desired_movement_y = -1;
 	int next_tile_x = 0;
 	int next_tile_y = 0;
 	int tile_size = 22;
+	int ghost_intelligence = 0;
 
 	float distance_to_move = 0.f;
 	float speed = 30.f;
@@ -45,6 +46,7 @@ protected:
 	std::list<PathmapTile*> path;
 
 	PathmapTile* nextTile = nullptr;
+	PathFinder* pathFinder = nullptr;
 
 	Sprite* ghost_sprite = nullptr;
 	Sprite* ghost_vulnerable_sprite = nullptr;

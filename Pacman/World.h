@@ -31,19 +31,8 @@ public:
 	bool hasIntersectedBigDot(const Vector2f&);
 	bool hasIntersectedCherry(const Vector2f&);
 
-	void GetPath(int, int, int, int, std::list<PathmapTile*>&);
-	bool getNextTile(PathmapTile*, std::list<PathmapTile*>&);
-
 private:
-	PathmapTile* GetTile(int, int);
-
-	bool initPathMap();
-	bool initDots(SDL_Renderer*);
-	bool initBigDots(SDL_Renderer*);
-	bool initCherrys(SDL_Renderer*);
-	bool findPath(PathmapTile*, PathmapTile*, std::list<PathmapTile*>&);
-	bool listDoesNotContain(PathmapTile*, std::list<PathmapTile*>&);	
-	
+	int line_index = 0;
 	int la = 0;
 
 	Vector2f player_pos = { 0, 0 };
@@ -52,6 +41,13 @@ private:
 	std::list<Dot*> dots_list;
 	std::list<BigDot*> big_dots_list;
 	std::list<Cherry*> cherry_list;
+
+	std::string line = "";
+	std::ifstream my_file;
+
+	PathmapTile* tile = nullptr;
+
+	SDL_Renderer* main_renderer = nullptr;
 
 	Sprite* dotSprite = nullptr;
 	Sprite* bigDotSprite = nullptr;

@@ -3,7 +3,7 @@
 Dot::Dot(Vector2f aPosition, Sprite mySprite)
 : StaticGameEntity(aPosition, &mySprite)
 {
-	dotSprite = mySprite;
+	dot_sprite = mySprite;
 }
 
 Dot::~Dot(void)
@@ -13,5 +13,5 @@ Dot::~Dot(void)
 
 Sprite Dot::ReturnSprite()
 {
-	return dotSprite;
+	return dot_sprite;
 }

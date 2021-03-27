@@ -5,7 +5,7 @@ class PathmapTile
 {
 public:
 	PathmapTile(int, int, bool);
-	~PathmapTile(void);
+	~PathmapTile() = default;
 
 	int x = 0;
 	int y = 0;

@@ -33,7 +33,7 @@ private:
 	SDL_Rect position_rect = { 0, 0 , 0 , 0};
 	SDL_Rect size_rect = { 0, 0 , 0 , 0 };
 
-	TTF_Font* font;
+	TTF_Font* font = nullptr;
 };
 
 #endif // DRAWER_H

@@ -3,7 +3,7 @@
 BigDot::BigDot(Vector2f aPosition, Sprite mySprite)
 : StaticGameEntity(aPosition, &mySprite)
 {
-	dotSprite = mySprite;
+	dot_sprite = mySprite;
 }
 
 BigDot::~BigDot(void)
@@ -13,5 +13,5 @@ BigDot::~BigDot(void)
 
 Sprite BigDot::ReturnSprite()
 {
-	return dotSprite;
+	return dot_sprite;
 }

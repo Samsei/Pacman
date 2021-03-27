@@ -3,7 +3,6 @@
 
 #include <list>
 
-#include "World.h"
 #include "PathmapTile.h"
 #include "Drawer.h"
 #include "MovableGameEntity.h"
@@ -15,14 +14,14 @@ class PathmapTile;
 class Ghost : public MovableGameEntity
 {
 public:
-	Ghost(const Vector2f&, SDL_Renderer*, const char*, int);
+	Ghost(const Vector2f&, SDL_Renderer*, const char*, int, Avatar*, World*);
 
-	void update(float, World*, Vector2f);
+	void update(float);
 	void getNextTile();
-	void findPath(float, World*, Vector2f);
+	void findPath(float);
 	void moveGhost();
 	void moveSprite();
-	void die(World*);
+	void die();
 	void draw(Drawer*);
 	void changeMovementDirection();
 
@@ -35,10 +34,9 @@ protected:
 	int next_tile_x = 0;
 	int next_tile_y = 0;
 	int tile_size = 22;
-	int ghost_intelligence = 0;
 
-	float distance_to_move = 0.f;
-	float speed = 30.f;
+	float distance_to_move = 0.0f;
+	float speed = 30.0f;
 
 	Vector2f destination = { 0, 0 };
 	Vector2f direction = { 0, 0 };
@@ -51,6 +49,8 @@ protected:
 	Sprite* ghost_sprite = nullptr;
 	Sprite* ghost_vulnerable_sprite = nullptr;
 	Sprite* ghost_dead_sprite = nullptr;
+
+	World* world = nullptr;
 };
 
 #endif // GHOST_H

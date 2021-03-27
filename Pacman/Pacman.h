@@ -6,7 +6,6 @@
 
 #include "Avatar.h"
 #include "Ghost.h"
-#include "World.h"
 
 struct SDL_Surface;
 class Drawer;
@@ -42,14 +41,14 @@ private:
 
 	int entity_next_tile_x = 0;
 	int entity_next_tile_y = 0;
-	int lives = 0;
+	int lives = 3;
 	int score = 0;
 	int fps = 0;
-	int intelligence = 0;
+	int intelligence = 1;
 
 	const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
-	Vector2f next_movement = { 0, 0 };
+	Vector2f next_movement = { -1.0f, 0.0f };
 
 	Avatar* player = nullptr;
 

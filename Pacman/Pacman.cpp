@@ -15,23 +15,17 @@ Pacman* Pacman::Create(Drawer* aDrawer)
 
 Pacman::Pacman(Drawer* main_renderer)
 : renderer(main_renderer)
-, time_to_next_update(0.f)
-, next_movement(-1.f,0.f)
-, score(0)
-, fps(0)
-, lives(3)
-, ghost_timer(0.f)
 {
 	player = new Avatar(main_renderer->returnRenderer(), Vector2f(13*22,22*22));
 
+	world = new World(main_renderer->returnRenderer());
+
 	for (auto* string : ghost_sprite_paths)
 	{
-		ghost = new Ghost(Vector2f(13 * 22, 13 * 22), main_renderer->returnRenderer(), string, intelligence);
+		ghost = new Ghost(Vector2f(13 * 22, 13 * 22), main_renderer->returnRenderer(), string, intelligence, player, world);
 		ghosts.push_back(ghost);
 		intelligence++;
 	}
-
-	world = new World(main_renderer->returnRenderer());
 }
 
 Pacman::~Pacman(void)
@@ -63,7 +57,7 @@ Pacman::~Pacman(void)
 
 bool Pacman::init()
 {
-	world->init(renderer);
+	world->init();
 
 	return true;
 }
@@ -90,7 +84,7 @@ bool Pacman::update(float delta_time)
 
 	for (auto* ghost_v : ghosts)
 	{
-		ghost_v->update(delta_time, world, player->getPosition());
+		ghost_v->update(delta_time);
 	}
 
 	updateScore();
@@ -132,7 +126,7 @@ void Pacman::updateScore()
 
 void Pacman::hitGhost()
 {
-	if ((ghost->getPosition() - player->getPosition()).Length() < 10.f)
+	if ((ghost->getPosition() - player->getPosition()).Length() <= 10.0f)
 	{
 		if (ghost_timer <= 0.f)
 		{
@@ -145,7 +139,7 @@ void Pacman::hitGhost()
 		{
 			score += 50;
 			ghost->is_dead = true;
-			ghost->die(world);
+			ghost->die();
 		}
 	}
 }
@@ -154,25 +148,25 @@ bool Pacman::updateInput()
 {
 	if (keystate[SDL_SCANCODE_UP])
 	{ 
-		next_movement = Vector2f(0.f, -1.f);
+		next_movement = Vector2f(0.0f, -1.0f);
 	}
 	else if (keystate[SDL_SCANCODE_DOWN])
 	{
-		next_movement = Vector2f(0.f, 1.f);
+		next_movement = Vector2f(0.0f, 1.0f);
 	}
 	else if (keystate[SDL_SCANCODE_RIGHT])
 	{
-		next_movement = Vector2f(1.f, 0.f);
+		next_movement = Vector2f(1.0f, 0.0f);
 	}
 	else if (keystate[SDL_SCANCODE_LEFT])
 	{
-		next_movement = Vector2f(-1.f, 0.f);//made if statements more readable
+		next_movement = Vector2f(-1.0f, 0.0f);//made if statements more readable
 	}
-
-	if (keystate[SDL_SCANCODE_ESCAPE])
+	else if (keystate[SDL_SCANCODE_ESCAPE])
 	{
 		return false;
 	}
+
 	return true;
 }
 
@@ -217,12 +211,12 @@ bool Pacman::draw()
 
 void Pacman::drawText()
 {
-	renderer->drawText("Score", 20, 50);
-	renderer->drawText(std::to_string(score).c_str(), 90, 50);
+	renderer->drawText("Score: ", 20, 50);
+	renderer->drawText(std::to_string(score).c_str(), 110, 50);
 
-	renderer->drawText("Lives", 20, 80);
-	renderer->drawText(std::to_string(lives).c_str(), 90, 80);
+	renderer->drawText("Lives: ", 20, 80);
+	renderer->drawText(std::to_string(lives).c_str(), 110, 80);
 
-	renderer->drawText("FPS", 880, 50);
-	renderer->drawText(std::to_string(fps).c_str(), 930, 50);
+	renderer->drawText("FPS: ", 880, 50);
+	renderer->drawText(std::to_string(fps).c_str(), 940, 50);
 }

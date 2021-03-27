@@ -7,7 +7,3 @@ PathmapTile::PathmapTile(int x, int y, bool is_blocking)
 ,is_visited(false)
 {
 }
-
-PathmapTile::~PathmapTile(void)
-{
-}

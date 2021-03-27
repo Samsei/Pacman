@@ -23,7 +23,7 @@ public:
 	World(SDL_Renderer*);
 	~World(void);
 
-	void init(Drawer*);
+	void init();
 	void draw(Drawer*);
 
 	bool tileIsValid(int, int);
@@ -49,9 +49,9 @@ private:
 
 	SDL_Renderer* main_renderer = nullptr;
 
-	Sprite* dotSprite = nullptr;
-	Sprite* bigDotSprite = nullptr;
-	Sprite* worldSprite = nullptr;
+	Sprite* dot_sprite = nullptr;
+	Sprite* big_dot_sprite = nullptr;
+	Sprite* world_sprite = nullptr;
 };
 
 #endif // WORLD_H

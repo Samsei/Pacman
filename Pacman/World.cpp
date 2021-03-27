@@ -1,15 +1,15 @@
 #include "World.h"
 
 
-World::World(SDL_Renderer* renderer)
+World::World(SDL_Renderer* renderer) :
+	main_renderer(renderer)
 {
-	bigDotSprite = new Sprite(renderer, "Big_Dot_32.png", 0, 0);;
-	worldSprite = new Sprite(renderer, "playfield.png", 0, 0);;
+	world_sprite = new Sprite(renderer, "playfield.png", 0, 0);;
 }
 
 World::~World(void)
 {
-	for (auto* dot : dots_list)
+	for (Dot* dot : dots_list)
 	{
 		if (dot)
 		{
@@ -18,7 +18,7 @@ World::~World(void)
 		}		
 	}
 
-	for (auto* big_dot : big_dots_list)
+	for (BigDot* big_dot : big_dots_list)
 	{
 		if (big_dot)
 		{
@@ -27,7 +27,7 @@ World::~World(void)
 		}
 	}
 
-	for (auto* cherry : cherry_list)
+	for (Cherry* cherry : cherry_list)
 	{
 		if (cherry)
 		{
@@ -35,12 +35,19 @@ World::~World(void)
 			cherry = NULL;
 		}
 	}
+
+	for (PathmapTile* path : pathmap_tiles)
+	{
+		if (path)
+		{
+			delete path;
+			path = NULL;
+		}		
+	}
 }
 
-void World::init(Drawer* renderer)
+void World::init()
 {
-	main_renderer = renderer->returnRenderer();
-
 	my_file.open("map.txt");
 
 	if (my_file.is_open())
@@ -84,19 +91,19 @@ void World::init(Drawer* renderer)
 
 void World::draw(Drawer* renderer)
 {
-	renderer->draw(worldSprite);
+	renderer->draw(world_sprite);
 
-	for (auto* dot : dots_list)
+	for (Dot* dot : dots_list)
 	{
 		renderer->draw(&dot->ReturnSprite(), dot->getPosition().x + 220, dot->getPosition().y + 60);
 	}
 
-	for (auto* big_dot : big_dots_list)
+	for (BigDot* big_dot : big_dots_list)
 	{
 		renderer->draw(&big_dot->ReturnSprite(), big_dot->getPosition().x + 220, big_dot->getPosition().y + 60);
 	}
 
-	for (auto* cherry : cherry_list)
+	for (Cherry* cherry : cherry_list)
 	{
 		renderer->draw(&cherry->ReturnSprite(), cherry->getPosition().x + 220, cherry->getPosition().y + 60);
 	}
@@ -158,7 +165,7 @@ bool World::hasIntersectedCherry(const Vector2f& position)
 
 bool World::tileIsValid(int x, int y)
 {
-	for (auto* tile : pathmap_tiles)
+	for (PathmapTile* tile : pathmap_tiles)
 	{
 		if (x == tile->x && y == tile->y && !tile->is_blocking)
 		{

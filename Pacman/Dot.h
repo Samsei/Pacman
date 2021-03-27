@@ -11,7 +11,7 @@ public:
 	Sprite ReturnSprite();
 
 private:
-	Sprite dotSprite;
+	Sprite dot_sprite;
 };
 
 #endif // DOT_H

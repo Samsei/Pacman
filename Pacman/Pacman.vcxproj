@@ -128,6 +128,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MovableGameEntity.cpp" />
     <ClCompile Include="Pacman.cpp" />
+    <ClCompile Include="PathFinder.cpp" />
     <ClCompile Include="PathmapTile.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="StaticGameEntity.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="Ghost.h" />
     <ClInclude Include="MovableGameEntity.h" />
     <ClInclude Include="Pacman.h" />
+    <ClInclude Include="PathFinder.h" />
     <ClInclude Include="PathmapTile.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="StaticGameEntity.h" />

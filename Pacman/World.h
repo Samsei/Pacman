@@ -32,6 +32,7 @@ public:
 	bool hasIntersectedCherry(const Vector2f&);
 
 	void GetPath(int, int, int, int, std::list<PathmapTile*>&);
+	bool getNextTile(PathmapTile*, std::list<PathmapTile*>&);
 
 private:
 	PathmapTile* GetTile(int, int);
@@ -42,6 +43,10 @@ private:
 	bool initCherrys(SDL_Renderer*);
 	bool findPath(PathmapTile*, PathmapTile*, std::list<PathmapTile*>&);
 	bool listDoesNotContain(PathmapTile*, std::list<PathmapTile*>&);	
+	
+	int la = 0;
+
+	Vector2f player_pos = { 0, 0 };
 
 	std::list<PathmapTile*> pathmap_tiles;
 	std::list<Dot*> dots_list;
@@ -51,11 +56,6 @@ private:
 	Sprite* dotSprite = nullptr;
 	Sprite* bigDotSprite = nullptr;
 	Sprite* worldSprite = nullptr;
-
-	PathmapTile* up = nullptr;
-	PathmapTile* down = nullptr;
-	PathmapTile* right = nullptr;
-	PathmapTile* left = nullptr;
 };
 
 #endif // WORLD_H

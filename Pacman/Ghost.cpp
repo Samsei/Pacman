@@ -29,22 +29,23 @@ void Ghost::die(World* world)
 {
 	path.clear();
 	world->GetPath(current_tile_x, current_tile_y, 13, 13, path);
+	speed = 120.f;
 }
 
-void Ghost::update(float delta_time, World* world)
+void Ghost::update(float delta_time, World* world, Vector2f player_position)
 {
 	getNextTile();
-	findPath(delta_time, world);
+	findPath(delta_time, world, player_position);
 	moveGhost();
 }
 
-void Ghost::findPath(float delta_time, World* world)
+void Ghost::findPath(float delta_time, World* world, Vector2f player_position)
 {
 	if (isAtDestination())
 	{
 		if (!path.empty())
 		{
-			PathmapTile* nextTile = path.front();
+			nextTile = path.front();
 			path.pop_front();
 			setNextTile(nextTile->x, nextTile->y);
 		}
@@ -54,27 +55,7 @@ void Ghost::findPath(float delta_time, World* world)
 		}
 		else
 		{
-			if (desired_movement_x == 1)
-			{
-				desired_movement_x = 0;
-				desired_movement_y = 1;
-			}
-			else if (desired_movement_y == 1)
-			{
-				desired_movement_x = -1;
-				desired_movement_y = 0;
-			}
-			else if (desired_movement_x == -1)
-			{
-				desired_movement_x = 0;
-				desired_movement_y = -1;
-			}
-			else
-			{
-				desired_movement_x = 1;
-				desired_movement_y = 0;
-			}
-
+			changeMovementDirection();
 			is_dead = false;
 			speed = 30.0f;
 		}
@@ -86,6 +67,30 @@ void Ghost::findPath(float delta_time, World* world)
 	distance_to_move = delta_time * speed;
 }
 
+void Ghost::changeMovementDirection()
+{
+	if (desired_movement_x == 1)
+	{
+		desired_movement_x = 0;
+		desired_movement_y = 1;
+	}
+	else if (desired_movement_y == 1)
+	{
+		desired_movement_x = -1;
+		desired_movement_y = 0;
+	}
+	else if (desired_movement_x == -1)
+	{
+		desired_movement_x = 0;
+		desired_movement_y = -1;
+	}
+	else
+	{
+		desired_movement_x = 1;
+		desired_movement_y = 0;
+	}
+}
+
 void Ghost::getNextTile()
 {
 	next_tile_x = getCurrentTileX() + desired_movement_x;
@@ -94,11 +99,6 @@ void Ghost::getNextTile()
 
 void Ghost::moveGhost()
 {
-	if (is_dead)
-	{
-		speed = 120.f;
-	}
-
 	if (distance_to_move > direction.Length())
 	{
 		position = destination;

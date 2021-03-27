@@ -80,7 +80,7 @@ bool Pacman::update(float delta_time)
 
 	movePlayer();
 	player->update(delta_time);
-	ghost->update(delta_time, world);
+	ghost->update(delta_time, world, player->getPosition());
 
 	updateScore();
 	checkGhostTimer(delta_time);

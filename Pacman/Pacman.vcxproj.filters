@@ -67,6 +67,9 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="PathFinder.cpp">
+      <Filter>Game\World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Pacman.h">
@@ -110,6 +113,9 @@
     </ClInclude>
     <ClInclude Include="Sprite.h">
       <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PathFinder.h">
+      <Filter>Game\World</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

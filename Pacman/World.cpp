@@ -175,21 +175,6 @@ void World::draw(Drawer* renderer)
 	}
 }
 
-bool World::tileIsValid(int x, int y)
-{
-	for(std::list<PathmapTile*>::iterator list_iter = pathmap_tiles.begin(); list_iter != pathmap_tiles.end(); list_iter++)
-	{
-		PathmapTile* tile = *list_iter;
-
-		if (x == tile->x && y == tile->y && !tile->is_blocking)
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
-
 bool World::hasIntersectedDot(const Vector2f& position)
 {
 	auto it = std::find_if(dots_list.begin(), dots_list.end(), [&](Dot* dot) -> bool { return ((dot->getPosition() - position).Length() < 5.f); });
@@ -244,108 +229,14 @@ bool World::hasIntersectedCherry(const Vector2f& position)
 	return false;
 }
 
-void World::GetPath(int from_x, int from_y, int to_x, int to_y, std::list<PathmapTile*>& list)
+bool World::tileIsValid(int x, int y)
 {
-	PathmapTile* fromTile = GetTile(from_x, from_y);
-	PathmapTile* toTile = GetTile(to_x, to_y);
-
-	for(std::list<PathmapTile*>::iterator list_iter = pathmap_tiles.begin(); list_iter != pathmap_tiles.end(); list_iter++)
+	for (auto* tile : pathmap_tiles)
 	{
-		PathmapTile* tile = *list_iter;
-		tile->is_visited = false;
-	}
-
-	findPath(fromTile, toTile, list);
-}
-
-PathmapTile* World::GetTile(int from_x, int from_y)
-{
-	for(std::list<PathmapTile*>::iterator list_iter = pathmap_tiles.begin(); list_iter != pathmap_tiles.end(); list_iter++)
-	{
-		PathmapTile* tile = *list_iter;
-		if (tile->x == from_x && tile->y == from_y)
-		{
-			return tile;
-		}
-	}
-
-	return NULL;
-}
-
-bool World::listDoesNotContain(PathmapTile* from_tile, std::list<PathmapTile*>& list)
-{
-	for(std::list<PathmapTile*>::iterator list_iter = list.begin(); list_iter != list.end(); list_iter++)
-	{
-		PathmapTile* tile = *list_iter;
-		if (tile == from_tile)
-		{
-			return false;
-		}
-	}
-
-	return true;
-}
-
-bool SortFromGhostSpawn(PathmapTile* a, PathmapTile* b)
-{
-	int la = abs(a->x - 13) + abs(a->y - 13);
-	int lb = abs(b->x - 13) + abs(b->y - 13);
-
-    return la < lb;
-}
-
-bool World::findPath(PathmapTile* from_tile, PathmapTile* to_tile, std::list<PathmapTile*>& list)
-{
-	from_tile->is_visited = true;
-
-	if (from_tile->is_blocking)
-	{
-		return false;
-	}
-	
-	if (from_tile == to_tile)
-	{
-		return true;
-	}
-
-	std::list<PathmapTile*> neighborList;
-
-	up = GetTile(from_tile->x, from_tile->y - 1);
-	down = GetTile(from_tile->x, from_tile->y + 1);
-	right = GetTile(from_tile->x + 1, from_tile->y);
-	left = GetTile(from_tile->x - 1, from_tile->y);
-
-	if (up && !up->is_visited && !up->is_blocking && listDoesNotContain(up, list))
-	{
-		neighborList.push_front(up);
-	}
-	if (down && !down->is_visited && !down->is_blocking && listDoesNotContain(down, list))
-	{
-		neighborList.push_front(down);
-	}
-	if (right && !right->is_visited && !right->is_blocking && listDoesNotContain(right, list))
-	{
-		neighborList.push_front(right);
-	}
-	if (left && !left->is_visited && !left->is_blocking && listDoesNotContain(left, list))
-	{
-		neighborList.push_front(left);
-	}
-
-	neighborList.sort(SortFromGhostSpawn);
-
-	for(std::list<PathmapTile*>::iterator list_iter = neighborList.begin(); list_iter != neighborList.end(); list_iter++)
-	{
-		PathmapTile* tile = *list_iter;
-
-		list.push_back(tile);
-
-		if (findPath(tile, to_tile, list))
+		if (x == tile->x && y == tile->y && !tile->is_blocking)
 		{
 			return true;
 		}
-
-		list.pop_back();
 	}
 
 	return false;

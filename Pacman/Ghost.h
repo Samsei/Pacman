@@ -17,13 +17,14 @@ public:
 	Ghost(const Vector2f&, SDL_Renderer*);
 	~Ghost(void);
 
-	void update(float, World*);
+	void update(float, World*, Vector2f);
 	void getNextTile();
-	void findPath(float, World*);
+	void findPath(float, World*, Vector2f);
 	void moveGhost();
 	void moveSprite();
 	void die(World*);
 	void draw(Drawer*);
+	void changeMovementDirection();
 
 	bool is_vulnerable = false;;
 	bool is_dead = false;
@@ -42,6 +43,8 @@ protected:
 	Vector2f direction = { 0, 0 };
 
 	std::list<PathmapTile*> path;
+
+	PathmapTile* nextTile = nullptr;
 
 	Sprite* ghost_sprite = nullptr;
 	Sprite* ghost_vulnerable_sprite = nullptr;

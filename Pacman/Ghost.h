@@ -16,8 +16,8 @@ class Ghost : public MovableGameEntity
 public:
 	Ghost(const Vector2f&, SDL_Renderer*, const char*, int, Avatar*, World*);
 
-	void update(float);
-	void getNextTile();
+	void update(float, Avatar*);
+	void getNextTile(Avatar*);
 	void findPath(float);
 	void moveGhost();
 	void moveSprite();
@@ -37,12 +37,13 @@ protected:
 	Vector2f destination = { 0.0f, 0.0f };
 	Vector2f direction = { 0.0f, 0.0f };
 	Vector2f desired_movement = { 0.0f, -1.0f };
-	Vector2f next_tile = { 0.0f, 0.0f };
+	Vector2f next_tile_v = { 0.0f, 0.0f };
 
 	std::list<PathmapTile*> path;
 
-	PathmapTile* nextTile = nullptr;
-	PathFinder* pathFinder = nullptr;
+	PathFinder* path_finder = nullptr;
+
+	PathmapTile* next_tile = nullptr;
 
 	Sprite* ghost_sprite = nullptr;
 	Sprite* ghost_vulnerable_sprite = nullptr;

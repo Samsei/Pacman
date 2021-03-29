@@ -1,9 +1,8 @@
 #include "GameEntity.h"
 
-GameEntity::GameEntity(const Vector2f& entity_position, Sprite* entity_sprite)
-:position(entity_position)
-,sprite(entity_sprite)
-,marked_for_delete(false)
+GameEntity::GameEntity(const Vector2f& entity_position, Sprite* entity_sprite):
+	position(entity_position),
+	sprite(entity_sprite)
 {
 }
 

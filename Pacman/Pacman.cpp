@@ -22,7 +22,7 @@ Pacman::Pacman(Drawer* main_renderer)
 
 	for (auto* string : ghost_sprite_paths)
 	{
-		ghost = new Ghost(Vector2f(13 * 22, 13 * 22), main_renderer->returnRenderer(), string, intelligence, player, world);
+		ghost = new Ghost(Vector2f(13 * 22, 11 * 22), main_renderer->returnRenderer(), string, intelligence, player, world);
 		ghosts.push_back(ghost);
 		intelligence++;
 	}
@@ -84,7 +84,7 @@ bool Pacman::update(float delta_time)
 
 	for (auto* ghost_v : ghosts)
 	{
-		ghost_v->update(delta_time);
+		ghost_v->update(delta_time, player);
 	}
 
 	updateScore();

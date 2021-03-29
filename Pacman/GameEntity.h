@@ -20,9 +20,6 @@ public:
 	Vector2f getPosition() const { return position; }
 
 protected:
-
-	bool marked_for_delete = false;
-
 	Vector2f position = { 0.0f, 0.0f };
 
 	Sprite* sprite = nullptr;

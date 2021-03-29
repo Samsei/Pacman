@@ -1,17 +1,31 @@
 #ifndef PATHMAPTILE_H
 #define PATHMAPTILE_H
 
+#include <vector>
+
+#include "Vector2f.h"
+
 class PathmapTile
 {
 public:
-	PathmapTile(int, int, bool);
+	PathmapTile(int, int, bool, bool);
 	~PathmapTile() = default;
-
-	int x = 0;
-	int y = 0;
 
 	bool is_blocking = false;
 	bool is_visited = false;
+	bool is_spawn = false;
+
+	float x = 0;
+	float y = 0;
+
+	float cost = 0;
+
+	PathmapTile* parent = nullptr;
+
+	std::vector<PathmapTile*> tile_neighbours;
+
+	float global_goal = INFINITY;
+	float local_goal = INFINITY;
 };
 
 #endif // PATHMAPTILE_H

@@ -31,6 +31,8 @@ public:
 	bool hasIntersectedBigDot(const Vector2f&);
 	bool hasIntersectedCherry(const Vector2f&);
 
+	std::list<PathmapTile*> returnTiles();
+
 private:
 	int line_index = 0;
 	int la = 0;

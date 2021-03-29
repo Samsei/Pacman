@@ -52,8 +52,8 @@ private:
 	Avatar* player = nullptr;
 
 	std::vector<Ghost*> ghosts;
-	std::list<const char*> ghost_sprite_paths = {"ghost_32_red.png", "ghost_32_pink.png", "ghost_32_cyan.png", "ghost_32_orange.png"};
-
+	std::list<const char*> ghost_sprite_paths = {"ghost_32_red.png"};
+	//, "ghost_32_pink.png", "ghost_32_cyan.png", "ghost_32_orange.png"
 	Ghost* ghost = nullptr;
 	World* world = nullptr;
 	Drawer* renderer = nullptr;

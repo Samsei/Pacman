@@ -8,7 +8,9 @@ Ghost::Ghost(const Vector2f& entity_position, SDL_Renderer* main_renderer, const
 	ghost_vulnerable_sprite = new Sprite(main_renderer, "Ghost_Vulnerable_32.png", 0, 0);
 	ghost_dead_sprite = new Sprite(main_renderer, "Ghost_Dead_32.png", 0, 0);
 
-	pathFinder = new PathFinder(player, intelligence, world);
+	path_finder = new PathFinder(player, intelligence, world);
+
+	entity_next_tile = current_tile;
 }
 
 void Ghost::die()
@@ -17,62 +19,33 @@ void Ghost::die()
 	speed = 120.f;
 }
 
-void Ghost::update(float delta_time)
+void Ghost::update(float delta_time, Avatar* player)
 {
-	getNextTile();
-	findPath(delta_time);
-	moveGhost();
-}
-
-void Ghost::findPath(float delta_time)
-{
-	if (isAtDestination())
-	{
-		if (world->tileIsValid(next_tile.x, next_tile.y))
-		{
-			setNextTile(next_tile.x, next_tile.y);
-		}
-		else
-		{
-			changeMovementDirection();
-			is_dead = false;
-			speed = 30.0f;
-		}
-	}
-
-	destination = Vector2f(entity_next_tile.x * tile_size, entity_next_tile.y * tile_size);
-	direction = destination - position;
+	getNextTile(player);
 
 	distance_to_move = delta_time * speed;
+
+	changeMovementDirection();
+	moveGhost();
 }
 
 void Ghost::changeMovementDirection()
 {
-	if (desired_movement.x == 1)
-	{
-		desired_movement.x = 0;
-		desired_movement.y = 1;
-	}
-	else if (desired_movement.y == 1)
-	{
-		desired_movement.x = -1;
-		desired_movement.y = 0;
-	}
-	else if (desired_movement.x == -1)
-	{
-		desired_movement.x = 0;
-		desired_movement.y = -1;
-	}
-	else
-	{
-		desired_movement.x = 1;
-		desired_movement.y = 0;
-	}
+	destination = Vector2f(entity_next_tile.x * tile_size, entity_next_tile.y * tile_size);
+	direction = destination - position;
 }
 
-void Ghost::getNextTile()
+void Ghost::getNextTile(Avatar* player)
 {
-	next_tile = { getCurrentTile().x + desired_movement.x, getCurrentTile().y + desired_movement.y };
+	if (isAtDestination())
+	{
+		next_tile = path_finder->getPath(world->returnTiles(), player, current_tile);
+		entity_next_tile = 
+		{ 
+			(float)next_tile->x, 
+			(float)next_tile->y
+		};
+	}
 }
 
 void Ghost::moveGhost()
@@ -80,7 +53,11 @@ void Ghost::moveGhost()
 	if (distance_to_move > direction.Length())
 	{
 		position = destination;
-		current_tile = { entity_next_tile.x, entity_next_tile.y };
+		current_tile = 
+		{
+			entity_next_tile.x, 
+			entity_next_tile.y 
+		};
 	}
 	else
 	{

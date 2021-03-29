@@ -58,8 +58,14 @@ void World::init()
 			std::getline(my_file, line);
 			for (unsigned int i = 0; i < line.length(); i++)
 			{
-				tile = new PathmapTile(i, line_index, (line[i] == 'x'));
+				tile = new PathmapTile(i, line_index, (line[i] == 'x'), (line[i] == 's'));
+
 				pathmap_tiles.push_back(tile);
+
+				if (line[i] == 's')
+				{
+					bool test = true;
+				}
 
 				if (line[i] == '.')
 				{
@@ -86,6 +92,38 @@ void World::init()
 			line_index++;
 		}
 		my_file.close();
+	}
+
+	for (PathmapTile* tile_n : pathmap_tiles)
+	{
+		if (!tile_n->is_blocking)
+		{
+			for (PathmapTile* neighbouring_tile : pathmap_tiles)
+			{
+				for (int x = -1; x < 2; x++)
+				{
+					if (x == 0)
+					{
+						for (int y = -1; y < 2; y++)
+						{
+							if (y == 0)
+							{
+
+							}
+
+							else if (tile_n->x == neighbouring_tile->x && tile_n->y + y == neighbouring_tile->y && tileIsValid(neighbouring_tile->x, neighbouring_tile->y))
+							{
+								tile_n->tile_neighbours.push_back(neighbouring_tile);
+							}
+						}
+					}
+					else if (tile_n->x + x == neighbouring_tile->x && tile_n->y == neighbouring_tile->y && tileIsValid(neighbouring_tile->x, neighbouring_tile->y))
+					{
+						tile_n->tile_neighbours.push_back(neighbouring_tile);
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -167,11 +205,16 @@ bool World::tileIsValid(int x, int y)
 {
 	for (PathmapTile* tile : pathmap_tiles)
 	{
-		if (x == tile->x && y == tile->y && !tile->is_blocking)
+		if (x == tile->x && y == tile->y && !tile->is_blocking && !tile->is_spawn)
 		{
 			return true;
 		}
 	}
 
 	return false;
+}
+
+std::list<PathmapTile*> World::returnTiles()
+{
+	return pathmap_tiles;
 }

@@ -31,7 +31,11 @@ void Avatar::moveAvatar(float delta_time)
 	if (distance_to_move > direction.Length())
 	{
 		position = destination;
-		current_tile = { entity_next_tile.x, entity_next_tile.y };
+		current_tile = 
+		{ 
+			entity_next_tile.x, 
+			entity_next_tile.y 
+		};
 	}
 	else
 	{
@@ -44,7 +48,12 @@ void Avatar::updateInput(Vector2f next_movement, World* world)
 {
 	if (isAtDestination() && world->tileIsValid(getCurrentTile().x + next_movement.x, getCurrentTile().y + next_movement.y))  //unnested if statement
 	{
-		entity_next_tile = { getCurrentTile().x + next_movement.x,  getCurrentTile().y + next_movement.y };
+		entity_next_tile = 
+		{ 
+			getCurrentTile().x + next_movement.x,  
+			getCurrentTile().y + next_movement.y 
+		};
+
 		setNextTile(entity_next_tile.x, entity_next_tile.y);
 	}
 }

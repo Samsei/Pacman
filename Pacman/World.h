@@ -30,6 +30,7 @@ public:
 	bool hasIntersectedDot(const Vector2f&);
 	bool hasIntersectedBigDot(const Vector2f&);
 	bool hasIntersectedCherry(const Vector2f&);
+	bool checkDotList();
 
 	std::list<PathmapTile*> returnTiles();
 

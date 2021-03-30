@@ -59,7 +59,6 @@ void World::init()
 			for (unsigned int i = 0; i < line.length(); i++)
 			{
 				tile = new PathmapTile(i, line_index, (line[i] == 'x'), (line[i] == 's'));
-
 				pathmap_tiles.push_back(tile);
 
 				if (line[i] == 's')
@@ -100,28 +99,31 @@ void World::init()
 		{
 			for (PathmapTile* neighbouring_tile : pathmap_tiles)
 			{
-				for (int x = -1; x < 2; x++)
+				if (!neighbouring_tile->is_blocking ||
+					tile_n != neighbouring_tile || 
+				   ((tile_n->x - neighbouring_tile->x < 1 ||
+					tile_n->x - neighbouring_tile->x > -1) &&
+					(tile_n->y - neighbouring_tile->y < 1 || 
+					tile_n->y - neighbouring_tile->y > -1)))
 				{
-					if (x == 0)
+					for (int x = -1; x <= 1; x++)
 					{
-						for (int y = -1; y < 2; y++)
+						if (x == 0)
 						{
-							if (y == 0)
+							for (int y = -1; y <= 1; y++)
 							{
-
-							}
-
-							else if (tile_n->x == neighbouring_tile->x && tile_n->y + y == neighbouring_tile->y && tileIsValid(neighbouring_tile->x, neighbouring_tile->y))
-							{
-								tile_n->tile_neighbours.push_back(neighbouring_tile);
+								if (y != 0 && tile_n->x == neighbouring_tile->x && tile_n->y + y == neighbouring_tile->y)
+								{
+									tile_n->tile_neighbours.push_back(neighbouring_tile);
+								}
 							}
 						}
+						else if (tile_n->x + x == neighbouring_tile->x && tile_n->y == neighbouring_tile->y)
+						{
+							tile_n->tile_neighbours.push_back(neighbouring_tile);
+						}
 					}
-					else if (tile_n->x + x == neighbouring_tile->x && tile_n->y == neighbouring_tile->y && tileIsValid(neighbouring_tile->x, neighbouring_tile->y))
-					{
-						tile_n->tile_neighbours.push_back(neighbouring_tile);
-					}
-				}
+				}			
 			}
 		}
 	}
@@ -198,6 +200,15 @@ bool World::hasIntersectedCherry(const Vector2f& position)
 		return true;
 	}
 
+	return false;
+}
+
+bool World::checkDotList()
+{
+	if (dots_list.empty())
+	{
+		return true;
+	}
 	return false;
 }
 

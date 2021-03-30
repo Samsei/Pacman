@@ -16,7 +16,7 @@ Avatar::~Avatar(void)
 
 void Avatar::reset()
 {
-	setPosition(Vector2f(13 * tile_size, 22 * tile_size));
+	setPosition(Vector2f(player_spawn.x * tile_size, player_spawn.y * tile_size));
 	current_tile = Vector2f{ position.x / tile_size, position.y / tile_size };
 	entity_next_tile = current_tile;
 }
@@ -73,20 +73,17 @@ void Avatar::updateSprite()
 		{
 			avatar_sprite->changeTexture(render, "closed_left_32.png", position.x + width_offset, position.y + height_offset);
 			return;
-		}
-		
+		}		
 		else if (direction.y == -1)
 		{
 			avatar_sprite->changeTexture(render, "closed_up_32.png", position.x + width_offset, position.y + height_offset);
 			return;
 		}
-
 		else if (direction.x == 1)
 		{
 			avatar_sprite->changeTexture(render, "closed_right_32.png", position.x + width_offset, position.y + height_offset);
 			return;
-		}
-		
+		}		
 		else if (direction.y == 1)
 		{
 			avatar_sprite->changeTexture(render, "closed_down_32.png", position.x + width_offset, position.y + height_offset);
@@ -101,7 +98,6 @@ void Avatar::updateSprite()
 			avatar_sprite->changeTexture(render, "open_left_32.png", position.x + width_offset, position.y + height_offset);
 			return;
 		}
-
 		else if (direction.y == -1)
 		{
 			avatar_sprite->changeTexture(render, "open_up_32.png", position.x + width_offset, position.y + height_offset);
@@ -119,7 +115,7 @@ void Avatar::updateSprite()
 		}
 	}	
 
-	avatar_sprite->moveSprite(position.x + width_offset, position.y + 60);
+	avatar_sprite->moveSprite(position.x + width_offset, position.y + height_offset);
 }
 
 void Avatar::changeSprite(float delta_time)

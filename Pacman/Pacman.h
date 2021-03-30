@@ -52,6 +52,9 @@ private:
 
 	Vector2f next_movement = { -1.0f, 0.0f };
 
+	const Vector2f ghost_spawn = { 13.0f, 11.0f };
+	const Vector2f player_spawn = { 13.0f, 22.0f };
+
 	Avatar* player = nullptr;
 
 	std::vector<Ghost*> ghosts;

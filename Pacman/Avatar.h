@@ -35,6 +35,8 @@ private:
 	Vector2f destination = { 0.0f, 0.0f };
 	Vector2f direction = { 0.0f, 0.0f };
 
+	const Vector2f player_spawn = { 13.0f, 22.0f };
+
 	SDL_Renderer* render = nullptr;
 	
 	Sprite* avatar_sprite = nullptr;

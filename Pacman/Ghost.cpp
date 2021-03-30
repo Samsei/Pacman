@@ -15,13 +15,12 @@ Ghost::Ghost(const Vector2f& entity_position, SDL_Renderer* main_renderer, const
 
 void Ghost::die()
 {
-	path.clear();
 	speed = 120.f;
 }
 
 void Ghost::reset(Avatar* player)
 {
-	setPosition(Vector2f(13 * tile_size, 11 * tile_size));
+	setPosition(Vector2f(ghost_spawn.x * tile_size, ghost_spawn.y * tile_size));
 	current_tile = Vector2f{ position.x / tile_size, position.y / tile_size };
 
 	next_tile = path_finder->getPath(world->returnTiles(), player, current_tile);
@@ -85,15 +84,15 @@ void Ghost::moveSprite()
 {
 	if (is_dead)
 	{
-		ghost_dead_sprite->moveSprite(position.x + 220, position.y + 60);
+		ghost_dead_sprite->moveSprite(position.x + width_offset, position.y + height_offset);
 	}
 	else if (is_vulnerable)
 	{
-		ghost_vulnerable_sprite->moveSprite(position.x + 220, position.y + 60);
+		ghost_vulnerable_sprite->moveSprite(position.x + width_offset, position.y + height_offset);
 	}
 	else
 	{
-		ghost_sprite->moveSprite(position.x + 220, position.y + 60);
+		ghost_sprite->moveSprite(position.x + width_offset, position.y + height_offset);
 	}
 }
 

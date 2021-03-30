@@ -18,11 +18,11 @@ Pacman::Pacman(Drawer* main_renderer)
 {
 	world = new World(main_renderer->returnRenderer());
 
-	player = new Avatar(main_renderer->returnRenderer(), Vector2f(13 * tile_size, 22 * tile_size));
+	player = new Avatar(main_renderer->returnRenderer(), Vector2f(player_spawn.x * tile_size, player_spawn.y * tile_size));
 
 	for (auto* string : ghost_sprite_paths)
 	{
-		ghost = new Ghost(Vector2f(13 * tile_size, 11 * tile_size), main_renderer->returnRenderer(), string, intelligence, player, world);
+		ghost = new Ghost(Vector2f(player_spawn.x * tile_size, player_spawn.y * tile_size), main_renderer->returnRenderer(), string, intelligence, player, world);
 		ghosts.push_back(ghost);
 		intelligence++;
 	}
@@ -179,7 +179,7 @@ bool Pacman::updateInput()
 
 bool Pacman::checkEndGameCondition()
 {
-	if (score == 10000000)
+	if (world->checkDotList())
 	{
 		renderer->drawText("You win!", 20, 70);
 		return false;

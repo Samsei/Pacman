@@ -24,10 +24,10 @@ private:
 
 	bool init();
 	
-	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
 	SDL_Surface* surface = nullptr;
 	SDL_Texture* texture = nullptr;
+	SDL_Window* window = nullptr;
 
 	SDL_Color color = { 255, 0, 0, 255 };
 	SDL_Rect position_rect = { 0, 0 , 0 , 0};

@@ -12,20 +12,17 @@ public:
 	~PathmapTile() = default;
 
 	bool is_blocking = false;
-	bool is_visited = false;
 	bool is_spawn = false;
-
-	float x = 0;
-	float y = 0;
-
-	float cost = 0;
-
-	PathmapTile* parent = nullptr;
-
-	std::vector<PathmapTile*> tile_neighbours;
+	bool is_visited = false;
 
 	float global_goal = INFINITY;
 	float local_goal = INFINITY;
+	float x = 0;
+	float y = 0;
+
+	std::vector<PathmapTile*> tile_neighbours;
+
+	PathmapTile* parent = nullptr;
 };
 
 #endif // PATHMAPTILE_H

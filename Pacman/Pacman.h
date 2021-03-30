@@ -27,24 +27,23 @@ private:
 	Pacman(Drawer*);
 
 	bool init();
-	bool updateInput();
-	bool checkEndGameCondition();
 
-	void updateScore();
-	void hitGhost();
+	bool checkEndGameCondition();
+	bool updateInput();
+
 	void checkGhostTimer(float);
 	void drawText();
+	void hitGhost();
+	void updateScore();
 
-	float time_to_next_update = 0;
 	float ghost_timer = 0;
 	float immortal_timer = 0;
+	float time_to_next_update = 0;
 
-	int entity_next_tile_x = 0;
-	int entity_next_tile_y = 0;
+	int fps = 0;	
+	int intelligence = 1;
 	int lives = 3;
 	int score = 0;
-	int fps = 0;
-	int intelligence = 1;
 
 	const int tile_size = 22;
 
@@ -55,15 +54,15 @@ private:
 	const Vector2f ghost_spawn = { 13.0f, 11.0f };
 	const Vector2f player_spawn = { 13.0f, 22.0f };
 
-	Avatar* player = nullptr;
-
 	std::vector<Ghost*> ghosts;
 	std::list<const char*> ghost_sprite_paths = {"ghost_32_red.png"};
 	//, "ghost_32_pink.png", "ghost_32_cyan.png", "ghost_32_orange.png"
-	Ghost* ghost = nullptr;
-	World* world = nullptr;
+	
+	Avatar* player = nullptr;
 	Drawer* renderer = nullptr;
+	Ghost* ghost = nullptr;
 	Sprite* player_sprite = nullptr;
+	World* world = nullptr;
 };
 
 #endif // PACMAN_H

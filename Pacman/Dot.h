@@ -8,6 +8,7 @@ class Dot : public StaticGameEntity
 public:
 	Dot(Vector2f aPosition, Sprite mySprite);
 	~Dot(void);
+
 	Sprite ReturnSprite();
 
 private:

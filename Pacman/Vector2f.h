@@ -6,79 +6,22 @@
 class Vector2f
 {
 public:
-	Vector2f()
-	{
-		x = 0.f;
-		y = 0.f;
-	}
+	Vector2f();
+	Vector2f(float, float);
 
-	Vector2f(float anX, float anY)
-	{
-		x = anX;
-		y = anY;
-	}
+	float Length() const;
+	void Normalize();
 
-	const Vector2f Vector2f::operator-(const Vector2f &other) const 
-	{
-		Vector2f v(x - other.x, y - other.y);
-		return v;
-	}
+	const bool operator==(const Vector2f& other) const;
 
-	const Vector2f Vector2f::operator+(const Vector2f &other) const 
-	{
-		Vector2f v(x + other.x, y + other.y);
-		return v;
-	}
+	Vector2f& operator+=(const Vector2f& other);
+	Vector2f& operator*=(const float aFloat);
+	Vector2f& operator/=(const float aFloat);
 
-	
-	const Vector2f Vector2f::operator*(const Vector2f& other) const 
-	{
-		Vector2f v(x*other.x, y*other.y);
-		return v;
-	}
-
-	Vector2f& Vector2f::operator+=(const Vector2f &other) 
-	{
-		x = x + other.x;
-		y = y + other.y;
-
-		return *this;
-	}
-
-	Vector2f& Vector2f::operator*=(const float aFloat) 
-	{
-		x *= aFloat;
-		y *= aFloat;
-
-		return *this;
-	}
-
-	Vector2f& Vector2f::operator/=(const float aFloat) 
-	{
-		x /= aFloat;
-		y /= aFloat;
-
-		return *this;
-	}
-
-	const Vector2f Vector2f::operator*(const float aValue) const 
-	{
-		Vector2f v(x * aValue, y * aValue);
-		return v;
-	}
-
-	float Vector2f::Length() const
-	{
-		return sqrt(x*x + y*y);
-	}
-
-	void Vector2f::Normalize()
-	{
-		float length = Length();
-
-		if (length > 0.f)
-			*this /= length;
-	}
+	const Vector2f operator*(const float aValue) const;
+	const Vector2f operator-(const Vector2f& other) const;
+	const Vector2f operator+(const Vector2f& other) const;
+	const Vector2f operator*(const Vector2f& other) const;
 
 	float x;
 	float y;

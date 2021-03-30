@@ -36,26 +36,23 @@ public:
 
 private:
 	int line_index = 0;
-	int la = 0;
 
-	const int tile_size = 22;
-	const int width_offset = 220;
 	const int height_offset = 60;
+	const int width_offset = 220;
+	const int tile_size = 22;
 
 	Vector2f player_pos = { 0, 0 };
 
-	std::list<PathmapTile*> pathmap_tiles;
-	std::list<Dot*> dots_list;
 	std::list<BigDot*> big_dots_list;
 	std::list<Cherry*> cherry_list;
+	std::list<Dot*> dots_list;
+	std::list<PathmapTile*> pathmap_tiles;
 
-	std::string line = "";
 	std::ifstream my_file;
+	std::string line = "";
 
 	PathmapTile* tile = nullptr;
-
 	SDL_Renderer* main_renderer = nullptr;
-
 	Sprite* dot_sprite = nullptr;
 	Sprite* big_dot_sprite = nullptr;
 	Sprite* world_sprite = nullptr;

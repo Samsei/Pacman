@@ -15,6 +15,7 @@ Ghost::Ghost(const Vector2f& entity_position, SDL_Renderer* main_renderer, const
 
 void Ghost::die()
 {
+	is_vulnerable = false;
 	speed = 120.f;
 }
 
@@ -23,7 +24,7 @@ void Ghost::reset(Avatar* player)
 	setPosition(Vector2f(ghost_spawn.x * tile_size, ghost_spawn.y * tile_size));
 	current_tile = Vector2f{ position.x / tile_size, position.y / tile_size };
 
-	next_tile = path_finder->getPath(world->returnTiles(), player, current_tile);
+	next_tile = path_finder->getPath(world->returnTiles(), player, current_tile, is_vulnerable, is_dead);
 	entity_next_tile =
 	{
 		(float)next_tile->x,
@@ -51,12 +52,18 @@ void Ghost::getNextTile(Avatar* player)
 {
 	if (isAtDestination())
 	{
-		next_tile = path_finder->getPath(world->returnTiles(), player, current_tile);
+		next_tile = path_finder->getPath(world->returnTiles(), player, current_tile, is_vulnerable, is_dead);
 		entity_next_tile = 
 		{ 
 			(float)next_tile->x, 
 			(float)next_tile->y
 		};
+	}
+
+	if (is_dead && current_tile == ghost_spawn)
+	{
+		is_dead = false;
+		speed = 25.0f;
 	}
 }
 

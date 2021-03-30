@@ -12,7 +12,7 @@ public:
 	GameEntity(const Vector2f&, Sprite*);
 	~GameEntity(void);
 
-	virtual void draw(Drawer*);
+	void draw(Drawer*);
 
 	void setPosition(const Vector2f& new_position) { position = new_position; };
 

@@ -10,10 +10,11 @@ public:
 	MovableGameEntity(const Vector2f&, Sprite*);
 	~MovableGameEntity(void);
 
-	void setNextTile(float, float);
+	bool isAtDestination();
 
 	Vector2f getCurrentTile() const { return current_tile; }
-	bool isAtDestination();
+
+	void setNextTile(float, float);
 
 protected:
 	Vector2f current_tile = { 0, 0 };

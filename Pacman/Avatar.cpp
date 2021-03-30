@@ -21,11 +21,10 @@ void Avatar::reset()
 	entity_next_tile = current_tile;
 }
 
-void Avatar::update(float delta_time, Vector2f next_movement)
+void Avatar::update(float delta_time)
 {
 	moveAvatar(delta_time);
 	changeSprite(delta_time);
-	updateSprite();
 }
 
 void Avatar::moveAvatar(float delta_time)
@@ -55,10 +54,21 @@ void Avatar::updateInput(Vector2f next_movement, World* world)
 {
 	if (isAtDestination() && world->tileIsValid(getCurrentTile().x + next_movement.x, getCurrentTile().y + next_movement.y))  //unnested if statement
 	{
-		entity_next_tile = 
-		{ 
-			getCurrentTile().x + next_movement.x,  
-			getCurrentTile().y + next_movement.y 
+		entity_next_tile =
+		{
+			getCurrentTile().x + next_movement.x,
+			getCurrentTile().y + next_movement.y
+		};
+
+		setNextTile(entity_next_tile.x, entity_next_tile.y);
+		previous_movement = next_movement;
+	}
+	else if (world->tileIsValid(getCurrentTile().x + previous_movement.x, getCurrentTile().y + previous_movement.y))
+	{
+		entity_next_tile =
+		{
+			getCurrentTile().x + previous_movement.x,
+			getCurrentTile().y + previous_movement.y
 		};
 
 		setNextTile(entity_next_tile.x, entity_next_tile.y);
@@ -66,46 +76,22 @@ void Avatar::updateInput(Vector2f next_movement, World* world)
 }
 
 void Avatar::updateSprite()
-{
-	if (sprite_open == -1)
-	{
-		if (direction.x == -1)
-		{
-			avatar_sprite->changeTexture(render, "closed_left_32.png", position.x + width_offset, position.y + height_offset);
-			return;
-		}		
-		else if (direction.y == -1)
-		{
-			avatar_sprite->changeTexture(render, "closed_up_32.png", position.x + width_offset, position.y + height_offset);
-			return;
-		}
-		else if (direction.x == 1)
-		{
-			avatar_sprite->changeTexture(render, "closed_right_32.png", position.x + width_offset, position.y + height_offset);
-			return;
-		}		
-		else if (direction.y == 1)
-		{
-			avatar_sprite->changeTexture(render, "closed_down_32.png", position.x + width_offset, position.y + height_offset);
-			return;
-		}		
-	}
-	
-	else
+{	
+	if (sprite_open)
 	{
 		if (direction.x == -1)
 		{
 			avatar_sprite->changeTexture(render, "open_left_32.png", position.x + width_offset, position.y + height_offset);
 			return;
 		}
-		else if (direction.y == -1)
-		{
-			avatar_sprite->changeTexture(render, "open_up_32.png", position.x + width_offset, position.y + height_offset);
-			return;
-		}
 		else if (direction.x == 1)
 		{
 			avatar_sprite->changeTexture(render, "open_right_32.png", position.x + width_offset, position.y + height_offset);
+			return;
+		}
+		else if (direction.y == -1)
+		{
+			avatar_sprite->changeTexture(render, "open_up_32.png", position.x + width_offset, position.y + height_offset);
 			return;
 		}
 		else if (direction.y == 1)
@@ -115,7 +101,29 @@ void Avatar::updateSprite()
 		}
 	}	
 
-	avatar_sprite->moveSprite(position.x + width_offset, position.y + height_offset);
+	else
+	{
+		if (direction.x == -1)
+		{
+			avatar_sprite->changeTexture(render, "closed_left_32.png", position.x + width_offset, position.y + height_offset);
+			return;
+		}
+		else if (direction.x == 1)
+		{
+			avatar_sprite->changeTexture(render, "closed_right_32.png", position.x + width_offset, position.y + height_offset);
+			return;
+		}
+		else if (direction.y == -1)
+		{
+			avatar_sprite->changeTexture(render, "closed_up_32.png", position.x + width_offset, position.y + height_offset);
+			return;
+		}
+		else if (direction.y == 1)
+		{
+			avatar_sprite->changeTexture(render, "closed_down_32.png", position.x + width_offset, position.y + height_offset);
+			return;
+		}
+	}
 }
 
 void Avatar::changeSprite(float delta_time)
@@ -123,9 +131,11 @@ void Avatar::changeSprite(float delta_time)
 	change_sprite_timer += delta_time;
 	if (change_sprite_timer >= sprite_timer)
 	{
-		sprite_open *= -1;
+		sprite_open = !sprite_open;
 		change_sprite_timer = 0;
 	}
+	updateSprite();
+	avatar_sprite->moveSprite(position.x + width_offset, position.y + height_offset);
 }
 
 void Avatar::draw(Drawer* renderer)

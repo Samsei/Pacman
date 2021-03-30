@@ -86,7 +86,7 @@ bool Pacman::update(float delta_time)
 
 	hitGhost();
 	player->updateInput(next_movement, world);
-	player->update(delta_time, next_movement);
+	player->update(delta_time);
 
 	for (auto* ghost_v : ghosts)
 	{

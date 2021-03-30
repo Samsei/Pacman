@@ -20,12 +20,7 @@ Pacman::Pacman(Drawer* main_renderer)
 
 	player = new Avatar(main_renderer->returnRenderer(), Vector2f(player_spawn.x * tile_size, player_spawn.y * tile_size));
 
-	for (auto* string : ghost_sprite_paths)
-	{
-		ghost = new Ghost(Vector2f(player_spawn.x * tile_size, player_spawn.y * tile_size), main_renderer->returnRenderer(), string, intelligence, player, world);
-		ghosts.push_back(ghost);
-		intelligence++;
-	}
+	ghost = new Ghost(Vector2f(player_spawn.x * tile_size, player_spawn.y * tile_size), main_renderer->returnRenderer(), "ghost_32_pink.png", player, world);
 }
 
 Pacman::~Pacman(void)
@@ -88,10 +83,7 @@ bool Pacman::update(float delta_time)
 	player->updateInput(next_movement, world);
 	player->update(delta_time);
 
-	for (auto* ghost_v : ghosts)
-	{
-		ghost_v->update(delta_time, player);
-	}
+	ghost->update(delta_time, player);
 
 	updateScore();
 	checkGhostTimer(delta_time);
@@ -106,6 +98,7 @@ void Pacman::checkGhostTimer(float delta_time)
 	if (ghost_timer <= 0)
 	{
 		ghost->is_vulnerable = false;
+		ghost->speed = 25.0f;
 	}
 }
 
@@ -119,8 +112,9 @@ void Pacman::updateScore()
 	else if (world->hasIntersectedBigDot(player->getPosition()))
 	{
 		score += 20;
-		ghost_timer = 20.f;
+		ghost_timer = 20.0f;
 		ghost->is_vulnerable = true;
+		ghost->speed = 15.0f;
 	}
 	
 	else if (world->hasIntersectedCherry(player->getPosition()))
@@ -198,6 +192,7 @@ bool Pacman::draw()
 {
 	world->draw(renderer);
 	player->draw(renderer);
+
 	ghost->draw(renderer);
 
 	drawText();	

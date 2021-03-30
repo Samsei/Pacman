@@ -26,11 +26,13 @@ public:
 	void init();
 	void draw(Drawer*);
 
-	bool tileIsValid(int, int);
-	bool hasIntersectedDot(const Vector2f&);
+	bool checkDotList();
 	bool hasIntersectedBigDot(const Vector2f&);
 	bool hasIntersectedCherry(const Vector2f&);
-	bool checkDotList();
+	bool hasIntersectedDot(const Vector2f&);
+	bool tileIsValid(int, int);
+
+	Vector2f tileIsTeleport(int, int);
 
 	std::list<PathmapTile*> returnTiles();
 
@@ -52,6 +54,8 @@ private:
 	std::string line = "";
 
 	PathmapTile* tile = nullptr;
+	PathmapTile* teleport_1 = nullptr;
+	PathmapTile* teleport_2 = nullptr;
 	SDL_Renderer* main_renderer = nullptr;
 	Sprite* dot_sprite = nullptr;
 	Sprite* big_dot_sprite = nullptr;

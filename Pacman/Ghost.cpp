@@ -1,6 +1,6 @@
 #include "Ghost.h"
 
-Ghost::Ghost(const Vector2f& entity_position, SDL_Renderer* main_renderer, const char* sprite, int intelligence, Avatar* player, World* main_world) : 
+Ghost::Ghost(const Vector2f& entity_position, SDL_Renderer* main_renderer, const char* sprite, Avatar* player, World* main_world) : 
 	MovableGameEntity(entity_position, ghost_sprite),
     world(main_world)
 {
@@ -8,9 +8,37 @@ Ghost::Ghost(const Vector2f& entity_position, SDL_Renderer* main_renderer, const
 	ghost_vulnerable_sprite = new Sprite(main_renderer, "Ghost_Vulnerable_32.png", 0, 0);
 	ghost_dead_sprite = new Sprite(main_renderer, "Ghost_Dead_32.png", 0, 0);
 
-	path_finder = new PathFinder(player, intelligence, world);
+	path_finder = new PathFinder(player, world);
 
 	entity_next_tile = current_tile;
+}
+
+Ghost::~Ghost()
+{
+	if (ghost_dead_sprite)
+	{
+		ghost_dead_sprite = NULL;
+	}
+	if (ghost_sprite)
+	{
+		ghost_sprite = NULL;
+	}
+	if (ghost_vulnerable_sprite)
+	{
+		ghost_vulnerable_sprite = NULL;
+	}
+	if (next_tile)
+	{
+		next_tile = NULL;
+	}
+	if (path_finder)
+	{
+		path_finder = NULL;
+	}	
+	if (world)
+	{
+		world = NULL;
+	}
 }
 
 void Ghost::die()

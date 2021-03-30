@@ -14,13 +14,16 @@ class PathmapTile;
 class Ghost : public MovableGameEntity
 {
 public:
-	Ghost(const Vector2f&, SDL_Renderer*, const char*, int, Avatar*, World*);
+	Ghost(const Vector2f&, SDL_Renderer*, const char*, Avatar*, World*);
+	~Ghost();
 
 	void update(float, Avatar*);
 	void draw(Drawer*);
 
 	void die();
 	void reset(Avatar*);
+
+	float speed = 25.0f;
 
 	bool is_vulnerable = false;;
 	bool is_dead = false;
@@ -32,7 +35,6 @@ private:
 	void moveSprite();
 
 	float distance_to_move = 0.0f;
-	float speed = 25.0f;
 
 	const int height_offset = 60;
 	const int tile_size = 22;

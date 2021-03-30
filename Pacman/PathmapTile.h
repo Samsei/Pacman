@@ -8,11 +8,11 @@
 class PathmapTile
 {
 public:
-	PathmapTile(int, int, bool, bool);
+	PathmapTile(int, int, bool);
 	~PathmapTile() = default;
 
 	bool is_blocking = false;
-	bool is_spawn = false;
+	bool is_teleport = false;
 	bool is_visited = false;
 
 	float global_goal = INFINITY;

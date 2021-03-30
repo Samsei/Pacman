@@ -13,6 +13,7 @@ public:
 	void Normalize();
 
 	const bool operator==(const Vector2f& other) const;
+	const bool operator!=(const Vector2f& other) const;
 
 	Vector2f& operator+=(const Vector2f& other);
 	Vector2f& operator*=(const float aFloat);

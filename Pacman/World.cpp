@@ -58,12 +58,21 @@ void World::init()
 			std::getline(my_file, line);
 			for (unsigned int i = 0; i < line.length(); i++)
 			{
-				tile = new PathmapTile(i, line_index, (line[i] == 'x'), (line[i] == 's'));
+				tile = new PathmapTile(i, line_index, (line[i] == 'x'));
 				pathmap_tiles.push_back(tile);
 
-				if (line[i] == 's')
+				if (line[i] == 't')
 				{
-					bool test = true;
+					tile->is_teleport = true;
+
+					if (teleport_1 == nullptr)
+					{
+						teleport_1 = tile;
+					}
+					else if (teleport_2 == nullptr)
+					{
+						teleport_2 = tile;
+					}
 				}
 
 				if (line[i] == '.')
@@ -216,13 +225,26 @@ bool World::tileIsValid(int x, int y)
 {
 	for (PathmapTile* tile : pathmap_tiles)
 	{
-		if (x == tile->x && y == tile->y && !tile->is_blocking && !tile->is_spawn)
+		if (x == tile->x && y == tile->y && !tile->is_blocking)
 		{
 			return true;
 		}
 	}
 
 	return false;
+}
+
+Vector2f World::tileIsTeleport(int x, int y)
+{
+	if (x == teleport_1->x && y == teleport_1->y)
+	{
+		return Vector2f{ teleport_2->x, teleport_2->y };
+	}
+	else if (x == teleport_2->x && y == teleport_2->y)
+	{
+		return Vector2f{ teleport_1->x, teleport_1->y };
+	}
+	return Vector2f{ 0, 0 };
 }
 
 std::list<PathmapTile*> World::returnTiles()

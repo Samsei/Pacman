@@ -51,12 +51,10 @@ private:
 
 	Vector2f next_movement = { -1.0f, 0.0f };
 
-	const Vector2f ghost_spawn = { 13.0f, 11.0f };
+	const Vector2f ghost_spawn = { 13.0f, 12.0f };
 	const Vector2f player_spawn = { 13.0f, 22.0f };
 
 	std::vector<Ghost*> ghosts;
-	std::list<const char*> ghost_sprite_paths = {"ghost_32_red.png"};
-	//, "ghost_32_pink.png", "ghost_32_cyan.png", "ghost_32_orange.png"
 	
 	Avatar* player = nullptr;
 	Drawer* renderer = nullptr;

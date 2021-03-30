@@ -2,12 +2,55 @@
 
 #include <iostream>
 
-PathFinder::PathFinder(Avatar* avatar, int intelligence, World* main_world) :
+PathFinder::PathFinder(Avatar* avatar, World* main_world) :
 	player(avatar),
-	ghost_intelligence(intelligence),
 	world(main_world)
 {
+	srand(time(NULL));
+}
 
+PathFinder::~PathFinder()
+{
+	if (player)
+	{
+		delete player;
+		player = NULL;
+	}
+	if (current_tile)
+	{
+		delete current_tile;
+		current_tile = NULL;
+	}
+	if (end_tile)
+	{
+		delete end_tile;
+		end_tile = NULL;
+	}
+	if (next_tile)
+	{
+		delete next_tile;
+		next_tile = NULL;
+	}
+	if (start_tile)
+	{
+		delete start_tile;
+		start_tile = NULL;
+	}
+	if (world)
+	{
+		delete world;
+		world = NULL;
+	}
+	if (pt)
+	{
+		delete pt;
+		pt = NULL;
+	}
+	if (prev)
+	{
+		delete prev;
+		prev = NULL;
+	}
 }
 
 auto distance = [](Vector2f a, Vector2f b)
@@ -18,16 +61,8 @@ auto distance = [](Vector2f a, Vector2f b)
 PathmapTile* PathFinder::getPath(std::list<PathmapTile*> tile_list, Avatar* player, Vector2f ghost_current_tile, bool is_vulnerable, bool is_dead)
 {
 	if (!is_vulnerable && !is_dead)
-	{
-		if (ghost_intelligence == 1)
-		{
-			return AStar(tile_list, Vector2f{ player->getCurrentTile().x, player->getCurrentTile().y }, ghost_current_tile, is_vulnerable);
-		}
-
-		if (ghost_intelligence == 2)
-		{
-			return randomPath(tile_list);
-		}
+	{		
+		return AStar(tile_list, Vector2f{ player->getCurrentTile().x, player->getCurrentTile().y }, ghost_current_tile, is_vulnerable);
 	}
 
 	else if (is_vulnerable)
@@ -39,11 +74,6 @@ PathmapTile* PathFinder::getPath(std::list<PathmapTile*> tile_list, Avatar* play
 	{
 		return AStar(tile_list, ghost_spawn, ghost_current_tile, is_vulnerable);
 	}
-}
-
-PathmapTile* PathFinder::randomPath(std::list<PathmapTile*>)
-{
-	return nullptr;
 }
 
 PathmapTile* PathFinder::AStar(std::list<PathmapTile*> tile_list, Vector2f destination, Vector2f ghost_current_tile, bool is_vulnerable)
@@ -141,7 +171,7 @@ PathmapTile* PathFinder::AStar(std::list<PathmapTile*> tile_list, Vector2f desti
 bool PathFinder::tileIsValid(PathmapTile* tile)
 {
 	
-	if (!tile->is_blocking && !tile->is_spawn && !tile->is_visited)
+	if (!tile->is_blocking && !tile->is_visited)
 	{
 		return true;
 	}

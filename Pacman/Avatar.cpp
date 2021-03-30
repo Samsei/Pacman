@@ -52,7 +52,14 @@ void Avatar::moveAvatar(float delta_time)
 
 void Avatar::updateInput(Vector2f next_movement, World* world)
 {
-	if (isAtDestination() && world->tileIsValid(getCurrentTile().x + next_movement.x, getCurrentTile().y + next_movement.y))  //unnested if statement
+	if (isAtDestination() && world->tileIsTeleport(getCurrentTile().x, getCurrentTile().y) != Vector2f {0, 0})  //unnested if statement
+	{
+		Vector2f teleport { (world->tileIsTeleport(getCurrentTile().x, getCurrentTile().y)) };
+		setPosition(Vector2f(teleport.x * tile_size, teleport.y * tile_size));
+		current_tile = Vector2f{ position.x / tile_size, position.y / tile_size };
+		entity_next_tile = current_tile + next_movement;
+	}
+	else if (isAtDestination() && world->tileIsValid(getCurrentTile().x + next_movement.x, getCurrentTile().y + next_movement.y))  //unnested if statement
 	{
 		entity_next_tile =
 		{

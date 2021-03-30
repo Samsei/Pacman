@@ -21,6 +21,15 @@ const bool Vector2f::operator==(const Vector2f& other) const
 	return false;
 }
 
+const bool Vector2f::operator!=(const Vector2f& other) const
+{
+	if (x != other.x && y != other.y)
+	{
+		return true;
+	}
+	return false;
+}
+
 const Vector2f Vector2f::operator-(const Vector2f& other) const
 {
 	Vector2f v(x - other.x, y - other.y);

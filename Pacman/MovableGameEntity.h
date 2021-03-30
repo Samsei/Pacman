@@ -13,7 +13,6 @@ public:
 	void setNextTile(float, float);
 
 	Vector2f getCurrentTile() const { return current_tile; }
-
 	bool isAtDestination();
 
 protected:

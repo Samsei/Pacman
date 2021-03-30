@@ -19,6 +19,19 @@ void Ghost::die()
 	speed = 120.f;
 }
 
+void Ghost::reset(Avatar* player)
+{
+	setPosition(Vector2f(13 * tile_size, 11 * tile_size));
+	current_tile = Vector2f{ position.x / tile_size, position.y / tile_size };
+
+	next_tile = path_finder->getPath(world->returnTiles(), player, current_tile);
+	entity_next_tile =
+	{
+		(float)next_tile->x,
+		(float)next_tile->y
+	};
+}
+
 void Ghost::update(float delta_time, Avatar* player)
 {
 	getNextTile(player);

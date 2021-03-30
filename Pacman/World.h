@@ -37,6 +37,10 @@ private:
 	int line_index = 0;
 	int la = 0;
 
+	const int tile_size = 22;
+	const int width_offset = 220;
+	const int height_offset = 60;
+
 	Vector2f player_pos = { 0, 0 };
 
 	std::list<PathmapTile*> pathmap_tiles;

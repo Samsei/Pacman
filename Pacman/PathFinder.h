@@ -30,7 +30,8 @@ private:
 
 	PathmapTile* current_tile = nullptr;
 	PathmapTile* start_tile = nullptr;
+	PathmapTile* end_tile = nullptr;
+	PathmapTile* next_tile = nullptr;
 
 	std::list<PathmapTile*> list_not_tested;
-	std::list<PathmapTile*> path;
 };

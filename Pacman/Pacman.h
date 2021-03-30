@@ -37,6 +37,7 @@ private:
 
 	float time_to_next_update = 0;
 	float ghost_timer = 0;
+	float immortal_timer = 0;
 
 	int entity_next_tile_x = 0;
 	int entity_next_tile_y = 0;
@@ -44,6 +45,8 @@ private:
 	int score = 0;
 	int fps = 0;
 	int intelligence = 1;
+
+	const int tile_size = 22;
 
 	const Uint8* keystate = SDL_GetKeyboardState(NULL);
 

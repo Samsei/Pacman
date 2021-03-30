@@ -28,11 +28,18 @@ PathmapTile* PathFinder::getPath(std::list<PathmapTile*> tile_list, Avatar* play
 		{
 			start_tile = p;
 		}
+
+		if (p->x == player->getCurrentTile().x && p->y == player->getCurrentTile().y)
+		{
+			end_tile = p;
+		}
+
 		p->global_goal = INFINITY;
 		p->local_goal = INFINITY;
 		p->parent = nullptr;
 		p->is_visited = false;
 	}
+
 	start_tile->x = ghost_current_tile.x;
 	start_tile->y = ghost_current_tile.y;
 	start_tile->local_goal = 0.0f;
@@ -41,7 +48,8 @@ PathmapTile* PathFinder::getPath(std::list<PathmapTile*> tile_list, Avatar* play
 	current_tile = start_tile;
 	list_not_tested.push_back(start_tile);
 
-	while (!list_not_tested.empty())
+
+	while (!list_not_tested.empty() && current_tile != end_tile)
 	{
 		list_not_tested.sort([](const PathmapTile* lhs, const PathmapTile* rhs) {return lhs->global_goal < rhs->global_goal; });
 
@@ -69,19 +77,18 @@ PathmapTile* PathFinder::getPath(std::list<PathmapTile*> tile_list, Avatar* play
 				tile_neighbour->parent = current_tile;
 				tile_neighbour->local_goal = test;
 				tile_neighbour->global_goal = tile_neighbour->local_goal + heuristic(Vector2f{ tile_neighbour->x, tile_neighbour->y }, Vector2f{ player->getCurrentTile().x, player->getCurrentTile().y });
-
-				path.push_back(tile_neighbour);
 			}
 		}
 	}
-
-	path.sort([](const PathmapTile* lhs, const PathmapTile* rhs) {return lhs->global_goal < rhs->global_goal; });
-
-	current_tile = path.front();
-	path.clear();
 	list_not_tested.clear();
 
-	return current_tile;
+	next_tile = end_tile;
+	while (next_tile->parent != nullptr && next_tile->parent != start_tile)
+	{
+		next_tile = next_tile->parent;
+	}
+
+	return next_tile;
 }
 
 bool PathFinder::tileIsValid(PathmapTile* tile)

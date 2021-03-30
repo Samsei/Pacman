@@ -18,10 +18,10 @@ public:
 
 	void update(float, Avatar*);
 	void getNextTile(Avatar*);
-	void findPath(float);
 	void moveGhost();
 	void moveSprite();
 	void die();
+	void reset(Avatar*);
 	void draw(Drawer*);
 	void changeMovementDirection();
 

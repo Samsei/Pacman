@@ -13,7 +13,8 @@ public:
 	~GameEntity(void);
 
 	virtual void draw(Drawer*);
-	void setPosition(const Vector2f& aPosition) { position = aPosition; }
+
+	void setPosition(const Vector2f& new_position) { position = new_position; };
 
 	bool intersect(GameEntity*);
 

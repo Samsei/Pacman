@@ -14,6 +14,13 @@ Avatar::~Avatar(void)
 	avatar_sprite = NULL;
 }
 
+void Avatar::reset()
+{
+	setPosition(Vector2f(13 * tile_size, 22 * tile_size));
+	current_tile = Vector2f{ position.x / tile_size, position.y / tile_size };
+	entity_next_tile = current_tile;
+}
+
 void Avatar::update(float delta_time, Vector2f next_movement)
 {
 	moveAvatar(delta_time);
@@ -64,25 +71,25 @@ void Avatar::updateSprite()
 	{
 		if (direction.x == -1)
 		{
-			avatar_sprite->changeTexture(render, "closed_left_32.png", position.x + 220, position.y + 60);
+			avatar_sprite->changeTexture(render, "closed_left_32.png", position.x + width_offset, position.y + height_offset);
 			return;
 		}
 		
 		else if (direction.y == -1)
 		{
-			avatar_sprite->changeTexture(render, "closed_up_32.png", position.x + 220, position.y + 60);
+			avatar_sprite->changeTexture(render, "closed_up_32.png", position.x + width_offset, position.y + height_offset);
 			return;
 		}
 
 		else if (direction.x == 1)
 		{
-			avatar_sprite->changeTexture(render, "closed_right_32.png", position.x + 220, position.y + 60);
+			avatar_sprite->changeTexture(render, "closed_right_32.png", position.x + width_offset, position.y + height_offset);
 			return;
 		}
 		
 		else if (direction.y == 1)
 		{
-			avatar_sprite->changeTexture(render, "closed_down_32.png", position.x + 220, position.y + 60);
+			avatar_sprite->changeTexture(render, "closed_down_32.png", position.x + width_offset, position.y + height_offset);
 			return;
 		}		
 	}
@@ -91,28 +98,28 @@ void Avatar::updateSprite()
 	{
 		if (direction.x == -1)
 		{
-			avatar_sprite->changeTexture(render, "open_left_32.png", position.x + 220, position.y + 60);
+			avatar_sprite->changeTexture(render, "open_left_32.png", position.x + width_offset, position.y + height_offset);
 			return;
 		}
 
 		else if (direction.y == -1)
 		{
-			avatar_sprite->changeTexture(render, "open_up_32.png", position.x + 220, position.y + 60);
+			avatar_sprite->changeTexture(render, "open_up_32.png", position.x + width_offset, position.y + height_offset);
 			return;
 		}
 		else if (direction.x == 1)
 		{
-			avatar_sprite->changeTexture(render, "open_right_32.png", position.x + 220, position.y + 60);
+			avatar_sprite->changeTexture(render, "open_right_32.png", position.x + width_offset, position.y + height_offset);
 			return;
 		}
 		else if (direction.y == 1)
 		{
-			avatar_sprite->changeTexture(render, "open_down_32.png", position.x + 220, position.y + 60);
+			avatar_sprite->changeTexture(render, "open_down_32.png", position.x + width_offset, position.y + height_offset);
 			return;
 		}
 	}	
 
-	avatar_sprite->moveSprite(position.x + 220, position.y + 60);
+	avatar_sprite->moveSprite(position.x + width_offset, position.y + 60);
 }
 
 void Avatar::changeSprite(float delta_time)

@@ -18,11 +18,11 @@ Pacman::Pacman(Drawer* main_renderer)
 {
 	world = new World(main_renderer->returnRenderer());
 
-	player = new Avatar(main_renderer->returnRenderer(), Vector2f(13 * 22, 22 * 22));
+	player = new Avatar(main_renderer->returnRenderer(), Vector2f(13 * tile_size, 22 * tile_size));
 
 	for (auto* string : ghost_sprite_paths)
 	{
-		ghost = new Ghost(Vector2f(13 * 22, 11 * 22), main_renderer->returnRenderer(), string, intelligence, player, world);
+		ghost = new Ghost(Vector2f(13 * tile_size, 11 * tile_size), main_renderer->returnRenderer(), string, intelligence, player, world);
 		ghosts.push_back(ghost);
 		intelligence++;
 	}
@@ -78,7 +78,13 @@ bool Pacman::update(float delta_time)
 	{
 		fps = (int)(1 / delta_time);
 	}
+	
+	if (immortal_timer > 0)
+	{
+		immortal_timer -= delta_time;
+	}
 
+	hitGhost();
 	player->updateInput(next_movement, world);
 	player->update(delta_time, next_movement);
 
@@ -89,7 +95,6 @@ bool Pacman::update(float delta_time)
 
 	updateScore();
 	checkGhostTimer(delta_time);
-	hitGhost();
 
 	return true;
 }
@@ -128,12 +133,14 @@ void Pacman::hitGhost()
 {
 	if ((ghost->getPosition() - player->getPosition()).Length() <= 10.0f)
 	{
-		if (ghost_timer <= 0.f)
+		if (ghost_timer <= 0.0f && immortal_timer <= 0.0f)
 		{
 			lives--;
 
-			player->setPosition(Vector2f(13 * 22, 22 * 22));
-			ghost->setPosition(Vector2f(13 * 22, 13 * 22));
+			player->reset();
+			ghost->reset(player);
+
+			immortal_timer = 3.0f;
 		}
 		else if (ghost->is_vulnerable && !ghost->is_dead)
 		{

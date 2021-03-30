@@ -69,22 +69,22 @@ void World::init()
 
 				if (line[i] == '.')
 				{
-					Sprite* sprite = new Sprite(main_renderer, "Small_Dot_32.png", i * 22 + 220, line_index * 22 + 60);
-					Dot* dot = new Dot(Vector2f(i * 22, line_index * 22), *sprite);
+					Sprite* sprite = new Sprite(main_renderer, "Small_Dot_32.png", i * tile_size + width_offset, line_index * tile_size + height_offset);
+					Dot* dot = new Dot(Vector2f(i * tile_size, line_index * tile_size), *sprite);
 					dots_list.push_back(dot);
 				}
 
 				else if (line[i] == 'o')
 				{
-					Sprite* sprite = new Sprite(main_renderer, "Big_Dot_32.png", i * 22 + 220, line_index * 22 + 60);
-					BigDot* big_dot = new BigDot(Vector2f(i * 22, line_index * 22), *sprite);
+					Sprite* sprite = new Sprite(main_renderer, "Big_Dot_32.png", i * tile_size + width_offset, line_index * tile_size + height_offset);
+					BigDot* big_dot = new BigDot(Vector2f(i * tile_size, line_index * tile_size), *sprite);
 					big_dots_list.push_back(big_dot);
 				}
 
 				else if (line[i] == 'c')
 				{
-					Sprite* sprite = new Sprite(main_renderer, "cherry.png", i * 22 + 220, line_index * 22 + 60);
-					Cherry* cherry = new Cherry(Vector2f(i * 22, line_index * 22), *sprite);
+					Sprite* sprite = new Sprite(main_renderer, "cherry.png", i * tile_size + width_offset, line_index * tile_size + height_offset);
+					Cherry* cherry = new Cherry(Vector2f(i * tile_size, line_index * tile_size), *sprite);
 					cherry_list.push_back(cherry);
 				}
 			}
@@ -133,17 +133,17 @@ void World::draw(Drawer* renderer)
 
 	for (Dot* dot : dots_list)
 	{
-		renderer->draw(&dot->ReturnSprite(), dot->getPosition().x + 220, dot->getPosition().y + 60);
+		renderer->draw(&dot->ReturnSprite(), dot->getPosition().x + width_offset, dot->getPosition().y + height_offset);
 	}
 
 	for (BigDot* big_dot : big_dots_list)
 	{
-		renderer->draw(&big_dot->ReturnSprite(), big_dot->getPosition().x + 220, big_dot->getPosition().y + 60);
+		renderer->draw(&big_dot->ReturnSprite(), big_dot->getPosition().x + width_offset, big_dot->getPosition().y + height_offset);
 	}
 
 	for (Cherry* cherry : cherry_list)
 	{
-		renderer->draw(&cherry->ReturnSprite(), cherry->getPosition().x + 220, cherry->getPosition().y + 60);
+		renderer->draw(&cherry->ReturnSprite(), cherry->getPosition().x + width_offset, cherry->getPosition().y + height_offset);
 	}
 }
 

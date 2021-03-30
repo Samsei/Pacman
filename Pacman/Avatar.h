@@ -11,6 +11,7 @@ public:
 	Avatar(SDL_Renderer*, const Vector2f&);
 	~Avatar(void);
 
+	void reset();
 	void update(float, Vector2f);
 	void moveAvatar(float);
 	void updateInput(Vector2f, World*);
@@ -21,9 +22,12 @@ private:
 	void changeSprite(float);
 
 	const int tile_size = 22;
+	const int width_offset = 220;
+	const int height_offset = 60;
 
 	const float sprite_timer = 0.365f;
 	const float speed = 30.0f;
+
 	float distance_to_move = 0; //added to .h instead of delcaring each frame
 	float change_sprite_timer = 0;
 	float sprite_open = 1;

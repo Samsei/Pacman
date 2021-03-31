@@ -1,17 +1,8 @@
 #include "Dot.h"
 
-Dot::Dot(Vector2f aPosition, Sprite mySprite)
-: StaticGameEntity(aPosition, &mySprite)
-{
-	dot_sprite = mySprite;
-}
+Dot::Dot(SDL_Renderer* main_renderer, Vector2f position, const char* texture)
+	: StaticGameEntity(main_renderer, position, texture)
+{}
 
 Dot::~Dot(void)
-{
-
-}
-
-Sprite Dot::ReturnSprite()
-{
-	return dot_sprite;
-}
+{}

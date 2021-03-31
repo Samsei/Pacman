@@ -77,22 +77,19 @@ void World::init()
 
 				if (line[i] == '.')
 				{
-					Sprite* sprite = new Sprite(main_renderer, "Small_Dot_32.png", i * tile_size + width_offset, line_index * tile_size + height_offset);
-					Dot* dot = new Dot(Vector2f(i * tile_size, line_index * tile_size), *sprite);
+					Dot* dot = new Dot(main_renderer, Vector2f(i * tile_size, line_index * tile_size));
 					dots_list.push_back(dot);
 				}
 
 				else if (line[i] == 'o')
 				{
-					Sprite* sprite = new Sprite(main_renderer, "Big_Dot_32.png", i * tile_size + width_offset, line_index * tile_size + height_offset);
-					BigDot* big_dot = new BigDot(Vector2f(i * tile_size, line_index * tile_size), *sprite);
+					BigDot* big_dot = new BigDot(main_renderer, Vector2f(i * tile_size, line_index * tile_size));
 					big_dots_list.push_back(big_dot);
 				}
 
 				else if (line[i] == 'c')
 				{
-					Sprite* sprite = new Sprite(main_renderer, "cherry.png", i * tile_size + width_offset, line_index * tile_size + height_offset);
-					Cherry* cherry = new Cherry(Vector2f(i * tile_size, line_index * tile_size), *sprite);
+					Cherry* cherry = new Cherry(main_renderer, Vector2f(i * tile_size, line_index * tile_size));
 					cherry_list.push_back(cherry);
 				}
 			}
@@ -144,51 +141,49 @@ void World::draw(Drawer* renderer)
 
 	for (Dot* dot : dots_list)
 	{
-		renderer->draw(&dot->ReturnSprite(), dot->getPosition().x + width_offset, dot->getPosition().y + height_offset);
+		dot->draw(renderer);
 	}
 
 	for (BigDot* big_dot : big_dots_list)
 	{
-		renderer->draw(&big_dot->ReturnSprite(), big_dot->getPosition().x + width_offset, big_dot->getPosition().y + height_offset);
+		big_dot->draw(renderer);
 	}
 
 	for (Cherry* cherry : cherry_list)
 	{
-		renderer->draw(&cherry->ReturnSprite(), cherry->getPosition().x + width_offset, cherry->getPosition().y + height_offset);
+		cherry->draw(renderer);
 	}
 }
 
 bool World::hasIntersectedDot(const Vector2f& position)
 {
-	auto it = std::find_if(dots_list.begin(), dots_list.end(), [&](Dot* dot) -> bool { return ((dot->getPosition() - position).Length() < 5.f); });
-
-	if (dots_list.end() != it)
+	for (Dot* dot : dots_list)
 	{
-		Dot* dot = *it;
+		if (dot->intersect(position))
+		{
+			dots_list.remove(dot);
+			delete dot;
+			dot = NULL;
 
-		dots_list.remove(dot);
-		delete dot;
-		dot = NULL;
-
-		return true;
-	}	
+			return true;
+		}
+	}
 
 	return false;
 }
 
 bool World::hasIntersectedBigDot(const Vector2f& position)
 {
-	auto it = std::find_if(big_dots_list.begin(), big_dots_list.end(), [&](BigDot* dot) -> bool { return ((dot->getPosition() - position).Length() < 5.f); });
-
-	if (big_dots_list.end() != it)
+	for (BigDot* big_dot : big_dots_list)
 	{
-		BigDot* big_dot = *it;
+		if (big_dot->intersect(position))
+		{
+			big_dots_list.remove(big_dot);
+			delete big_dot;
+			big_dot = NULL;
 
-		big_dots_list.remove(big_dot);
-		delete big_dot;
-		big_dot = NULL;
-
-		return true;
+			return true;
+		}
 	}
 
 	return false;
@@ -196,17 +191,16 @@ bool World::hasIntersectedBigDot(const Vector2f& position)
 
 bool World::hasIntersectedCherry(const Vector2f& position)
 {
-	auto it = std::find_if(cherry_list.begin(), cherry_list.end(), [&](Cherry* cherry) -> bool { return ((cherry->getPosition() - position).Length() < 5.f); });
-
-	if (cherry_list.end() != it)
+	for (Cherry* cherry : cherry_list)
 	{
-		Cherry* cherry = *it;
+		if (cherry->intersect(position))
+		{
+			cherry_list.remove(cherry);
+			delete cherry;
+			cherry = NULL;
 
-		cherry_list.remove(cherry);
-		delete cherry;
-		cherry = NULL;
-
-		return true;
+			return true;
+		}
 	}
 
 	return false;

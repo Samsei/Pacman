@@ -99,6 +99,7 @@ void Pacman::checkGhostTimer(float delta_time)
 	{
 		ghost->is_vulnerable = false;
 		ghost->speed = 25.0f;
+		ghost->changeState();
 	}
 }
 
@@ -115,6 +116,7 @@ void Pacman::updateScore()
 		ghost_timer = 20.0f;
 		ghost->is_vulnerable = true;
 		ghost->speed = 15.0f;
+		ghost->changeState();
 	}
 	
 	else if (world->hasIntersectedCherry(player->getPosition()))
@@ -129,11 +131,9 @@ void Pacman::hitGhost()
 	{
 		if (ghost_timer <= 0.0f && immortal_timer <= 0.0f)
 		{
-			lives--;
-
 			player->reset();
 			ghost->reset(player);
-
+			lives--;
 			immortal_timer = 3.0f;
 		}
 		else if (ghost->is_vulnerable && !ghost->is_dead)
@@ -141,6 +141,7 @@ void Pacman::hitGhost()
 			score += 50;
 			ghost->is_dead = true;
 			ghost->die();
+			ghost->changeState();
 		}
 	}
 }

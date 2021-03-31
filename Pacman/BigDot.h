@@ -6,13 +6,8 @@
 class BigDot : public StaticGameEntity
 {
 public:
-	BigDot(Vector2f aPosition, Sprite mySprite);
+	BigDot(SDL_Renderer*, Vector2f, const char* texture = "Big_Dot_32.png");
 	~BigDot(void);
-
-	Sprite ReturnSprite();
-
-private:
-	Sprite dot_sprite;
 };
 
 #endif // BIGDOT_H

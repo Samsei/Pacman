@@ -12,17 +12,17 @@ public:
 	float Length() const;
 	void Normalize();
 
-	const bool operator==(const Vector2f& other) const;
-	const bool operator!=(const Vector2f& other) const;
+	const bool operator==(const Vector2f&) const;
+	const bool operator!=(const Vector2f&) const;
 
-	Vector2f& operator+=(const Vector2f& other);
-	Vector2f& operator*=(const float aFloat);
-	Vector2f& operator/=(const float aFloat);
+	Vector2f& operator+=(const Vector2f&);
+	Vector2f& operator*=(const float);
+	Vector2f& operator/=(const float);
 
-	const Vector2f operator*(const float aValue) const;
-	const Vector2f operator-(const Vector2f& other) const;
-	const Vector2f operator+(const Vector2f& other) const;
-	const Vector2f operator*(const Vector2f& other) const;
+	const Vector2f operator-(const Vector2f&) const;
+	const Vector2f operator+(const Vector2f&) const;
+	const Vector2f operator*(const Vector2f&) const;
+	const Vector2f operator*(const float) const;
 
 	float x;
 	float y;

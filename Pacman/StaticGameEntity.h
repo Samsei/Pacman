@@ -7,7 +7,7 @@
 class StaticGameEntity : public GameEntity
 {
 public:
-	StaticGameEntity(Vector2f, Sprite*);
+	StaticGameEntity(SDL_Renderer*, Vector2f, const char*);
 	~StaticGameEntity(void);
 };
 

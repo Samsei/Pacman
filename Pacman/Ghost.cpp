@@ -1,13 +1,10 @@
 #include "Ghost.h"
 
-Ghost::Ghost(const Vector2f& entity_position, SDL_Renderer* main_renderer, const char* sprite, Avatar* player, World* main_world) : 
-	MovableGameEntity(entity_position, ghost_sprite),
-    world(main_world)
+Ghost::Ghost(const Vector2f& entity_position, SDL_Renderer* main_renderer, const char* sprite_texture, Avatar* player, World* main_world) :
+	MovableGameEntity(main_renderer, entity_position, sprite_texture),
+	world(main_world),
+	renderer(main_renderer)
 {
-	ghost_sprite = new Sprite(main_renderer, sprite, 0, 0);
-	ghost_vulnerable_sprite = new Sprite(main_renderer, "Ghost_Vulnerable_32.png", 0, 0);
-	ghost_dead_sprite = new Sprite(main_renderer, "Ghost_Dead_32.png", 0, 0);
-
 	path_finder = new PathFinder(player, world);
 
 	entity_next_tile = current_tile;
@@ -15,18 +12,6 @@ Ghost::Ghost(const Vector2f& entity_position, SDL_Renderer* main_renderer, const
 
 Ghost::~Ghost()
 {
-	if (ghost_dead_sprite)
-	{
-		ghost_dead_sprite = NULL;
-	}
-	if (ghost_sprite)
-	{
-		ghost_sprite = NULL;
-	}
-	if (ghost_vulnerable_sprite)
-	{
-		ghost_vulnerable_sprite = NULL;
-	}
 	if (next_tile)
 	{
 		next_tile = NULL;
@@ -55,25 +40,17 @@ void Ghost::reset(Avatar* player)
 	next_tile = path_finder->getPath(world->returnTiles(), player, current_tile, is_vulnerable, is_dead);
 	entity_next_tile =
 	{
-		(float)next_tile->x,
-		(float)next_tile->y
+		next_tile->x,
+		next_tile->y
 	};
 }
 
 void Ghost::update(float delta_time, Avatar* player)
 {
 	getNextTile(player);
-
-	distance_to_move = delta_time * speed;
-
-	changeMovementDirection();
-	moveGhost();
-}
-
-void Ghost::changeMovementDirection()
-{
-	destination = Vector2f(entity_next_tile.x * tile_size, entity_next_tile.y * tile_size);
-	direction = destination - position;
+	changeDirection();
+	moveEntity(delta_time);
+	moveSprite();
 }
 
 void Ghost::getNextTile(Avatar* player)
@@ -83,8 +60,8 @@ void Ghost::getNextTile(Avatar* player)
 		next_tile = path_finder->getPath(world->returnTiles(), player, current_tile, is_vulnerable, is_dead);
 		entity_next_tile = 
 		{ 
-			(float)next_tile->x, 
-			(float)next_tile->y
+			next_tile->x, 
+			next_tile->y
 		};
 	}
 
@@ -95,55 +72,18 @@ void Ghost::getNextTile(Avatar* player)
 	}
 }
 
-void Ghost::moveGhost()
-{
-	if (distance_to_move > direction.Length())
-	{
-		position = destination;
-		current_tile = 
-		{
-			entity_next_tile.x, 
-			entity_next_tile.y 
-		};
-	}
-	else
-	{
-		direction.Normalize();
-		position += direction * distance_to_move;
-	}
-
-	moveSprite();
-}
-
-void Ghost::moveSprite()
+void Ghost::changeState()
 {
 	if (is_dead)
 	{
-		ghost_dead_sprite->moveSprite(position.x + width_offset, position.y + height_offset);
+		sprite->changeTexture(renderer, dead_texture, position.x + width_offset, position.y + height_offset);
 	}
 	else if (is_vulnerable)
 	{
-		ghost_vulnerable_sprite->moveSprite(position.x + width_offset, position.y + height_offset);
+		sprite->changeTexture(renderer, vulnerable_texture, position.x + width_offset, position.y + height_offset);
 	}
 	else
 	{
-		ghost_sprite->moveSprite(position.x + width_offset, position.y + height_offset);
-	}
-}
-
-void Ghost::draw(Drawer* renderer)
-{
-	if (is_dead)
-	{
-		renderer->draw(ghost_dead_sprite, position.x, position.y);
-
-	}
-	else if (is_vulnerable)
-	{
-		renderer->draw(ghost_vulnerable_sprite, position.x, position.y);
-	}
-	else
-	{
-		renderer->draw(ghost_sprite, position.x, position.y);
+		sprite->changeTexture(renderer, normal_texture, position.x + width_offset, position.y + height_offset);
 	}
 }

@@ -41,7 +41,6 @@ private:
 	float time_to_next_update = 0;
 
 	int fps = 0;	
-	int intelligence = 1;
 	int lives = 3;
 	int score = 0;
 

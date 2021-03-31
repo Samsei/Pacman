@@ -2,23 +2,32 @@
 #define MOVABLEGAMEENTITY_H
 
 #include "GameEntity.h"
-#include "Vector2f.h"
 
 class MovableGameEntity : public GameEntity
 {
 public:
-	MovableGameEntity(const Vector2f&, Sprite*);
+	MovableGameEntity(SDL_Renderer*, const Vector2f&, const char*);
 	~MovableGameEntity(void);
-
-	bool isAtDestination();
 
 	Vector2f getCurrentTile() const { return current_tile; }
 
-	void setNextTile(float, float);
-
 protected:
-	Vector2f current_tile = { 0, 0 };
-	Vector2f entity_next_tile = { 0, 0 };
+	void changeDirection();
+	void moveEntity(float);
+	void setNextTile(float, float);
+	void moveSprite();
+
+	bool isAtDestination();
+
+
+	float distance_to_move = 0.0f;
+
+	int speed = 30;
+
+	Vector2f current_tile = { 0.0f, 0.0f };
+	Vector2f entity_next_tile = { 0.0f, 0.0f };
+	Vector2f destination = { 0.0f, 0.0f };
+	Vector2f direction = { 0.0f, 0.0f };
 };
 
 #endif // MOVABLEGAMEENTITY_H

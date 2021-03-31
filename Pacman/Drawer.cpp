@@ -36,7 +36,7 @@ bool Drawer::init()
 	return true;
 }
 
-void Drawer::draw(Sprite* sprite, int cell_x, int cell_y)
+void Drawer::draw(Sprite* sprite)
 {
 	SDL_RenderCopy(renderer, sprite->returnTexture(), sprite->returnSize(), sprite->returnPos());
 }

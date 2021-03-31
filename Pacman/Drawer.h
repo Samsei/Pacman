@@ -14,7 +14,7 @@ public:
 	static Drawer* Create(SDL_Window*, SDL_Renderer*);
 	~Drawer(void);
 
-	void draw(Sprite*, int = 0, int = 0);
+	void draw(Sprite*);
 	void drawText(const char*, int, int);
 
 	SDL_Renderer* returnRenderer();

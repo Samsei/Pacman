@@ -6,13 +6,8 @@
 class Dot : public StaticGameEntity
 {
 public:
-	Dot(Vector2f aPosition, Sprite mySprite);
+	Dot(SDL_Renderer*, Vector2f, const char* texture = "Small_Dot_32.png");
 	~Dot(void);
-
-	Sprite ReturnSprite();
-
-private:
-	Sprite dot_sprite;
 };
 
 #endif // DOT_H

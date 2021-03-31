@@ -6,13 +6,8 @@
 class Cherry : public StaticGameEntity
 {
 public:
-	Cherry(Vector2f aPosition, Sprite mySprite);
+	Cherry(SDL_Renderer*, Vector2f, const char* texture = "cherry.png");
 	~Cherry(void);
-
-	Sprite ReturnSprite();
-
-private:
-	Sprite cherrySprite;
 };
 
 #endif // CHERRY_H

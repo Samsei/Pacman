@@ -74,6 +74,8 @@ PathmapTile* PathFinder::getPath(std::list<PathmapTile*> tile_list, Avatar* play
 	{
 		return AStar(tile_list, ghost_spawn, ghost_current_tile, is_vulnerable);
 	}
+
+	return nullptr;
 }
 
 PathmapTile* PathFinder::AStar(std::list<PathmapTile*> tile_list, Vector2f destination, Vector2f ghost_current_tile, bool is_vulnerable)
@@ -124,12 +126,12 @@ PathmapTile* PathFinder::AStar(std::list<PathmapTile*> tile_list, Vector2f desti
 		{			
 			list_not_tested.push_back(tile_neighbour);
 
-			test = current_tile->local_goal + distance(Vector2f{ current_tile->x, current_tile->y }, Vector2f{ tile_neighbour->x, tile_neighbour->y });
+			lowest_cost = current_tile->local_goal + distance(Vector2f{ current_tile->x, current_tile->y }, Vector2f{ tile_neighbour->x, tile_neighbour->y });
 
-			if (test < tile_neighbour->local_goal)
+			if (lowest_cost < tile_neighbour->local_goal)
 			{
 				tile_neighbour->parent = current_tile;
-				tile_neighbour->local_goal = test;
+				tile_neighbour->local_goal = lowest_cost;
 				tile_neighbour->global_goal = tile_neighbour->local_goal + distance(Vector2f{ tile_neighbour->x, tile_neighbour->y }, Vector2f{ destination.x, destination.y });
 			}		
 		}

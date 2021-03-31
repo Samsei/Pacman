@@ -18,10 +18,10 @@ public:
 	~Ghost();
 
 	void update(float, Avatar*);
-	void draw(Drawer*);
 
 	void die();
 	void reset(Avatar*);
+	void changeState();
 
 	float speed = 25.0f;
 
@@ -29,28 +29,17 @@ public:
 	bool is_dead = false;
 
 private:
-	void changeMovementDirection();
 	void getNextTile(Avatar*);
-	void moveGhost();
-	void moveSprite();
 
-	float distance_to_move = 0.0f;
-
-	const int height_offset = 60;
-	const int tile_size = 22;
-	const int width_offset = 220;
-
-	Vector2f desired_movement = { 0.0f, 0.0f };
-	Vector2f destination = { 0.0f, 0.0f };
-	Vector2f direction = { 0.0f, 0.0f };
+	const char* dead_texture = "Ghost_Dead_32.png";
+	const char* normal_texture = "ghost_32_pink.png";
+	const char* vulnerable_texture = "Ghost_Vulnerable_32.png";
 	
 	const Vector2f ghost_spawn = { 13.0f, 11.0f };
 
 	PathmapTile* next_tile = nullptr;
 	PathFinder* path_finder = nullptr;
-	Sprite* ghost_dead_sprite = nullptr;
-	Sprite* ghost_sprite = nullptr;
-	Sprite* ghost_vulnerable_sprite = nullptr;	
+	SDL_Renderer* renderer = nullptr;
 	World* world = nullptr;
 };
 

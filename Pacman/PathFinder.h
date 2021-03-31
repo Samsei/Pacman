@@ -22,7 +22,6 @@ private:
 
 	float highest_cost = 0;
 	float lowest_cost = 0;
-	float test = 0;
 
 	int neighbour_total = 0;
 

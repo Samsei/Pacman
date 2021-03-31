@@ -30,7 +30,7 @@ void Avatar::updateInput(Vector2f next_movement, World* world)
 	if (isAtDestination() && world->tileIsTeleport(current_tile) != Vector2f {0, 0})
 	{
 		teleport = { (world->tileIsTeleport(current_tile)) };
-		setPosition(teleport);
+		setPosition(teleport * tile_size);
 		current_tile = position / tile_size;
 		entity_next_tile = current_tile + next_movement;
 	}

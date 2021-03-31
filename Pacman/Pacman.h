@@ -26,8 +26,6 @@ public:
 private:
 	Pacman(Drawer*);
 
-	bool init();
-
 	bool checkEndGameCondition();
 	bool updateInput();
 

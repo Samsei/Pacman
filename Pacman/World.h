@@ -23,13 +23,13 @@ public:
 	World(SDL_Renderer*);
 	~World(void);
 
-	void init();
 	void draw(Drawer*);
 
 	bool checkDotList();
 	bool hasIntersectedBigDot(const Vector2f&);
 	bool hasIntersectedCherry(const Vector2f&);
 	bool hasIntersectedDot(const Vector2f&);
+	bool init();
 	bool tileIsValid(Vector2f);
 
 	Vector2f tileIsTeleport(Vector2f);

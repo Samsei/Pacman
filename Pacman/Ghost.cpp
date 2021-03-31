@@ -1,5 +1,6 @@
 #include "Ghost.h"
 
+//create the ghost, assigning world, renderer, spawn, and pacman pointers and creating a game entity
 Ghost::Ghost(SDL_Renderer* main_renderer, const Vector2f& entity_position, const char* sprite_texture, Avatar* player, World* main_world, const Vector2f ghost_spawn) :
 	MovableGameEntity(main_renderer, entity_position, sprite_texture, ghost_spawn),
 	world(main_world),
@@ -12,6 +13,7 @@ Ghost::Ghost(SDL_Renderer* main_renderer, const Vector2f& entity_position, const
 	entity_next_tile = current_tile;
 }
 
+//destruct path finder and set pointers to null
 Ghost::~Ghost()
 {
 	if (next_tile)
@@ -33,29 +35,33 @@ Ghost::~Ghost()
 	}
 }
 
+//set the ghost to the dead state
 void Ghost::setDead()
 {
 	is_vulnerable = false;
 	is_dead = true;
-	speed = 120.f;
-	changeState();
+	speed = 120;
+	sprite->changeTexture(renderer, dead_texture, position.x + width_offset, position.y + height_offset);
 }
 
+//set the ghost to its normal state
 void Ghost::setNormal()
 {
 	is_vulnerable = false;
 	is_dead = false;
 	speed = 30;
-	changeState();
+	sprite->changeTexture(renderer, normal_texture, position.x + width_offset, position.y + height_offset);
 }
 
+//set the ghost to the vulnerable state
 void Ghost::setVulnerable()
 {
 	is_vulnerable = true;
 	speed = 20;
-	changeState();
+	sprite->changeTexture(renderer, vulnerable_texture, position.x + width_offset, position.y + height_offset);
 }
 
+//update the ghosts movement and sprite
 void Ghost::update(float delta_time)
 {
 	getNextTile();
@@ -64,6 +70,7 @@ void Ghost::update(float delta_time)
 	moveSprite();
 }
 
+//check if the ghost is at its destination / if it has returned to spawn
 void Ghost::getNextTile()
 {
 	if (isAtDestination())
@@ -74,24 +81,6 @@ void Ghost::getNextTile()
 
 	if (is_dead && current_tile == spawn)
 	{
-		is_dead = false;
-		speed = 30.0f;
-		changeState();
-	}
-}
-
-void Ghost::changeState()
-{
-	if (is_dead)
-	{
-		sprite->changeTexture(renderer, dead_texture, position.x + width_offset, position.y + height_offset);
-	}
-	else if (is_vulnerable)
-	{
-		sprite->changeTexture(renderer, vulnerable_texture, position.x + width_offset, position.y + height_offset);
-	}
-	else
-	{
-		sprite->changeTexture(renderer, normal_texture, position.x + width_offset, position.y + height_offset);
+		setNormal();
 	}
 }

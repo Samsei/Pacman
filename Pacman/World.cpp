@@ -1,12 +1,13 @@
 #include "World.h"
 
-
+//initialize the world sprite and assign the renderer to a pointer
 World::World(SDL_Renderer* renderer) :
 	main_renderer(renderer)
 {
 	world_sprite = new Sprite(renderer, "playfield.png", 0, 0);;
 }
 
+//destruct all objects and set pointers to null
 World::~World(void)
 {
 	for (Dot* dot : dots_list)
@@ -46,10 +47,18 @@ World::~World(void)
 	}
 }
 
-void World::init()
+//initialize world 
+bool World::init()
 {
 	my_file.open("map.txt");
 
+	//if the file is not open, return false
+	if (!my_file.is_open())
+	{
+		return false;
+	}
+
+	//if the file is open, populate lists with objects based on contents within the file
 	if (my_file.is_open())
 	{
 		line_index = 0;
@@ -99,6 +108,7 @@ void World::init()
 		my_file.close();
 	}
 
+	//assign each tile neighbouring tiles that are accessable (used in AStar)
 	for (PathmapTile* tile_n : pathmap_tiles)
 	{
 		if (!tile_n->is_blocking)
@@ -133,8 +143,11 @@ void World::init()
 			}
 		}
 	}
+
+	return true;
 }
 
+//draw each object and the world background
 void World::draw(Drawer* renderer)
 {
 	renderer->draw(world_sprite);
@@ -155,6 +168,7 @@ void World::draw(Drawer* renderer)
 	}
 }
 
+//check if the player has moved to a dots position
 bool World::hasIntersectedDot(const Vector2f& position)
 {
 	for (Dot* dot : dots_list)
@@ -172,6 +186,7 @@ bool World::hasIntersectedDot(const Vector2f& position)
 	return false;
 }
 
+//check if the player has moved to a big dots position
 bool World::hasIntersectedBigDot(const Vector2f& position)
 {
 	for (BigDot* big_dot : big_dots_list)
@@ -189,6 +204,7 @@ bool World::hasIntersectedBigDot(const Vector2f& position)
 	return false;
 }
 
+//check if the player has moved to a cherrys position
 bool World::hasIntersectedCherry(const Vector2f& position)
 {
 	for (Cherry* cherry : cherry_list)
@@ -206,6 +222,7 @@ bool World::hasIntersectedCherry(const Vector2f& position)
 	return false;
 }
 
+//check if the dots list is empty, if so, game ends
 bool World::checkDotList()
 {
 	if (dots_list.empty())
@@ -215,6 +232,7 @@ bool World::checkDotList()
 	return false;
 }
 
+//check if the next tile is not a wall
 bool World::tileIsValid(Vector2f next_tile)
 {
 	for (PathmapTile* tile : pathmap_tiles)
@@ -228,6 +246,7 @@ bool World::tileIsValid(Vector2f next_tile)
 	return false;
 }
 
+//check if the tile is a teleporter
 Vector2f World::tileIsTeleport(Vector2f tile)
 {
 	if (tile == teleport_1->returnTileAsVector())
@@ -241,6 +260,7 @@ Vector2f World::tileIsTeleport(Vector2f tile)
 	return Vector2f{ 0, 0 };
 }
 
+//return the list of tiles (used in AStar)
 std::list<PathmapTile*> World::returnTiles()
 {
 	return pathmap_tiles;

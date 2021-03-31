@@ -22,7 +22,6 @@ public:
 	void setDead();
 	void setNormal();
 	void setVulnerable();
-	void changeState();
 
 	bool is_vulnerable = false;;
 	bool is_dead = false;

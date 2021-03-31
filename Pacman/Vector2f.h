@@ -16,7 +16,6 @@ public:
 	const bool operator!=(const Vector2f&) const;
 
 	Vector2f& operator+=(const Vector2f&);
-	Vector2f& operator*=(const float);
 	Vector2f& operator/=(const float);
 
 	const Vector2f operator-(const Vector2f&) const;
@@ -26,8 +25,9 @@ public:
 	const Vector2f operator*(const int) const;
 	const Vector2f operator/(const int) const;
 
-	float x;
-	float y;
+	float x = 0.0f;
+	float y = 0.0f;
+	float length = 0.0f;
 };
 
 #endif // VECTOR2F_H

@@ -9,9 +9,11 @@ public:
 	MovableGameEntity(SDL_Renderer*, const Vector2f&, const char*, const Vector2f);
 	~MovableGameEntity(void);
 
-	Vector2f getCurrentTile() const { return current_tile; }
-
 	void reset();
+
+	bool isAtDestination();
+
+	Vector2f getCurrentTile() const { return current_tile; }
 
 	int speed = 30;
 
@@ -21,7 +23,6 @@ protected:
 	void setNextTile(Vector2f);
 	void moveSprite();
 
-	bool isAtDestination();
 
 	float distance_to_move = 0.0f;
 

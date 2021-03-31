@@ -21,8 +21,6 @@ public:
 
 private:
 	Drawer(SDL_Window*, SDL_Renderer*);
-
-	bool init();
 	
 	SDL_Renderer* renderer = nullptr;
 	SDL_Surface* surface = nullptr;

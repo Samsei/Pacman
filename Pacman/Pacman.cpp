@@ -1,26 +1,29 @@
 #include "Pacman.h"
 
-Pacman* Pacman::Create(Drawer* aDrawer)
+//create pacman with a pointer to the drawer
+Pacman* Pacman::Create(Drawer* drawer)
 {
-	Pacman* pacman = new Pacman(aDrawer);
-
-	if (!pacman->init())
-	{
-		delete pacman;
-		pacman = NULL;
-	}
-
+	Pacman* pacman = new Pacman(drawer);
 	return pacman;
 }
 
+//create the world, player and ghost, and assign the pointer to "renderer"
 Pacman::Pacman(Drawer* main_renderer)
 : renderer(main_renderer)
 {
 	world = new World(main_renderer->returnRenderer());
-	player = new Avatar(main_renderer->returnRenderer(), Vector2f(player_spawn.x * tile_size, player_spawn.y * tile_size), player_spawn);
+
+	//if world fails to create
+	if (!world->init())
+	{
+		return;
+	}
+
+	player = new Avatar(main_renderer->returnRenderer(), player_spawn * tile_size, player_spawn);
 	ghost = new Ghost(main_renderer->returnRenderer(), Vector2f(ghost_spawn.x * tile_size, ghost_spawn.y * tile_size), "ghost_32_pink.png", player, world, ghost_spawn);
 }
 
+//destruct objects and set pointers to null
 Pacman::~Pacman(void)
 {
 	if (player)
@@ -49,36 +52,33 @@ Pacman::~Pacman(void)
 	}
 }
 
-bool Pacman::init()
-{
-	world->init();
-
-	return true;
-}
-
+//core game loop, update each object and check win/loss conditions
 bool Pacman::update(float delta_time)
 {
+	//if escape is pressed, exit
 	if (!updateInput())
 	{
 		return false;
 	}
 
+	//if game has ended, exit
 	if (!checkEndGameCondition())
 	{
 		return false;
 	}
 
-	player->updateInput(next_movement, world);
-	player->update(delta_time);
-	ghost->update(delta_time);
-
 	hitGhost();
 	updateScore();
 	checkTimers(delta_time);
 
+	player->updateInput(next_movement, world);
+	player->update(delta_time);
+	ghost->update(delta_time);
+
 	return true;
 }
 
+//update various timers used for the game
 void Pacman::checkTimers(float delta_time)
 {
 	if (delta_time > 0)
@@ -102,26 +102,28 @@ void Pacman::checkTimers(float delta_time)
 	}
 }
 
+//check if the player is at the destination tile and if that tile contains an entity
 void Pacman::updateScore()
 {
-	if (world->hasIntersectedDot(player->getPosition()))
+	if (player->isAtDestination() && world->hasIntersectedDot(player->getPosition()))
 	{
 		score += 10;
 	}
 
-	else if (world->hasIntersectedBigDot(player->getPosition()))
+	else if (player->isAtDestination() && world->hasIntersectedBigDot(player->getPosition()))
 	{
 		score += 20;
 		ghost_timer = 20.0f;
 		ghost->setVulnerable();
 	}
 	
-	else if (world->hasIntersectedCherry(player->getPosition()))
+	else if (player->isAtDestination() && world->hasIntersectedCherry(player->getPosition()))
 	{
 		score += 100;
 	}
 }
 
+//check if the ghost has hit the player, and check if it is vulnerable
 void Pacman::hitGhost()
 {
 	if ((ghost->getPosition() - player->getPosition()).Length() <= 10.0f)
@@ -141,6 +143,7 @@ void Pacman::hitGhost()
 	}
 }
 
+//check if the player has collected all dots, or if the life total is 0 or less
 bool Pacman::checkEndGameCondition()
 {
 	if (score >= 2000 && world->checkDotList())
@@ -160,6 +163,7 @@ bool Pacman::checkEndGameCondition()
 	return true;
 }
 
+//update the input
 bool Pacman::updateInput()
 {
 	if (keystate[SDL_SCANCODE_UP])
@@ -186,6 +190,7 @@ bool Pacman::updateInput()
 	return true;
 }
 
+//draw the objects
 bool Pacman::draw()
 {
 	world->draw(renderer);
@@ -197,6 +202,7 @@ bool Pacman::draw()
 	return true;
 }
 
+//draw text relating to score, lives and fps
 void Pacman::drawText()
 {
 	renderer->drawText("Score: ", 20, 50);

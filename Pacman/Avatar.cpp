@@ -1,10 +1,12 @@
 #include "Avatar.h"
 
+//create the game entity for the player and assign the renderer to a pointer
 Avatar::Avatar(SDL_Renderer* main_renderer, const Vector2f& avatar_position, const Vector2f player_spawn): 
 	MovableGameEntity(main_renderer, avatar_position, "open_32.png", player_spawn),
 	renderer(main_renderer)
 {}
 
+//destruct and set pointer to null
 Avatar::~Avatar(void)
 {
 	if (renderer)
@@ -13,6 +15,7 @@ Avatar::~Avatar(void)
 	}
 }
 
+//update the players movement and sprite
 void Avatar::update(float delta_time)
 {
 	changeDirection();
@@ -21,6 +24,7 @@ void Avatar::update(float delta_time)
 	moveSprite();
 }
 
+//update the players input and check if the tile is a teleporter, or if the next tile is valid
 void Avatar::updateInput(Vector2f next_movement, World* world)
 {
 	if (isAtDestination() && world->tileIsTeleport(current_tile) != Vector2f {0, 0})
@@ -41,6 +45,7 @@ void Avatar::updateInput(Vector2f next_movement, World* world)
 	}
 }
 
+//change the texture of the sprite (could possibly be done using SDL animation or a spritesheet)
 void Avatar::updateSprite()
 {	
 	if (sprite_open)
@@ -92,6 +97,7 @@ void Avatar::updateSprite()
 	}
 }
 
+//update the timer and change the sprite based on the timer and direction
 void Avatar::changeSprite(float delta_time)
 {
 	timer += delta_time;

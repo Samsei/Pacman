@@ -28,6 +28,10 @@ public:
 
 private:
 	void getNextTile();
+	
+	const int ghost_dead_speed = 120;
+	const int ghost_normal_speed = 25;
+	const int ghost_vulnerable_speed = 20;
 
 	const char* dead_texture = "Ghost_Dead_32.png";
 	const char* normal_texture = "ghost_32_pink.png";

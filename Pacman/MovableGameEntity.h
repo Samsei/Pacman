@@ -15,7 +15,7 @@ public:
 
 	Vector2f getCurrentTile() const { return current_tile; }
 
-	int speed = 30;
+	int speed = 0;
 
 protected:
 	void changeDirection();

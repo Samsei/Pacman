@@ -4,7 +4,9 @@
 Avatar::Avatar(SDL_Renderer* main_renderer, const Vector2f& avatar_position, const Vector2f player_spawn): 
 	MovableGameEntity(main_renderer, avatar_position, "open_32.png", player_spawn),
 	renderer(main_renderer)
-{}
+{
+	speed = player_speed;
+}
 
 //destruct and set pointer to null
 Avatar::~Avatar(void)

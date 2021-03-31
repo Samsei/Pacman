@@ -9,7 +9,7 @@ Ghost::Ghost(SDL_Renderer* main_renderer, const Vector2f& entity_position, const
 	pacman(player)
 {
 	path_finder = new PathFinder(world->returnTiles(), player, world);
-
+	speed = ghost_normal_speed;
 	entity_next_tile = current_tile;
 }
 
@@ -40,7 +40,7 @@ void Ghost::setDead()
 {
 	is_vulnerable = false;
 	is_dead = true;
-	speed = 120;
+	speed = ghost_dead_speed;
 	sprite->changeTexture(renderer, dead_texture, position.x + width_offset, position.y + height_offset);
 }
 
@@ -49,7 +49,7 @@ void Ghost::setNormal()
 {
 	is_vulnerable = false;
 	is_dead = false;
-	speed = 30;
+	speed = ghost_normal_speed;
 	sprite->changeTexture(renderer, normal_texture, position.x + width_offset, position.y + height_offset);
 }
 
@@ -57,7 +57,7 @@ void Ghost::setNormal()
 void Ghost::setVulnerable()
 {
 	is_vulnerable = true;
-	speed = 20;
+	speed = ghost_vulnerable_speed;
 	sprite->changeTexture(renderer, vulnerable_texture, position.x + width_offset, position.y + height_offset);
 }
 

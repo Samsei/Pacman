@@ -22,6 +22,8 @@ private:
 
 	float timer = 0.0f;
 
+	int player_speed = 30;
+
 	bool sprite_open = true;;
 	
 	Vector2f previous_movement = { 0.0f, 0.0f };

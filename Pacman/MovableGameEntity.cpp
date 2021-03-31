@@ -23,14 +23,14 @@ void MovableGameEntity::moveEntity(float delta_time)
 {
 	distance_to_move = delta_time * speed;
 
-	if (distance_to_move > direction.Length())
+	if (distance_to_move > direction.length())
 	{
 		position = destination;
 		current_tile = entity_next_tile;
 	}
 	else
 	{
-		direction.Normalize();
+		direction.normalize();
 		position += direction * distance_to_move;
 	}
 }

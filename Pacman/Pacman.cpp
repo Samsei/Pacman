@@ -128,7 +128,7 @@ void Pacman::updateScore()
 //check if the ghost has hit the player, and check if it is vulnerable
 void Pacman::hitGhost()
 {
-	if ((ghost->getPosition() - player->getPosition()).Length() <= 10.0f)
+	if ((ghost->getPosition() - player->getPosition()).length() <= 10.0f)
 	{
 		if (ghost_timer <= 0.0f && immortal_timer <= 0.0f)
 		{

@@ -7,7 +7,7 @@ class Sprite
 public:
 	Sprite() = default;
 	Sprite(SDL_Renderer*, const char*, int = 0, int = 0);
-	~Sprite() = default;
+	~Sprite();
 
 	SDL_Texture* returnTexture();
 	SDL_Rect* returnSize();

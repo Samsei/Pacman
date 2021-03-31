@@ -14,29 +14,29 @@ class PathmapTile;
 class Ghost : public MovableGameEntity
 {
 public:
-	Ghost(const Vector2f&, SDL_Renderer*, const char*, Avatar*, World*);
+	Ghost(SDL_Renderer*, const Vector2f&, const char*, Avatar*, World*, const Vector2f);
 	~Ghost();
 
-	void update(float, Avatar*);
+	void update(float);
 
-	void die();
-	void reset(Avatar*);
+	void setDead();
+	void setNormal();
+	void setVulnerable();
 	void changeState();
-
-	float speed = 25.0f;
 
 	bool is_vulnerable = false;;
 	bool is_dead = false;
 
 private:
-	void getNextTile(Avatar*);
+	void getNextTile();
 
 	const char* dead_texture = "Ghost_Dead_32.png";
 	const char* normal_texture = "ghost_32_pink.png";
 	const char* vulnerable_texture = "Ghost_Vulnerable_32.png";
-	
-	const Vector2f ghost_spawn = { 13.0f, 11.0f };
 
+	Vector2f spawn = { 0.0f, 0.0f };
+	
+	Avatar* pacman = nullptr;
 	PathmapTile* next_tile = nullptr;
 	PathFinder* path_finder = nullptr;
 	SDL_Renderer* renderer = nullptr;

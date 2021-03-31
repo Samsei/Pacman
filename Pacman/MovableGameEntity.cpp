@@ -1,7 +1,8 @@
 #include "MovableGameEntity.h"
 
-MovableGameEntity::MovableGameEntity(SDL_Renderer* main_renderer, const Vector2f& entity_position, const char* entity_image)
-: GameEntity(main_renderer, entity_position, entity_image)
+MovableGameEntity::MovableGameEntity(SDL_Renderer* main_renderer, const Vector2f& entity_position, const char* entity_image, const Vector2f entity_spawn)
+	: GameEntity(main_renderer, entity_position, entity_image),
+	spawn(entity_spawn)
 {
 	current_tile.x = entity_next_tile.x =  position.x / 22;
 	current_tile.y = entity_next_tile.y =  position.y / 22;
@@ -42,12 +43,19 @@ bool MovableGameEntity::isAtDestination()
 	return false;
 }
 
+void MovableGameEntity::reset()
+{
+	setPosition(Vector2f(spawn.x * tile_size, spawn.y * tile_size));
+	current_tile = Vector2f{ position.x / tile_size, position.y / tile_size };
+	entity_next_tile = current_tile;
+}
+
 void MovableGameEntity::moveSprite()
 {
 	sprite->moveSprite(position.x + width_offset, position.y + height_offset);
 }
 
-void MovableGameEntity::setNextTile(float x, float y)
+void MovableGameEntity::setNextTile(Vector2f next_tile)
 {
-	entity_next_tile = { x, y };
+	entity_next_tile = { next_tile.x, next_tile.y };
 }

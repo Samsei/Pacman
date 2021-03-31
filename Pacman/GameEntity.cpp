@@ -8,7 +8,11 @@ GameEntity::GameEntity(SDL_Renderer* main_renderer, const Vector2f& entity_posit
 
 GameEntity::~GameEntity(void)
 {
-
+	if (sprite)
+	{
+		delete sprite;
+		sprite = NULL;
+	}
 }
 
 bool GameEntity::intersect(Vector2f entity_position)

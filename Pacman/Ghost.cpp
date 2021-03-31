@@ -1,9 +1,11 @@
 #include "Ghost.h"
 
-Ghost::Ghost(const Vector2f& entity_position, SDL_Renderer* main_renderer, const char* sprite_texture, Avatar* player, World* main_world) :
-	MovableGameEntity(main_renderer, entity_position, sprite_texture),
+Ghost::Ghost(SDL_Renderer* main_renderer, const Vector2f& entity_position, const char* sprite_texture, Avatar* player, World* main_world, const Vector2f ghost_spawn) :
+	MovableGameEntity(main_renderer, entity_position, sprite_texture, ghost_spawn),
 	world(main_world),
-	renderer(main_renderer)
+	renderer(main_renderer),
+	spawn(ghost_spawn),
+	pacman(player)
 {
 	path_finder = new PathFinder(player, world);
 
@@ -18,46 +20,55 @@ Ghost::~Ghost()
 	}
 	if (path_finder)
 	{
+		delete path_finder;
 		path_finder = NULL;
 	}	
 	if (world)
 	{
 		world = NULL;
 	}
+	if (renderer)
+	{
+		renderer = NULL;
+	}
 }
 
-void Ghost::die()
+void Ghost::setDead()
 {
 	is_vulnerable = false;
+	is_dead = true;
 	speed = 120.f;
+	changeState();
 }
 
-void Ghost::reset(Avatar* player)
+void Ghost::setNormal()
 {
-	setPosition(Vector2f(ghost_spawn.x * tile_size, ghost_spawn.y * tile_size));
-	current_tile = Vector2f{ position.x / tile_size, position.y / tile_size };
-
-	next_tile = path_finder->getPath(world->returnTiles(), player, current_tile, is_vulnerable, is_dead);
-	entity_next_tile =
-	{
-		next_tile->x,
-		next_tile->y
-	};
+	is_vulnerable = false;
+	is_dead = false;
+	speed = 30;
+	changeState();
 }
 
-void Ghost::update(float delta_time, Avatar* player)
+void Ghost::setVulnerable()
 {
-	getNextTile(player);
+	is_vulnerable = true;
+	speed = 20;
+	changeState();
+}
+
+void Ghost::update(float delta_time)
+{
+	getNextTile();
 	changeDirection();
 	moveEntity(delta_time);
 	moveSprite();
 }
 
-void Ghost::getNextTile(Avatar* player)
+void Ghost::getNextTile()
 {
 	if (isAtDestination())
 	{
-		next_tile = path_finder->getPath(world->returnTiles(), player, current_tile, is_vulnerable, is_dead);
+		next_tile = path_finder->getPath(world->returnTiles(), pacman, current_tile, is_vulnerable, is_dead);
 		entity_next_tile = 
 		{ 
 			next_tile->x, 
@@ -65,10 +76,11 @@ void Ghost::getNextTile(Avatar* player)
 		};
 	}
 
-	if (is_dead && current_tile == ghost_spawn)
+	if (is_dead && current_tile == spawn)
 	{
 		is_dead = false;
-		speed = 25.0f;
+		speed = 30.0f;
+		changeState();
 	}
 }
 

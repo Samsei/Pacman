@@ -9,7 +9,7 @@ class PathmapTile
 {
 public:
 	PathmapTile(int, int, bool);
-	~PathmapTile() = default;
+	~PathmapTile();
 
 	bool is_blocking = false;
 	bool is_teleport = false;

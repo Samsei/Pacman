@@ -17,10 +17,8 @@ Pacman::Pacman(Drawer* main_renderer)
 : renderer(main_renderer)
 {
 	world = new World(main_renderer->returnRenderer());
-
-	player = new Avatar(main_renderer->returnRenderer(), Vector2f(player_spawn.x * tile_size, player_spawn.y * tile_size));
-
-	ghost = new Ghost(Vector2f(player_spawn.x * tile_size, player_spawn.y * tile_size), main_renderer->returnRenderer(), "ghost_32_pink.png", player, world);
+	player = new Avatar(main_renderer->returnRenderer(), Vector2f(player_spawn.x * tile_size, player_spawn.y * tile_size), player_spawn);
+	ghost = new Ghost(main_renderer->returnRenderer(), Vector2f(ghost_spawn.x * tile_size, ghost_spawn.y * tile_size), "ghost_32_pink.png", player, world, ghost_spawn);
 }
 
 Pacman::~Pacman(void)
@@ -30,23 +28,24 @@ Pacman::~Pacman(void)
 		delete player;
 		player = NULL;
 	}
-
 	if (world)
 	{
-		delete world;//memory
+		delete world;
 		world = NULL;
 	}
-
 	if (player_sprite)
 	{
 		delete player_sprite;
 		player_sprite = NULL;
 	}	
-
 	if (ghost)
 	{
 		delete ghost;
 		ghost = NULL;
+	}
+	if (renderer)
+	{
+		renderer = NULL;
 	}
 }
 
@@ -71,19 +70,14 @@ bool Pacman::update(float delta_time)
 
 	if (delta_time > 0)
 	{
-		fps = (int)(1 / delta_time);
-	}
-	
-	if (immortal_timer > 0)
-	{
-		immortal_timer -= delta_time;
+		fps = (1 / delta_time);
 	}
 
-	hitGhost();
 	player->updateInput(next_movement, world);
 	player->update(delta_time);
+	ghost->update(delta_time);
 
-	ghost->update(delta_time, player);
+	hitGhost();
 
 	updateScore();
 	checkGhostTimer(delta_time);
@@ -93,13 +87,19 @@ bool Pacman::update(float delta_time)
 
 void Pacman::checkGhostTimer(float delta_time)
 {
-	ghost_timer -= delta_time;
+	if (ghost_timer > 0)
+	{
+		ghost_timer -= delta_time;
+	}
 
 	if (ghost_timer <= 0)
 	{
-		ghost->is_vulnerable = false;
-		ghost->speed = 25.0f;
-		ghost->changeState();
+		ghost->setNormal();
+	}
+
+	if (immortal_timer > 0)
+	{
+		immortal_timer -= delta_time;
 	}
 }
 
@@ -114,9 +114,7 @@ void Pacman::updateScore()
 	{
 		score += 20;
 		ghost_timer = 20.0f;
-		ghost->is_vulnerable = true;
-		ghost->speed = 15.0f;
-		ghost->changeState();
+		ghost->setVulnerable();
 	}
 	
 	else if (world->hasIntersectedCherry(player->getPosition()))
@@ -132,16 +130,14 @@ void Pacman::hitGhost()
 		if (ghost_timer <= 0.0f && immortal_timer <= 0.0f)
 		{
 			player->reset();
-			ghost->reset(player);
+			ghost->reset();
 			lives--;
 			immortal_timer = 3.0f;
 		}
 		else if (ghost->is_vulnerable && !ghost->is_dead)
 		{
 			score += 50;
-			ghost->is_dead = true;
-			ghost->die();
-			ghost->changeState();
+			ghost->setDead();
 		}
 	}
 }
@@ -193,7 +189,6 @@ bool Pacman::draw()
 {
 	world->draw(renderer);
 	player->draw(renderer);
-
 	ghost->draw(renderer);
 
 	drawText();	

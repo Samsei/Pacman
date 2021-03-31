@@ -18,8 +18,6 @@ public:
 private:
 	PathmapTile* AStar(std::list<PathmapTile*>, Vector2f, Vector2f, bool);
 
-	bool isDestination(PathmapTile*, Avatar*);
-
 	float highest_cost = 0;
 	float lowest_cost = 0;
 

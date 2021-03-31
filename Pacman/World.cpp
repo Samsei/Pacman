@@ -215,11 +215,11 @@ bool World::checkDotList()
 	return false;
 }
 
-bool World::tileIsValid(int x, int y)
+bool World::tileIsValid(Vector2f next_tile)
 {
 	for (PathmapTile* tile : pathmap_tiles)
 	{
-		if (x == tile->x && y == tile->y && !tile->is_blocking)
+		if (next_tile.x == tile->x && next_tile.y == tile->y && !tile->is_blocking)
 		{
 			return true;
 		}
@@ -228,13 +228,13 @@ bool World::tileIsValid(int x, int y)
 	return false;
 }
 
-Vector2f World::tileIsTeleport(int x, int y)
+Vector2f World::tileIsTeleport(Vector2f tile)
 {
-	if (x == teleport_1->x && y == teleport_1->y)
+	if (tile.x == teleport_1->x && tile.y == teleport_1->y)
 	{
 		return Vector2f{ teleport_2->x, teleport_2->y };
 	}
-	else if (x == teleport_2->x && y == teleport_2->y)
+	else if (tile.x == teleport_2->x && tile.y == teleport_2->y)
 	{
 		return Vector2f{ teleport_1->x, teleport_1->y };
 	}

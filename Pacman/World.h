@@ -30,9 +30,9 @@ public:
 	bool hasIntersectedBigDot(const Vector2f&);
 	bool hasIntersectedCherry(const Vector2f&);
 	bool hasIntersectedDot(const Vector2f&);
-	bool tileIsValid(int, int);
+	bool tileIsValid(Vector2f);
 
-	Vector2f tileIsTeleport(int, int);
+	Vector2f tileIsTeleport(Vector2f);
 
 	std::list<PathmapTile*> returnTiles();
 

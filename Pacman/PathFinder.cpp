@@ -13,42 +13,34 @@ PathFinder::~PathFinder()
 {
 	if (player)
 	{
-		delete player;
 		player = NULL;
 	}
 	if (current_tile)
 	{
-		delete current_tile;
 		current_tile = NULL;
 	}
 	if (end_tile)
 	{
-		delete end_tile;
 		end_tile = NULL;
 	}
 	if (next_tile)
 	{
-		delete next_tile;
 		next_tile = NULL;
 	}
 	if (start_tile)
 	{
-		delete start_tile;
 		start_tile = NULL;
 	}
 	if (world)
 	{
-		delete world;
 		world = NULL;
 	}
 	if (pt)
 	{
-		delete pt;
 		pt = NULL;
 	}
 	if (prev)
 	{
-		delete prev;
 		prev = NULL;
 	}
 }
@@ -62,12 +54,12 @@ PathmapTile* PathFinder::getPath(std::list<PathmapTile*> tile_list, Avatar* play
 {
 	if (!is_vulnerable && !is_dead)
 	{		
-		return AStar(tile_list, Vector2f{ player->getCurrentTile().x, player->getCurrentTile().y }, ghost_current_tile, is_vulnerable);
+		return AStar(tile_list, player->getCurrentTile(), ghost_current_tile, is_vulnerable);
 	}
 
 	else if (is_vulnerable)
 	{
-		return AStar(tile_list, Vector2f{ player->getCurrentTile().x, player->getCurrentTile().y }, ghost_current_tile, is_vulnerable);
+		return AStar(tile_list, player->getCurrentTile(), ghost_current_tile, is_vulnerable);
 	}
 	
 	else if (is_dead)
@@ -172,16 +164,10 @@ PathmapTile* PathFinder::AStar(std::list<PathmapTile*> tile_list, Vector2f desti
 
 bool PathFinder::tileIsValid(PathmapTile* tile)
 {
-	
 	if (!tile->is_blocking && !tile->is_visited)
 	{
 		return true;
 	}
 
 	return false;
-}
-
-bool PathFinder::isDestination(PathmapTile* tile, Avatar* player)
-{
-	return (tile->x == player->getCurrentTile().x && tile->y == player->getCurrentTile().y);
 }

@@ -8,10 +8,9 @@
 class Avatar : public MovableGameEntity
 {
 public:
-	Avatar(SDL_Renderer*, const Vector2f&);
+	Avatar(SDL_Renderer*, const Vector2f&, const Vector2f);
 	~Avatar(void);
 
-	void reset();
 	void update(float);
 	void updateInput(Vector2f, World*);
 
@@ -27,8 +26,6 @@ private:
 	
 	Vector2f previous_movement = { 0.0f, 0.0f };
 	Vector2f teleport = { 0.0f, 0.0f };
-
-	const Vector2f player_spawn = { 13.0f, 22.0f };
 
 	SDL_Renderer* render = nullptr;	
 };

@@ -7,6 +7,23 @@ Sprite::Sprite(SDL_Renderer* main_renderer, const char* image, int x, int y) :
 	changeTexture(main_renderer, image, x, y);
 }
 
+Sprite::~Sprite()
+{
+	if (renderer)
+	{
+		renderer = NULL;
+	}
+	if (texture)
+	{
+		SDL_DestroyTexture(texture);
+		texture = NULL;
+	}
+	if (surface)
+	{
+		surface = NULL;
+	}
+}
+
 SDL_Texture* Sprite::returnTexture()
 {
 	return texture;

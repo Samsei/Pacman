@@ -1,19 +1,12 @@
 #include "Avatar.h"
 
-Avatar::Avatar(SDL_Renderer* main_renderer, const Vector2f& avatar_position): 
-	MovableGameEntity(main_renderer, avatar_position, "open_32.png"),
+Avatar::Avatar(SDL_Renderer* main_renderer, const Vector2f& avatar_position, const Vector2f player_spawn): 
+	MovableGameEntity(main_renderer, avatar_position, "open_32.png", player_spawn),
 	render(main_renderer)
 {}
 
 Avatar::~Avatar(void)
 {}
-
-void Avatar::reset()
-{
-	setPosition(Vector2f(player_spawn.x * tile_size, player_spawn.y * tile_size));
-	current_tile = Vector2f{ position.x / tile_size, position.y / tile_size };
-	entity_next_tile = current_tile;
-}
 
 void Avatar::update(float delta_time)
 {
@@ -25,33 +18,21 @@ void Avatar::update(float delta_time)
 
 void Avatar::updateInput(Vector2f next_movement, World* world)
 {
-	if (isAtDestination() && world->tileIsTeleport(getCurrentTile().x, getCurrentTile().y) != Vector2f {0, 0})
+	if (isAtDestination() && world->tileIsTeleport(current_tile) != Vector2f {0, 0})
 	{
-		teleport = { (world->tileIsTeleport(getCurrentTile().x, getCurrentTile().y)) };
+		teleport = { (world->tileIsTeleport(current_tile)) };
 		setPosition(teleport);
 		current_tile = Vector2f{ position.x / tile_size, position.y / tile_size };
 		entity_next_tile = current_tile + next_movement;
 	}
-	else if (isAtDestination() && world->tileIsValid(getCurrentTile().x + next_movement.x, getCurrentTile().y + next_movement.y))
+	else if (isAtDestination() && world->tileIsValid(current_tile + next_movement))
 	{
-		entity_next_tile =
-		{
-			getCurrentTile().x + next_movement.x,
-			getCurrentTile().y + next_movement.y
-		};
-
-		setNextTile(entity_next_tile.x, entity_next_tile.y);
+		setNextTile(current_tile + next_movement);
 		previous_movement = next_movement;
 	}
-	else if (world->tileIsValid(getCurrentTile().x + previous_movement.x, getCurrentTile().y + previous_movement.y))
+	else if (world->tileIsValid(current_tile + previous_movement))
 	{
-		entity_next_tile =
-		{
-			getCurrentTile().x + previous_movement.x,
-			getCurrentTile().y + previous_movement.y
-		};
-
-		setNextTile(entity_next_tile.x, entity_next_tile.y);
+		setNextTile(current_tile + previous_movement);
 	}
 }
 

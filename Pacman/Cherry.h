@@ -1,9 +1,9 @@
 #ifndef CHERRY_H
 #define CHERRY_H
 
-#include "StaticGameEntity.h"
+#include "GameEntity.h"
 
-class Cherry : public StaticGameEntity
+class Cherry : public GameEntity
 {
 public:
 	Cherry(SDL_Renderer*, Vector2f, const char* texture = "cherry.png");

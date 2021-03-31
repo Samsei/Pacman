@@ -1,9 +1,9 @@
 #ifndef BIGDOT_H
 #define BIGDOT_H
 
-#include "StaticGameEntity.h"
+#include "GameEntity.h"
 
-class BigDot : public StaticGameEntity
+class BigDot : public GameEntity
 {
 public:
 	BigDot(SDL_Renderer*, Vector2f, const char* texture = "Big_Dot_32.png");

@@ -39,9 +39,6 @@
     <ClCompile Include="Dot.cpp">
       <Filter>Game\Game entities\Static</Filter>
     </ClCompile>
-    <ClCompile Include="StaticGameEntity.cpp">
-      <Filter>Game\Game entities\Static</Filter>
-    </ClCompile>
     <ClCompile Include="Avatar.cpp">
       <Filter>Game\Game entities\Movable</Filter>
     </ClCompile>
@@ -85,9 +82,6 @@
       <Filter>Game\Game entities\Static</Filter>
     </ClInclude>
     <ClInclude Include="Dot.h">
-      <Filter>Game\Game entities\Static</Filter>
-    </ClInclude>
-    <ClInclude Include="StaticGameEntity.h">
       <Filter>Game\Game entities\Static</Filter>
     </ClInclude>
     <ClInclude Include="Avatar.h">

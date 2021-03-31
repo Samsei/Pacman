@@ -1,9 +1,9 @@
 #ifndef DOT_H
 #define DOT_H
 
-#include "StaticGameEntity.h"
+#include "GameEntity.h"
 
-class Dot : public StaticGameEntity
+class Dot : public GameEntity
 {
 public:
 	Dot(SDL_Renderer*, Vector2f, const char* texture = "Small_Dot_32.png");

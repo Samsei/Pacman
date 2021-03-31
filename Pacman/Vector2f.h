@@ -23,6 +23,8 @@ public:
 	const Vector2f operator+(const Vector2f&) const;
 	const Vector2f operator*(const Vector2f&) const;
 	const Vector2f operator*(const float) const;
+	const Vector2f operator*(const int) const;
+	const Vector2f operator/(const int) const;
 
 	float x;
 	float y;

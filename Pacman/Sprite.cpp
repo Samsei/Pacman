@@ -1,7 +1,7 @@
 #include "Sprite.h"
 
-Sprite::Sprite(SDL_Renderer* main_renderer, const char* image, int x, int y) :
-	image(image),
+Sprite::Sprite(SDL_Renderer* main_renderer, const char* entity_image, int x, int y) :
+	image(entity_image),
 	renderer(main_renderer)
 {
 	changeTexture(main_renderer, image, x, y);

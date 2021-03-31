@@ -4,8 +4,7 @@ MovableGameEntity::MovableGameEntity(SDL_Renderer* main_renderer, const Vector2f
 	: GameEntity(main_renderer, entity_position, entity_image),
 	spawn(entity_spawn)
 {
-	current_tile.x = entity_next_tile.x =  position.x / 22;
-	current_tile.y = entity_next_tile.y =  position.y / 22;
+	current_tile = entity_next_tile =  position / tile_size;
 }
 
 MovableGameEntity::~MovableGameEntity(void)
@@ -13,7 +12,7 @@ MovableGameEntity::~MovableGameEntity(void)
 
 void MovableGameEntity::changeDirection()
 {
-	destination = Vector2f(entity_next_tile.x * tile_size, entity_next_tile.y * tile_size);
+	destination = entity_next_tile * tile_size;
 	direction = destination - position;
 }
 
@@ -45,8 +44,8 @@ bool MovableGameEntity::isAtDestination()
 
 void MovableGameEntity::reset()
 {
-	setPosition(Vector2f(spawn.x * tile_size, spawn.y * tile_size));
-	current_tile = Vector2f{ position.x / tile_size, position.y / tile_size };
+	setPosition(spawn * tile_size);
+	current_tile = position / tile_size;
 	entity_next_tile = current_tile;
 }
 
@@ -57,5 +56,5 @@ void MovableGameEntity::moveSprite()
 
 void MovableGameEntity::setNextTile(Vector2f next_tile)
 {
-	entity_next_tile = { next_tile.x, next_tile.y };
+	entity_next_tile = next_tile;
 }

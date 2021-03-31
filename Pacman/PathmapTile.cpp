@@ -14,3 +14,8 @@ PathmapTile::~PathmapTile()
 		parent = NULL;
 	}
 }
+
+Vector2f PathmapTile::returnTileAsVector()
+{
+	return Vector2f{ x, y };
+}

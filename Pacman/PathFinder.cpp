@@ -74,12 +74,12 @@ PathmapTile* PathFinder::AStar(std::list<PathmapTile*> tile_list, Vector2f desti
 {
 	for (PathmapTile* p : tile_list)
 	{
-		if (p->x == ghost_current_tile.x && p->y == ghost_current_tile.y)
+		if (p->returnTileAsVector() == ghost_current_tile)
 		{
 			start_tile = p;
 		}
 
-		if (p->x == destination.x && p->y == destination.y)
+		if (p->returnTileAsVector() == destination)
 		{
 			end_tile = p;
 		}
@@ -91,7 +91,7 @@ PathmapTile* PathFinder::AStar(std::list<PathmapTile*> tile_list, Vector2f desti
 	}
 
 	start_tile->local_goal = 0.0f;
-	start_tile->global_goal = distance(Vector2f{ start_tile->x, start_tile->y }, Vector2f{ destination.x, destination.y });
+	start_tile->global_goal = distance(start_tile->returnTileAsVector(), destination);
 
 	current_tile = start_tile;
 	list_not_tested.push_back(start_tile);
@@ -118,13 +118,13 @@ PathmapTile* PathFinder::AStar(std::list<PathmapTile*> tile_list, Vector2f desti
 		{			
 			list_not_tested.push_back(tile_neighbour);
 
-			lowest_cost = current_tile->local_goal + distance(Vector2f{ current_tile->x, current_tile->y }, Vector2f{ tile_neighbour->x, tile_neighbour->y });
+			lowest_cost = current_tile->local_goal + distance(current_tile->returnTileAsVector(), tile_neighbour->returnTileAsVector());
 
 			if (lowest_cost < tile_neighbour->local_goal)
 			{
 				tile_neighbour->parent = current_tile;
 				tile_neighbour->local_goal = lowest_cost;
-				tile_neighbour->global_goal = tile_neighbour->local_goal + distance(Vector2f{ tile_neighbour->x, tile_neighbour->y }, Vector2f{ destination.x, destination.y });
+				tile_neighbour->global_goal = tile_neighbour->local_goal + distance(tile_neighbour->returnTileAsVector(), destination);
 			}		
 		}
 	}

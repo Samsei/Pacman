@@ -69,11 +69,7 @@ void Ghost::getNextTile()
 	if (isAtDestination())
 	{
 		next_tile = path_finder->getPath(world->returnTiles(), pacman, current_tile, is_vulnerable, is_dead);
-		entity_next_tile = 
-		{ 
-			next_tile->x, 
-			next_tile->y
-		};
+		setNextTile(next_tile->returnTileAsVector());
 	}
 
 	if (is_dead && current_tile == spawn)

@@ -18,14 +18,14 @@ public:
 private:
 	PathmapTile* AStar(std::list<PathmapTile*>, Vector2f, Vector2f, bool);
 
-	float highest_cost = 0;
-	float lowest_cost = 0;
+	float highest_cost = 0.0f;
+	float lowest_cost = 0.0f;
 
 	int neighbour_total = 0;
 
 	bool path_found = false;
 
-	const Vector2f ghost_spawn = { 13.0f, 11.0f };
+	const Vector2f ghost_spawn = { 13.0f, 13.0f };
 
 	std::list<PathmapTile*> list_not_tested;
 

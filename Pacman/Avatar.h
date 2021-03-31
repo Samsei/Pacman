@@ -18,16 +18,16 @@ private:
 	void updateSprite();
 	void changeSprite(float);
 
-	const float sprite_timer = 0.365f;
+	const float sprite_change_timer = 0.365f;
 
-	float change_sprite_timer = 0.0f;
+	float timer = 0.0f;
 
 	bool sprite_open = true;;
 	
 	Vector2f previous_movement = { 0.0f, 0.0f };
 	Vector2f teleport = { 0.0f, 0.0f };
 
-	SDL_Renderer* render = nullptr;	
+	SDL_Renderer* renderer = nullptr;	
 };
 
 #endif //AVATAR_H

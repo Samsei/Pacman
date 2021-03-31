@@ -11,14 +11,16 @@ public:
 	PathmapTile(int, int, bool);
 	~PathmapTile();
 
+	Vector2f returnTileAsVector();
+
 	bool is_blocking = false;
 	bool is_teleport = false;
 	bool is_visited = false;
 
 	float global_goal = INFINITY;
 	float local_goal = INFINITY;
-	float x = 0;
-	float y = 0;
+	float x = 0.0f;
+	float y = 0.0f;
 
 	std::vector<PathmapTile*> tile_neighbours;
 

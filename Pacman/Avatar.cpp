@@ -2,11 +2,16 @@
 
 Avatar::Avatar(SDL_Renderer* main_renderer, const Vector2f& avatar_position, const Vector2f player_spawn): 
 	MovableGameEntity(main_renderer, avatar_position, "open_32.png", player_spawn),
-	render(main_renderer)
+	renderer(main_renderer)
 {}
 
 Avatar::~Avatar(void)
-{}
+{
+	if (renderer)
+	{
+		renderer = NULL;
+	}
+}
 
 void Avatar::update(float delta_time)
 {
@@ -22,7 +27,7 @@ void Avatar::updateInput(Vector2f next_movement, World* world)
 	{
 		teleport = { (world->tileIsTeleport(current_tile)) };
 		setPosition(teleport);
-		current_tile = Vector2f{ position.x / tile_size, position.y / tile_size };
+		current_tile = position / tile_size;
 		entity_next_tile = current_tile + next_movement;
 	}
 	else if (isAtDestination() && world->tileIsValid(current_tile + next_movement))
@@ -42,22 +47,22 @@ void Avatar::updateSprite()
 	{
 		if (direction.x == -1)
 		{
-			sprite->changeTexture(render, "open_left_32.png", position.x + width_offset, position.y + height_offset);
+			sprite->changeTexture(renderer, "open_left_32.png", position.x + width_offset, position.y + height_offset);
 			return;
 		}
 		else if (direction.x == 1)
 		{
-			sprite->changeTexture(render, "open_right_32.png", position.x + width_offset, position.y + height_offset);
+			sprite->changeTexture(renderer, "open_right_32.png", position.x + width_offset, position.y + height_offset);
 			return;
 		}
 		else if (direction.y == -1)
 		{
-			sprite->changeTexture(render, "open_up_32.png", position.x + width_offset, position.y + height_offset);
+			sprite->changeTexture(renderer, "open_up_32.png", position.x + width_offset, position.y + height_offset);
 			return;
 		}
 		else if (direction.y == 1)
 		{
-			sprite->changeTexture(render, "open_down_32.png", position.x + width_offset, position.y + height_offset);
+			sprite->changeTexture(renderer, "open_down_32.png", position.x + width_offset, position.y + height_offset);
 			return;
 		}
 	}	
@@ -66,22 +71,22 @@ void Avatar::updateSprite()
 	{
 		if (direction.x == -1)
 		{
-			sprite->changeTexture(render, "closed_left_32.png", position.x + width_offset, position.y + height_offset);
+			sprite->changeTexture(renderer, "closed_left_32.png", position.x + width_offset, position.y + height_offset);
 			return;
 		}
 		else if (direction.x == 1)
 		{
-			sprite->changeTexture(render, "closed_right_32.png", position.x + width_offset, position.y + height_offset);
+			sprite->changeTexture(renderer, "closed_right_32.png", position.x + width_offset, position.y + height_offset);
 			return;
 		}
 		else if (direction.y == -1)
 		{
-			sprite->changeTexture(render, "closed_up_32.png", position.x + width_offset, position.y + height_offset);
+			sprite->changeTexture(renderer, "closed_up_32.png", position.x + width_offset, position.y + height_offset);
 			return;
 		}
 		else if (direction.y == 1)
 		{
-			sprite->changeTexture(render, "closed_down_32.png", position.x + width_offset, position.y + height_offset);
+			sprite->changeTexture(renderer, "closed_down_32.png", position.x + width_offset, position.y + height_offset);
 			return;
 		}
 	}
@@ -89,11 +94,11 @@ void Avatar::updateSprite()
 
 void Avatar::changeSprite(float delta_time)
 {
-	change_sprite_timer += delta_time;
-	if (change_sprite_timer >= sprite_timer)
+	timer += delta_time;
+	if (timer >= sprite_change_timer)
 	{
 		sprite_open = !sprite_open;
-		change_sprite_timer = 0;
+		timer = 0;
 	}
 	updateSprite();
 }

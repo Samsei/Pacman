@@ -18,11 +18,6 @@ int main(int argc, char **argv)
 		assert(0 && "Failed to create ttf!");
 		exit(-1);
 	}
-
-	if (SDL_Init(SDL_INIT_AUDIO) < 0)
-	{
-		exit(-1);//i'll add audio at some point
-	}
 	
 	SDL_Event event;
 	SDL_Window* window = SDL_CreateWindow("Pacman", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1024, 768, SDL_WINDOW_OPENGL);
@@ -34,7 +29,6 @@ int main(int argc, char **argv)
 	float current_frame = 0;
 	float elapsed_time = 0;
 
-
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); //no need to set every frame if not being changed
 
 	if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) < 0)
@@ -43,35 +37,33 @@ int main(int argc, char **argv)
 		exit(-1);
 	}
 
-	if (!window)
+	if (!drawer)
 	{
-		assert(0 && "Failed to create window!");
+		assert(0 && "Failed to create drawer!");
 		exit(-1);
-	}	
-
+	}
+		
+	if (!pacman)
+	{
+		assert(0 && "Failed to create game!");
+		exit(-1);
+	}
+	
 	if (!renderer)
 	{
 		assert(0 && "Failed to create renderer!");
 		exit(-1);
 	}
-	
-	if (!pacman)
+
+	if (!window)
 	{
-		assert(0 && "Failed to create renderer!");
-		exit(-1);
-	}
-	
-	if (!drawer)
-	{
-		assert(0 && "Failed to create renderer!");
+		assert(0 && "Failed to create window!");
 		exit(-1);
 	}
 
 	while (SDL_PollEvent(&event) >= 0)
 	{
-		SDL_RenderClear(renderer);
-
-		current_frame = (float) SDL_GetTicks() * 0.001f;
+		current_frame = SDL_GetTicks() * 0.001f;
 		elapsed_time = current_frame - last_frame;
 		last_frame = current_frame;
 
@@ -86,8 +78,27 @@ int main(int argc, char **argv)
 		SDL_Delay(1);
 	}
 
-	delete pacman;
-	delete drawer;
+	if (drawer)
+	{
+		delete drawer;
+		drawer = NULL;
+	}
+
+	if (pacman)
+	{
+		delete pacman;
+		pacman = NULL;
+	}
+
+	if (renderer)
+	{
+		renderer = NULL;
+	}
+
+	if (window)
+	{
+		window = NULL;
+	}
 
 	TTF_Quit();
 	IMG_Quit();

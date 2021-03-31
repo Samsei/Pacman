@@ -31,14 +31,14 @@ private:
 	bool checkEndGameCondition();
 	bool updateInput();
 
-	void checkGhostTimer(float);
+	void checkTimers(float);
 	void drawText();
 	void hitGhost();
 	void updateScore();
 
-	float ghost_timer = 0;
-	float immortal_timer = 0;
-	float time_to_next_update = 0;
+	float ghost_timer = 0.0f;
+	float immortal_timer = 0.0f;
+	float time_to_next_update = 0.0f;
 
 	int fps = 0;	
 	int lives = 3;
@@ -50,7 +50,7 @@ private:
 
 	Vector2f next_movement = { -1.0f, 0.0f };
 
-	const Vector2f ghost_spawn = { 13.0f, 12.0f };
+	const Vector2f ghost_spawn = { 13.0f, 13.0f };
 	const Vector2f player_spawn = { 13.0f, 22.0f };
 
 	std::vector<Ghost*> ghosts;

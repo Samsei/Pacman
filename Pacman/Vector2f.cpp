@@ -79,6 +79,19 @@ const Vector2f Vector2f::operator*(const float other) const
 	return v;
 }
 
+const Vector2f Vector2f::operator*(const int other) const
+{
+	Vector2f v(x * other, y * other);
+	return v;
+}
+
+const Vector2f Vector2f::operator/(const int other) const
+{
+	Vector2f v(x / other, y / other);
+	return v;
+}
+
+
 float Vector2f::Length() const
 {
 	return sqrt(x * x + y * y);

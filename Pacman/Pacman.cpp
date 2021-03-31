@@ -68,25 +68,24 @@ bool Pacman::update(float delta_time)
 		return false;
 	}
 
-	if (delta_time > 0)
-	{
-		fps = (1 / delta_time);
-	}
-
 	player->updateInput(next_movement, world);
 	player->update(delta_time);
 	ghost->update(delta_time);
 
 	hitGhost();
-
 	updateScore();
-	checkGhostTimer(delta_time);
+	checkTimers(delta_time);
 
 	return true;
 }
 
-void Pacman::checkGhostTimer(float delta_time)
+void Pacman::checkTimers(float delta_time)
 {
+	if (delta_time > 0)
+	{
+		fps = (1 / delta_time);
+	}
+
 	if (ghost_timer > 0)
 	{
 		ghost_timer -= delta_time;
@@ -142,6 +141,25 @@ void Pacman::hitGhost()
 	}
 }
 
+bool Pacman::checkEndGameCondition()
+{
+	if (score >= 2000 && world->checkDotList())
+	{
+		renderer->drawText("You win!", 20, 70);
+		SDL_Delay(5000);
+		return false;
+	}
+
+	if (lives <= 0)
+	{
+		renderer->drawText("You lose!", 20, 70);
+		SDL_Delay(5000);
+		return false;
+	}
+
+	return true;
+}
+
 bool Pacman::updateInput()
 {
 	if (keystate[SDL_SCANCODE_UP])
@@ -162,23 +180,6 @@ bool Pacman::updateInput()
 	}
 	else if (keystate[SDL_SCANCODE_ESCAPE])
 	{
-		return false;
-	}
-
-	return true;
-}
-
-bool Pacman::checkEndGameCondition()
-{
-	if (world->checkDotList())
-	{
-		renderer->drawText("You win!", 20, 70);
-		return false;
-	}
-
-	if (lives <= 0)
-	{
-		renderer->drawText("You lose!", 20, 70);
 		return false;
 	}
 

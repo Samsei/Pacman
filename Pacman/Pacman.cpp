@@ -31,21 +31,25 @@ Pacman::~Pacman(void)
 		delete player;
 		player = NULL;
 	}
+
 	if (world)
 	{
 		delete world;
 		world = NULL;
 	}
+
 	if (player_sprite)
 	{
 		delete player_sprite;
 		player_sprite = NULL;
 	}	
+
 	if (ghost)
 	{
 		delete ghost;
 		ghost = NULL;
 	}
+
 	if (renderer)
 	{
 		renderer = NULL;
@@ -107,19 +111,17 @@ void Pacman::updateScore()
 {
 	if (player->isAtDestination() && world->hasIntersectedDot(player->getPosition()))
 	{
-		score += 10;
+		score += dot_score;
 	}
-
 	else if (player->isAtDestination() && world->hasIntersectedBigDot(player->getPosition()))
 	{
-		score += 20;
+		score += big_dot_score;
 		ghost_timer = 20.0f;
 		ghost->setVulnerable();
-	}
-	
+	}	
 	else if (player->isAtDestination() && world->hasIntersectedCherry(player->getPosition()))
 	{
-		score += 100;
+		score += cherry_score;
 	}
 }
 
@@ -137,7 +139,7 @@ void Pacman::hitGhost()
 		}
 		else if (ghost->is_vulnerable && !ghost->is_dead)
 		{
-			score += 50;
+			score += ghost_score;
 			ghost->setDead();
 		}
 	}
@@ -146,8 +148,9 @@ void Pacman::hitGhost()
 //check if the player has collected all dots, or if the life total is 0 or less
 bool Pacman::checkEndGameCondition()
 {
-	if (score >= 2000 && world->checkDotList())
+	if (score >= score_threshhold && world->checkDotList())
 	{
+		SDL_RenderClear(renderer->returnRenderer());
 		renderer->drawText("You win!", 20, 70);
 		SDL_Delay(5000);
 		return false;
@@ -155,6 +158,7 @@ bool Pacman::checkEndGameCondition()
 
 	if (lives <= 0)
 	{
+		SDL_RenderClear(renderer->returnRenderer());
 		renderer->drawText("You lose!", 20, 70);
 		SDL_Delay(5000);
 		return false;

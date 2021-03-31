@@ -3,9 +3,10 @@
 #include <iostream>
 
 //assign pointers
-PathFinder::PathFinder(Avatar* avatar, World* main_world) :
+PathFinder::PathFinder(std::list<PathmapTile*> tile_list, Avatar* avatar, World* main_world) :
 	player(avatar),
-	world(main_world)
+	world(main_world),
+	original_tile_list(tile_list)
 {}
 
 //destruct and set pointers to null
@@ -52,31 +53,31 @@ auto distance = [](Vector2f a, Vector2f b)
 };
 
 //get path based on current state
-PathmapTile* PathFinder::getPath(std::list<PathmapTile*> tile_list, Avatar* player, Vector2f ghost_current_tile, bool is_vulnerable, bool is_dead)
+PathmapTile* PathFinder::getPath(Avatar* player, Vector2f ghost_current_tile, bool is_vulnerable, bool is_dead)
 {
 	if (!is_vulnerable && !is_dead)
 	{		
-		return AStar(tile_list, player->getCurrentTile(), ghost_current_tile, is_vulnerable);
+		return AStar(player->getCurrentTile(), ghost_current_tile, is_vulnerable);
 	}
 
 	else if (is_vulnerable)
 	{
-		return AStar(tile_list, player->getCurrentTile(), ghost_current_tile, is_vulnerable);
+		return AStar(player->getCurrentTile(), ghost_current_tile, is_vulnerable);
 	}
 	
 	else if (is_dead)
 	{
-		return AStar(tile_list, ghost_spawn, ghost_current_tile, is_vulnerable);
+		return AStar(ghost_spawn, ghost_current_tile, is_vulnerable);
 	}
 
 	return nullptr;
 }
 
 //the AStar algorithm, calculate the fastest path to a destination (not necessarily the shortest)
-PathmapTile* PathFinder::AStar(std::list<PathmapTile*> tile_list, Vector2f destination, Vector2f ghost_current_tile, bool is_vulnerable)
+PathmapTile* PathFinder::AStar(Vector2f destination, Vector2f ghost_current_tile, bool is_vulnerable)
 {
 	//find the starting tile and the end tile, set each tiles cost to infinity, parents to nullptr and if they have been visited to false
-	for (PathmapTile* p : tile_list)
+	for (PathmapTile* p : original_tile_list)
 	{
 		if (p->returnTileAsVector() == ghost_current_tile)
 		{

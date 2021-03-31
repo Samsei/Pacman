@@ -5,7 +5,7 @@ Vector2f::Vector2f()
 {
 	x = 0.0f;
 	y = 0.0f;
-	length = 0.0f;
+	length_of_vector = 0.0f;
 }
 
 //create a vector with passed variables
@@ -97,18 +97,18 @@ const Vector2f Vector2f::operator/(const int other) const
 }
 
 //get the length of a vector
-float Vector2f::Length() const
+float Vector2f::length() const
 {
 	return sqrt(x * x + y * y);
 }
 
 //normalize a vector
-void Vector2f::Normalize()
+void Vector2f::normalize()
 {
-	length = Length();
+	length_of_vector = length();
 
-	if (length > 0.f)
+	if (length_of_vector > 0.f)
 	{
-		*this /= length;
+		*this /= length_of_vector;
 	}
 }

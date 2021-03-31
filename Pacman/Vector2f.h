@@ -9,8 +9,8 @@ public:
 	Vector2f();
 	Vector2f(float, float);
 
-	float Length() const;
-	void Normalize();
+	float length() const;
+	void normalize();
 
 	const bool operator==(const Vector2f&) const;
 	const bool operator!=(const Vector2f&) const;
@@ -27,7 +27,7 @@ public:
 
 	float x = 0.0f;
 	float y = 0.0f;
-	float length = 0.0f;
+	float length_of_vector = 0.0f;
 };
 
 #endif // VECTOR2F_H

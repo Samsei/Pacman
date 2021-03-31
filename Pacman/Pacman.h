@@ -38,9 +38,14 @@ private:
 	float immortal_timer = 0.0f;
 	float time_to_next_update = 0.0f;
 
+	int big_dot_score = 20;
+	int cherry_score = 100;
+	int dot_score = 10;
 	int fps = 0;	
+	int ghost_score = 50;
 	int lives = 3;
 	int score = 0;
+	int score_threshhold = 2000;
 
 	const int tile_size = 22;
 

@@ -8,7 +8,7 @@ Ghost::Ghost(SDL_Renderer* main_renderer, const Vector2f& entity_position, const
 	spawn(ghost_spawn),
 	pacman(player)
 {
-	path_finder = new PathFinder(player, world);
+	path_finder = new PathFinder(world->returnTiles(), player, world);
 
 	entity_next_tile = current_tile;
 }
@@ -75,7 +75,7 @@ void Ghost::getNextTile()
 {
 	if (isAtDestination())
 	{
-		next_tile = path_finder->getPath(world->returnTiles(), pacman, current_tile, is_vulnerable, is_dead);
+		next_tile = path_finder->getPath(pacman, current_tile, is_vulnerable, is_dead);
 		setNextTile(next_tile->returnTileAsVector());
 	}
 

@@ -8,15 +8,15 @@
 class PathFinder
 {
 public:
-	PathFinder(Avatar*, World*);
+	PathFinder(std::list<PathmapTile*>, Avatar*, World*);
 	~PathFinder();
 
 	bool tileIsValid(PathmapTile*);
 
-	PathmapTile* getPath(std::list<PathmapTile*>, Avatar*, Vector2f, bool, bool);
+	PathmapTile* getPath(Avatar*, Vector2f, bool, bool);
 
 private:
-	PathmapTile* AStar(std::list<PathmapTile*>, Vector2f, Vector2f, bool);
+	PathmapTile* AStar(Vector2f, Vector2f, bool);
 
 	float highest_cost = 0.0f;
 	float lowest_cost = 0.0f;
@@ -27,6 +27,7 @@ private:
 
 	const Vector2f ghost_spawn = { 13.0f, 13.0f };
 
+	std::list<PathmapTile*> original_tile_list;
 	std::list<PathmapTile*> list_not_tested;
 
 	Avatar* player = nullptr;
